@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import usePersistedState from '../../hooks/usePersistedState';
 
 interface AvatarState {
@@ -212,9 +213,9 @@ const AIAvatar: React.FC = () => {
                         <p style={{ fontSize: '0.75rem', opacity: 0.7, lineHeight: '1.5', marginBottom: '16px' }}>
                             Avatar creation is currently in private beta. High-fidelity rendering requires Premium Plan.
                         </p>
-                        <button style={{ width: '100%', padding: '10px', borderRadius: '10px', border: '1px solid var(--accent-gold)', background: 'transparent', color: 'var(--accent-gold)', fontWeight: 600, cursor: 'pointer', fontSize: '0.8rem' }}>
+                        <Link to="/profile#plan" style={{ display: 'block', textAlign: 'center', width: '100%', padding: '10px', borderRadius: '10px', border: '1px solid var(--accent-gold)', background: 'transparent', color: 'var(--accent-gold)', fontWeight: 600, cursor: 'pointer', fontSize: '0.8rem', textDecoration: 'none' }}>
                             Upgrade Plan →
-                        </button>
+                        </Link>
                     </div>
                 </div>
 

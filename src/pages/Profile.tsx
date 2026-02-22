@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import usePersistedState from '../hooks/usePersistedState';
@@ -59,6 +59,13 @@ const Profile: React.FC = () => {
     const [draft, setDraft] = useState<ProfileData>(profile);
     const [saved, setSaved] = useState(false);
     const [activeTab, setActiveTab] = useState<'overview' | 'settings' | 'plan'>('overview');
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.hash === '#plan') {
+            setActiveTab('plan');
+        }
+    }, [location.hash]);
 
     // Compute overall completion score
     const legacyItems = JSON.parse(localStorage.getItem('continuum_legacy_vault_v2') || '[]');
