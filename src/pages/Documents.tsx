@@ -58,16 +58,16 @@ const Documents: React.FC = () => {
     };
 
     return (
-        <div style={{ minHeight: '100vh', padding: '100px 0 60px' }}>
+        <div style={{ minHeight: '100vh', padding: '20px 0 60px', marginTop: '-40px' }}>
             <div className="container">
                 {/* Header */}
-                <div style={{ marginBottom: '48px' }}>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '2px', opacity: 0.8 }}>Document Archive</span>
-                    <h1 style={{ fontSize: '2.8rem', marginTop: '8px', marginBottom: '12px', background: 'linear-gradient(to right, #fff, var(--accent-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                        Your Documents
+                <div style={{ marginBottom: '40px' }}>
+                    <span style={{ fontSize: '1rem', color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '2px', opacity: 0.8 }}>{t('docs_archive') || 'Document Archive'}</span>
+                    <h1 style={{ fontSize: '3rem', marginTop: '8px', marginBottom: '16px', background: 'linear-gradient(to right, #fff, var(--accent-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                        {t('docs_title') || 'Your Documents'}
                     </h1>
-                    <p style={{ opacity: 0.6, maxWidth: '560px' }}>
-                        All your completed templates, legal documents, and saved forms in one place. Download, print, or update them at any time.
+                    <p style={{ opacity: 0.8, maxWidth: '600px', fontSize: '1.4rem', lineHeight: 1.6 }}>
+                        {t('docs_desc') || 'All your completed templates, legal documents, and saved forms in one place. Download, print, or update them at any time.'}
                     </p>
                 </div>
 
@@ -78,24 +78,24 @@ const Documents: React.FC = () => {
                             key={f}
                             onClick={() => setFilter(f)}
                             style={{
-                                padding: '8px 18px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.12)',
+                                padding: '10px 22px', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.12)',
                                 background: filter === f ? 'rgba(255,215,0,0.1)' : 'transparent',
                                 color: filter === f ? 'var(--accent-gold)' : 'var(--text-muted)',
-                                fontSize: '0.82rem', cursor: 'pointer', transition: 'all 0.2s', fontWeight: filter === f ? 700 : 400
+                                fontSize: '1.05rem', cursor: 'pointer', transition: 'all 0.2s', fontWeight: filter === f ? 700 : 500
                             }}
                         >
-                            {f === 'all' ? 'All' : STATUS_STYLES[f]?.label} ({counts[f]})
+                            {t(`docs_filter_${f}`) || (f === 'all' ? 'All' : STATUS_STYLES[f]?.label)} ({counts[f]})
                         </button>
                     ))}
                     <button
                         onClick={() => navigate('/tools?tool=templates')}
                         style={{
-                            marginLeft: 'auto', padding: '8px 20px', borderRadius: '20px',
+                            marginLeft: 'auto', padding: '10px 24px', borderRadius: '24px',
                             border: '1px solid var(--accent-gold)', background: 'rgba(255,215,0,0.08)',
-                            color: 'var(--accent-gold)', fontSize: '0.82rem', cursor: 'pointer', fontWeight: 700
+                            color: 'var(--accent-gold)', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 700
                         }}
                     >
-                        + Create New Document
+                        {t('docs_btn_create') || '+ Create New Document'}
                     </button>
                 </div>
 
@@ -103,13 +103,13 @@ const Documents: React.FC = () => {
                 {filtered.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '80px 20px', opacity: 0.4 }}>
                         <div style={{ fontSize: '3rem', marginBottom: '16px' }}>📄</div>
-                        <p style={{ fontStyle: 'italic' }}>No documents yet. Use the Templates wizard to create your first document.</p>
+                        <p style={{ fontStyle: 'italic' }}>{t('docs_empty_state') || 'No documents yet. Use the Templates wizard to create your first document.'}</p>
                         <button
                             onClick={() => navigate('/tools?tool=templates')}
                             className="btn"
                             style={{ marginTop: '20px' }}
                         >
-                            Open Templates →
+                            {t('docs_btn_templates') || 'Open Templates'} →
                         </button>
                     </div>
                 ) : (
@@ -138,23 +138,23 @@ const Documents: React.FC = () => {
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                                         <span style={{ fontSize: '2rem' }}>{doc.icon}</span>
                                         <span style={{
-                                            fontSize: '0.72rem', padding: '3px 10px', borderRadius: '12px',
+                                            fontSize: '0.95rem', padding: '4px 14px', borderRadius: '12px',
                                             background: statusStyle.bg, color: statusStyle.color,
                                             border: `1px solid ${statusStyle.color}30`
                                         }}>
-                                            {statusStyle.label}
+                                            {t(`docs_filter_${doc.status}`) || statusStyle.label}
                                         </span>
                                     </div>
-                                    <h3 style={{ fontSize: '1.05rem', marginBottom: '6px', color: '#fff' }}>{doc.title}</h3>
-                                    <p style={{ fontSize: '0.8rem', opacity: 0.45, marginBottom: '16px', flex: 1 }}>{doc.type}</p>
+                                    <h3 style={{ fontSize: '1.6rem', marginBottom: '6px', color: '#fff' }}>{doc.title}</h3>
+                                    <p style={{ fontSize: '1.1rem', opacity: 0.6, marginBottom: '24px', flex: 1 }}>{doc.type}</p>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ fontSize: '0.72rem', opacity: 0.3 }}>{doc.createdAt}</span>
+                                        <span style={{ fontSize: '0.95rem', opacity: 0.5 }}>{doc.createdAt}</span>
                                         <div style={{ display: 'flex', gap: '8px' }}>
                                             <button
                                                 onClick={e => { e.stopPropagation(); window.print(); }}
-                                                style={{ padding: '5px 12px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', cursor: 'pointer' }}
+                                                style={{ padding: '8px 16px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(255,255,255,0.7)', fontSize: '1rem', cursor: 'pointer' }}
                                             >
-                                                🖨 Print
+                                                🖨 {t('docs_btn_print') || 'Print'}
                                             </button>
                                         </div>
                                     </div>
@@ -165,15 +165,15 @@ const Documents: React.FC = () => {
                 )}
 
                 {/* Quick links */}
-                <div style={{ marginTop: '60px', padding: '32px', borderRadius: '16px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ marginTop: '20px', padding: '32px', borderRadius: '16px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                        <h3 style={{ marginBottom: '6px', fontSize: '1.1rem' }}>Need to create a document?</h3>
-                        <p style={{ opacity: 0.5, fontSize: '0.85rem' }}>Use our step-by-step wizards to generate legal document drafts.</p>
+                        <h3 style={{ marginBottom: '8px', fontSize: '1.4rem' }}>{t('docs_need_create') || 'Need to create a document?'}</h3>
+                        <p style={{ opacity: 0.6, fontSize: '1rem' }}>{t('docs_need_create_desc') || 'Use our step-by-step wizards to generate legal document drafts.'}</p>
                     </div>
-                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                        <button onClick={() => navigate('/tools?tool=templates')} className="btn" style={{ fontSize: '0.8rem' }}>Open Templates</button>
-                        <button onClick={() => navigate('/tools?tool=legal-docs')} className="btn" style={{ fontSize: '0.8rem' }}>Legal Framework</button>
-                        <button onClick={() => navigate('/tools?tool=will-builder')} className="btn" style={{ fontSize: '0.8rem' }}>Will Builder</button>
+                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                        <button onClick={() => navigate('/tools?tool=templates')} className="btn" style={{ fontSize: '1rem', padding: '10px 20px' }}>{t('docs_btn_templates') || 'Open Templates'}</button>
+                        <button onClick={() => navigate('/tools?tool=legal-docs')} className="btn" style={{ fontSize: '1rem', padding: '10px 20px' }}>{t('docs_btn_legal') || 'Legal Framework'}</button>
+                        <button onClick={() => navigate('/tools?tool=will-builder')} className="btn" style={{ fontSize: '1rem', padding: '10px 20px' }}>{t('docs_btn_will') || 'Will Builder'}</button>
                     </div>
                 </div>
             </div>
@@ -198,7 +198,7 @@ const Documents: React.FC = () => {
                                 {viewing.data.note || 'This document has been saved to your archive.'}
                             </div>
                             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                                <button onClick={() => window.print()} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem' }}>🖨 Print</button>
+                                <button onClick={() => window.print()} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem' }}>🖨 {t('docs_btn_print') || 'Print'}</button>
                                 <button onClick={() => { navigate('/tools?tool=templates'); setViewing(null); }} style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', background: 'var(--accent-gold)', color: '#000', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>Edit in Wizard</button>
                             </div>
                         </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import usePersistedState from '../hooks/usePersistedState';
@@ -90,16 +90,20 @@ const Profile: React.FC = () => {
 
     const planStyle = PLAN_STYLES[profile.plan];
 
+    if (!localStorage.getItem('continuum_user')) {
+        return <Navigate to="/login" replace />;
+    }
+
     return (
-        <div style={{ height: '100vh', padding: '20px 0', overflow: 'hidden' }}>
-            <div className="container" style={{ transform: 'scale(0.85)', transformOrigin: 'top center', height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ minHeight: '100vh', padding: '20px 0 60px', marginTop: '-60px' }}>
+            <div className="container" style={{ display: 'flex', flexDirection: 'column' }}>
                 {/* Header bar */}
                 <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap' }}>
-                    <Link to="/" style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', opacity: 0.7, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Link to="/" style={{ fontSize: '1.1rem', color: 'var(--accent-gold)', opacity: 0.7, display: 'flex', alignItems: 'center', gap: '6px' }}>
                         ← Home
                     </Link>
                     <span style={{ opacity: 0.2 }}>/</span>
-                    <span style={{ fontSize: '0.8rem', opacity: 0.4 }}>Your Profile</span>
+                    <span style={{ fontSize: '1.1rem', opacity: 0.4 }}>Your Profile</span>
                     {saved && (
                         <span style={{ marginLeft: 'auto', color: '#10b981', fontSize: '0.82rem', animation: 'fadeIn 0.3s ease' }}>
                             ✓ Saved successfully
@@ -107,7 +111,7 @@ const Profile: React.FC = () => {
                     )}
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '20px', flex: 1, overflow: 'hidden' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(260px, 300px) 1fr', gap: '30px', flex: 1, alignItems: 'start' }}>
 
                     {/* ─── LEFT COLUMN ──────────────────────────────────── */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -126,10 +130,10 @@ const Profile: React.FC = () => {
                             }}>
                                 {initials}
                             </div>
-                            <h2 style={{ fontSize: '1.2rem', marginBottom: '4px' }}>{profile.name || 'Your Name'}</h2>
-                            <p style={{ fontSize: '0.82rem', opacity: 0.45, marginBottom: '14px' }}>{profile.email || 'your@email.com'}</p>
+                            <h2 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{profile.name || 'Your Name'}</h2>
+                            <p style={{ fontSize: '1.1rem', opacity: 0.45, marginBottom: '18px' }}>{profile.email || 'your@email.com'}</p>
                             <span style={{
-                                display: 'inline-block', fontSize: '0.72rem', padding: '4px 12px', borderRadius: '12px',
+                                display: 'inline-block', fontSize: '0.9rem', padding: '6px 14px', borderRadius: '12px',
                                 background: planStyle.bg, color: planStyle.color, border: `1px solid ${planStyle.border}`
                             }}>
                                 {planStyle.label}
@@ -141,14 +145,14 @@ const Profile: React.FC = () => {
                             padding: '22px', borderRadius: '20px',
                             background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)'
                         }}>
-                            <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '12px' }}>Legacy Readiness</div>
-                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '12px' }}>
-                                <span style={{ fontSize: '2.5rem', fontWeight: 700, color: score >= 70 ? '#10b981' : score >= 40 ? 'var(--accent-gold)' : '#ef4444' }}>
+                            <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '12px' }}>Legacy Readiness</div>
+                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '18px' }}>
+                                <span style={{ fontSize: '3rem', fontWeight: 700, color: score >= 70 ? '#10b981' : score >= 40 ? 'var(--accent-gold)' : '#ef4444' }}>
                                     {score}%
                                 </span>
-                                <span style={{ fontSize: '0.8rem', opacity: 0.5 }}>complete</span>
+                                <span style={{ fontSize: '1.2rem', opacity: 0.5 }}>complete</span>
                             </div>
-                            <div style={{ height: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.08)', marginBottom: '16px' }}>
+                            <div style={{ height: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.08)', marginBottom: '20px' }}>
                                 <div style={{
                                     height: '100%', borderRadius: '4px', transition: 'width 0.5s ease',
                                     width: `${score}%`,
@@ -158,7 +162,7 @@ const Profile: React.FC = () => {
                                 }} />
                             </div>
                             {scoreItems.map((item, i) => (
-                                <div key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '7px', fontSize: '0.8rem' }}>
+                                <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '10px', fontSize: '1rem' }}>
                                     <span style={{ color: item.done ? '#10b981' : 'rgba(255,255,255,0.2)', flexShrink: 0 }}>{item.done ? '✓' : '○'}</span>
                                     <span style={{ opacity: item.done ? 0.8 : 0.4, textDecoration: item.done ? 'none' : 'none' }}>{item.label}</span>
                                 </div>
@@ -167,7 +171,7 @@ const Profile: React.FC = () => {
 
                         {/* Quick nav */}
                         <div style={{ padding: '20px', borderRadius: '20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                            <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '12px' }}>Quick Links</div>
+                            <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '16px' }}>Quick Links</div>
                             {[
                                 { to: '/tools', label: '🛠 Tools Dashboard' },
                                 { to: '/documents', label: '📄 My Documents' },
@@ -175,8 +179,8 @@ const Profile: React.FC = () => {
                                 { to: '/tools?tool=leave-behind', label: '✦ Digital Legacy' },
                             ].map(link => (
                                 <Link key={link.to} to={link.to} style={{
-                                    display: 'block', padding: '8px 10px', borderRadius: '8px', marginBottom: '4px',
-                                    fontSize: '0.85rem', opacity: 0.65, transition: 'all 0.2s',
+                                    display: 'block', padding: '10px 12px', borderRadius: '8px', marginBottom: '8px',
+                                    fontSize: '1.1rem', opacity: 0.65, transition: 'all 0.2s',
                                     color: 'var(--text-color)'
                                 }}
                                     onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
@@ -201,10 +205,10 @@ const Profile: React.FC = () => {
                                     key={tab.key}
                                     onClick={() => setActiveTab(tab.key as any)}
                                     style={{
-                                        flex: 1, padding: '11px', borderRadius: '10px', border: 'none', cursor: 'pointer',
+                                        flex: 1, padding: '14px', borderRadius: '10px', border: 'none', cursor: 'pointer',
                                         background: activeTab === tab.key ? 'rgba(255,215,0,0.12)' : 'transparent',
                                         color: activeTab === tab.key ? 'var(--accent-gold)' : 'var(--text-muted)',
-                                        fontWeight: activeTab === tab.key ? 700 : 400, fontSize: '0.88rem', transition: 'all 0.2s'
+                                        fontWeight: activeTab === tab.key ? 700 : 400, fontSize: '1.2rem', transition: 'all 0.2s'
                                     }}
                                 >{tab.label}</button>
                             ))}
@@ -214,15 +218,15 @@ const Profile: React.FC = () => {
                         {activeTab === 'overview' && (
                             <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '28px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                                    <h3 style={{ fontSize: '1.1rem', margin: 0 }}>Personal Information</h3>
+                                    <h3 style={{ fontSize: '1.6rem', margin: 0 }}>Personal Information</h3>
                                     {!editing ? (
-                                        <button onClick={() => { setDraft(profile); setEditing(true); }} style={{ padding: '8px 18px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.82rem' }}>
+                                        <button onClick={() => { setDraft(profile); setEditing(true); }} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '1.1rem' }}>
                                             ✏️ Edit
                                         </button>
                                     ) : (
                                         <div style={{ display: 'flex', gap: '8px' }}>
-                                            <button onClick={() => setEditing(false)} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: '0.82rem' }}>Cancel</button>
-                                            <button onClick={saveProfile} style={{ padding: '8px 18px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#000', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 700 }}>Save Changes</button>
+                                            <button onClick={() => setEditing(false)} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: '1.1rem' }}>Cancel</button>
+                                            <button onClick={saveProfile} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#000', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 700 }}>Save Changes</button>
                                         </div>
                                     )}
                                 </div>
@@ -237,17 +241,17 @@ const Profile: React.FC = () => {
                                         { key: 'city', label: 'City / Country', placeholder: 'Vienna, Austria', type: 'text' },
                                     ].map(field => (
                                         <div key={field.key}>
-                                            <label style={{ fontSize: '0.78rem', opacity: 0.5, display: 'block', marginBottom: '6px' }}>{field.label}</label>
+                                            <label style={{ fontSize: '1rem', opacity: 0.5, display: 'block', marginBottom: '8px' }}>{field.label}</label>
                                             {editing ? (
                                                 <input
                                                     type={field.type}
                                                     value={(draft as any)[field.key]}
                                                     onChange={e => setDraft({ ...draft, [field.key]: e.target.value })}
                                                     placeholder={field.placeholder}
-                                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,215,0,0.2)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box', fontSize: '0.88rem' }}
+                                                    style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid rgba(255,215,0,0.2)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box', fontSize: '1.2rem' }}
                                                 />
                                             ) : (
-                                                <div style={{ padding: '10px 0', fontSize: '0.9rem', opacity: (profile as any)[field.key] ? 0.85 : 0.3, fontStyle: (profile as any)[field.key] ? 'normal' : 'italic' }}>
+                                                <div style={{ padding: '12px 0', fontSize: '1.2rem', opacity: (profile as any)[field.key] ? 0.85 : 0.3, fontStyle: (profile as any)[field.key] ? 'normal' : 'italic' }}>
                                                     {(profile as any)[field.key] || 'Not set'}
                                                 </div>
                                             )}
@@ -256,18 +260,18 @@ const Profile: React.FC = () => {
                                 </div>
 
                                 {/* Bio */}
-                                <div style={{ marginTop: '16px' }}>
-                                    <label style={{ fontSize: '0.78rem', opacity: 0.5, display: 'block', marginBottom: '6px' }}>Personal Note / Bio</label>
+                                <div style={{ marginTop: '24px' }}>
+                                    <label style={{ fontSize: '1rem', opacity: 0.5, display: 'block', marginBottom: '8px' }}>Personal Note / Bio</label>
                                     {editing ? (
                                         <textarea
                                             value={draft.bio}
                                             onChange={e => setDraft({ ...draft, bio: e.target.value })}
                                             rows={3}
-                                            placeholder="A short personal note or message to your heirs..."
-                                            style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,215,0,0.2)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box', resize: 'vertical', fontSize: '0.88rem' }}
+                                            placeholder={t('auto_a_short_persona') || 'A short personal note or message to your heirs...'}
+                                            style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid rgba(255,215,0,0.2)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box', resize: 'vertical', fontSize: '1.2rem' }}
                                         />
                                     ) : (
-                                        <div style={{ padding: '10px 0', fontSize: '0.9rem', opacity: profile.bio ? 0.85 : 0.3, fontStyle: profile.bio ? 'normal' : 'italic' }}>
+                                        <div style={{ padding: '12px 0', fontSize: '1.2rem', opacity: profile.bio ? 0.85 : 0.3, fontStyle: profile.bio ? 'normal' : 'italic' }}>
                                             {profile.bio || 'Not set'}
                                         </div>
                                     )}
@@ -300,7 +304,7 @@ const Profile: React.FC = () => {
 
                                 {/* Theme */}
                                 <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '24px' }}>
-                                    <h4 style={{ marginBottom: '16px', fontSize: '1rem' }}>Theme</h4>
+                                    <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>Theme</h4>
                                     <div style={{ display: 'flex', gap: '12px' }}>
                                         {[{ key: 'dark', label: '🌙 Dark Mode' }, { key: 'light', label: '☀️ Light Mode' }].map(t => (
                                             <button
@@ -311,7 +315,7 @@ const Profile: React.FC = () => {
                                                     border: `1px solid ${theme === t.key ? 'rgba(255,215,0,0.3)' : 'rgba(255,255,255,0.08)'}`,
                                                     background: theme === t.key ? 'rgba(255,215,0,0.06)' : 'transparent',
                                                     color: theme === t.key ? 'var(--accent-gold)' : 'var(--text-muted)',
-                                                    cursor: 'pointer', fontSize: '0.9rem', fontWeight: theme === t.key ? 700 : 400, transition: 'all 0.2s'
+                                                    cursor: 'pointer', fontSize: '1.1rem', fontWeight: theme === t.key ? 700 : 400, transition: 'all 0.2s'
                                                 }}
                                             >{t.label}</button>
                                         ))}
@@ -320,20 +324,20 @@ const Profile: React.FC = () => {
 
                                 {/* Notifications */}
                                 <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '24px' }}>
-                                    <h4 style={{ marginBottom: '6px', fontSize: '1rem' }}>Email Reminders</h4>
-                                    <p style={{ opacity: 0.5, fontSize: '0.82rem', marginBottom: '16px' }}>Get reminded to keep your estate documents up to date.</p>
+                                    <h4 style={{ marginBottom: '12px', fontSize: '1.4rem' }}>Email Reminders</h4>
+                                    <p style={{ opacity: 0.5, fontSize: '1.1rem', marginBottom: '16px' }}>Get reminded to keep your estate documents up to date.</p>
                                     <Link to="/tools?tool=reminders" style={{
-                                        display: 'inline-block', padding: '10px 20px', borderRadius: '10px',
+                                        display: 'inline-block', padding: '12px 24px', borderRadius: '10px',
                                         border: '1px solid var(--accent-gold)', color: 'var(--accent-gold)',
-                                        fontSize: '0.82rem', fontWeight: 600, transition: 'all 0.2s'
+                                        fontSize: '1.1rem', fontWeight: 600, transition: 'all 0.2s'
                                     }}>
                                         📧 Manage Reminders →
                                     </Link>
                                 </div>
 
                                 {/* Security */}
-                                <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '24px' }}>
-                                    <h4 style={{ marginBottom: '16px', fontSize: '1rem' }}>Security</h4>
+                                <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '28px' }}>
+                                    <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>Security</h4>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         {[
                                             { label: 'Change Password', icon: '🔑' },
@@ -341,10 +345,10 @@ const Profile: React.FC = () => {
                                             { label: 'Connected Accounts (OAuth)', icon: '🔗' },
                                         ].map(item => (
                                             <button key={item.label} style={{
-                                                display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px',
+                                                display: 'flex', alignItems: 'center', gap: '10px', padding: '16px 20px',
                                                 borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)',
                                                 background: 'transparent', color: 'rgba(255,255,255,0.65)', cursor: 'pointer',
-                                                textAlign: 'left', fontSize: '0.85rem', transition: 'all 0.2s'
+                                                textAlign: 'left', fontSize: '1.1rem', transition: 'all 0.2s'
                                             }}
                                                 onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(255,215,0,0.2)'}
                                                 onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'}
@@ -362,18 +366,18 @@ const Profile: React.FC = () => {
                         {activeTab === 'plan' && (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                 <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '28px' }}>
-                                    <h3 style={{ marginBottom: '6px', fontSize: '1.1rem' }}>Current Plan</h3>
+                                    <h3 style={{ marginBottom: '12px', fontSize: '1.6rem' }}>Current Plan</h3>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
                                         <span style={{
-                                            display: 'inline-block', fontSize: '0.82rem', padding: '6px 16px', borderRadius: '20px',
+                                            display: 'inline-block', fontSize: '1.1rem', padding: '8px 20px', borderRadius: '20px',
                                             background: planStyle.bg, color: planStyle.color, border: `1px solid ${planStyle.border}`, fontWeight: 700
                                         }}>
                                             {planStyle.label}
                                         </span>
-                                        {profile.plan === 'free' && <span style={{ fontSize: '0.8rem', opacity: 0.5 }}>Upgrade to unlock all features</span>}
+                                        {profile.plan === 'free' && <span style={{ fontSize: '1.1rem', opacity: 0.5 }}>Upgrade to unlock all features</span>}
                                     </div>
 
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
                                         {[
                                             { plan: 'free' as const, label: 'Free', price: '€0', features: ['Asset Overview', 'Basic Checklist', 'Legal Framework (view)', '1 Digital Legacy item'] },
                                             { plan: 'premium' as const, label: 'Premium', price: '€9.90/mo', features: ['Everything in Free', 'Unlimited Legacy items', 'AI Chat Assistant', 'Email Reminders', 'PDF Export', 'Will Builder'] },
@@ -382,23 +386,23 @@ const Profile: React.FC = () => {
                                             const ts = PLAN_STYLES[tier.plan];
                                             return (
                                                 <div key={tier.plan} style={{
-                                                    padding: '20px', borderRadius: '14px',
+                                                    padding: '24px', borderRadius: '14px',
                                                     border: `1px solid ${profile.plan === tier.plan ? ts.border : 'rgba(255,255,255,0.08)'}`,
                                                     background: profile.plan === tier.plan ? ts.bg : 'rgba(255,255,255,0.02)',
                                                     display: 'flex', flexDirection: 'column'
                                                 }}>
-                                                    <div style={{ fontWeight: 700, marginBottom: '4px', color: ts.color }}>{tier.label}</div>
-                                                    <div style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '14px' }}>{tier.price}</div>
+                                                    <div style={{ fontWeight: 700, marginBottom: '6px', fontSize: '1.2rem', color: ts.color }}>{tier.label}</div>
+                                                    <div style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: '18px' }}>{tier.price}</div>
                                                     {tier.features.map(f => (
-                                                        <div key={f} style={{ fontSize: '0.78rem', opacity: 0.65, marginBottom: '5px', display: 'flex', gap: '6px' }}>
-                                                            <span style={{ color: ts.color }}>✓</span> {f}
+                                                        <div key={f} style={{ fontSize: '1rem', opacity: 0.65, marginBottom: '8px', display: 'flex', gap: '8px', alignItems: 'start' }}>
+                                                            <span style={{ color: ts.color, flexShrink: 0 }}>✓</span> <span>{f}</span>
                                                         </div>
                                                     ))}
                                                     <button
                                                         style={{
-                                                            marginTop: 'auto', paddingTop: '14px', padding: '8px', borderRadius: '8px', border: `1px solid ${ts.border}`,
+                                                            marginTop: 'auto', paddingTop: '14px', padding: '12px', borderRadius: '8px', border: `1px solid ${ts.border}`,
                                                             background: profile.plan === tier.plan ? ts.bg : 'transparent',
-                                                            color: ts.color, cursor: 'pointer', fontSize: '0.78rem',
+                                                            color: ts.color, cursor: 'pointer', fontSize: '1rem',
                                                             fontWeight: profile.plan === tier.plan ? 700 : 400, transition: 'all 0.2s'
                                                         }}
                                                         onClick={() => setProfile({ ...profile, plan: tier.plan })}

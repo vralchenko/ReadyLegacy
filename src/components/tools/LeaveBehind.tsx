@@ -250,7 +250,7 @@ const LeaveBehind: React.FC = () => {
                                             type="text"
                                             value={title}
                                             onChange={e => setTitle(e.target.value)}
-                                            placeholder="Give this memory a name..."
+                                            placeholder={t('auto_give_this_memor') || 'Give this memory a name...'}
                                             autoFocus
                                             style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: '#fff', boxSizing: 'border-box' }}
                                         />
@@ -281,7 +281,7 @@ const LeaveBehind: React.FC = () => {
                                             type="text"
                                             value={tagsInput}
                                             onChange={e => setTagsInput(e.target.value)}
-                                            placeholder="e.g. family, childhood, love..."
+                                            placeholder={t('auto_e_g_family_chil') || 'e.g. family, childhood, love...'}
                                             style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: '#fff', boxSizing: 'border-box' }}
                                         />
                                     </div>
@@ -296,7 +296,7 @@ const LeaveBehind: React.FC = () => {
                                         type="text"
                                         value={recipient}
                                         onChange={e => setRecipient(e.target.value)}
-                                        placeholder="e.g. My daughter Sofia, or 'Everyone'..."
+                                        placeholder={t('auto_e_g_my_daughter') || 'e.g. My daughter Sofia, or \'Everyone\'...'}
                                         autoFocus
                                         style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: '#fff', boxSizing: 'border-box' }}
                                     />

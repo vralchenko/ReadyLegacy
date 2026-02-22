@@ -86,7 +86,7 @@ const Executor: React.FC = () => {
                         value={newText}
                         onChange={e => setNewText(e.target.value)}
                         onKeyDown={e => e.key === 'Enter' && addTask()}
-                        placeholder="Add a new task..."
+                        placeholder={t('auto_add_a_new_task') || 'Add a new task...'}
                         style={{ flex: '2', minWidth: '200px', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'var(--text-color)', fontSize: '0.95rem' }}
                     />
                     <select

@@ -1,0 +1,8 @@
+[
+  { "id": "t1", "description": "Increase font size on documents wizard and list (completed)", "status": "done" },
+  { "id": "t2", "description": "Reduce top padding in documents view (completed)", "status": "done" },
+  { "id": "t3", "description": "Increase font size and reduce top spacing on Home page (completed)", "status": "done" },
+  { "id": "t4", "description": "Increase font size and reduce empty space on Visionaries/Team section (completed)", "status": "done" },
+  { "id": "t5", "description": "Reduce top padding in Profile/Settings (completed)", "status": "done" },
+  { "id": "t6", "description": "Ensure vertical scrolling when content overflows (CSS already handles this via main body scroll)", "status": "done" }
+]

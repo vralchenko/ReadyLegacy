@@ -234,7 +234,7 @@ const AssetOverview: React.FC = () => {
                         <h3>1.1 Personal Property</h3>
                         <div className="form-group">
                             <label>{t('label_brought') || 'Assets brought into the marriage'}</label>
-                            <input type="text" placeholder="e.g. Apartment in Vienna, inherited from family..." {...assetBrought} />
+                            <input type="text" placeholder={t('auto_e_g_apartment_i') || 'e.g. Apartment in Vienna, inherited from family...'} {...assetBrought} />
                             {errors['brought'] && <span style={{ color: '#ff6b6b', fontSize: '0.8rem' }}>{errors['brought']}</span>}
                         </div>
                     </div>
@@ -254,7 +254,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList title={t('label_securities') || 'Securities & Stocks'} itemKey="securities" />
                             <DynamicAssetList title={t('label_bvg') || 'Pension Fund'} itemKey="bvg" />
                             <DynamicAssetList title={t('label_insurance') || 'Insurance'} itemKey="insurance" />
-                            <DynamicAssetList title="Real Estate" itemKey="real_estate" fields={[
+                            <DynamicAssetList title={t('auto_real_estate') || 'Real Estate'} itemKey="real_estate" fields={[
                                 { key: 'name', label: 'Property', placeholder: 'e.g. Vienna apartment' },
                                 { key: 'value', label: 'Estimated Value', placeholder: 'e.g. 350,000 EUR' },
                                 { key: 'address', label: 'Address', placeholder: 'Street, City' },
@@ -275,11 +275,11 @@ const AssetOverview: React.FC = () => {
                         <h3>1.3 Liabilities</h3>
                         <div className="form-group">
                             <label>{t('label_mortgages') || 'Mortgages'}</label>
-                            <input type="text" placeholder="e.g. 200,000 EUR — Raiffeisen Bank" {...assetMortgages} />
+                            <input type="text" placeholder={t('auto_e_g_200_000_eur') || 'e.g. 200,000 EUR — Raiffeisen Bank'} {...assetMortgages} />
                         </div>
                         <div className="form-group">
                             <label>{t('label_debts') || 'Other Debts & Liabilities'}</label>
-                            <input type="text" placeholder="e.g. Car loan, credit card..." {...assetDebts} />
+                            <input type="text" placeholder={t('auto_e_g_car_loan_cr') || 'e.g. Car loan, credit card...'} {...assetDebts} />
                         </div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -299,7 +299,7 @@ const AssetOverview: React.FC = () => {
                         </p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                             <DynamicAssetList
-                                title="🔐 Crypto Wallets"
+                                title={t('auto_crypto_wallets') || '🔐 Crypto Wallets'}
                                 itemKey="crypto_wallets"
                                 fields={[
                                     { key: 'name', label: 'Wallet / Coin', placeholder: 'e.g. Bitcoin — Ledger Nano X' },
@@ -308,7 +308,7 @@ const AssetOverview: React.FC = () => {
                                 ]}
                             />
                             <DynamicAssetList
-                                title="📈 Crypto Exchanges"
+                                title={t('auto_crypto_exchange') || '📈 Crypto Exchanges'}
                                 itemKey="crypto_exchanges"
                                 fields={[
                                     { key: 'name', label: 'Exchange', placeholder: 'e.g. Binance, Coinbase, Kraken...' },
@@ -317,7 +317,7 @@ const AssetOverview: React.FC = () => {
                                 ]}
                             />
                             <DynamicAssetList
-                                title="💳 Hardware Device (Ledger, Trezor, etc.)"
+                                title={t('auto_hardware_device') || '💳 Hardware Device (Ledger, Trezor, etc.)'}
                                 itemKey="hardware_wallets"
                                 fields={[
                                     { key: 'name', label: 'Device', placeholder: 'e.g. Ledger Nano X' },
@@ -326,7 +326,7 @@ const AssetOverview: React.FC = () => {
                                 ]}
                             />
                             <DynamicAssetList
-                                title="🌐 Online Accounts (Email, Social Media, etc.)"
+                                title={t('auto_online_accounts') || '🌐 Online Accounts (Email, Social Media, etc.)'}
                                 itemKey="online_accounts"
                                 fields={[
                                     { key: 'name', label: 'Platform / Service', placeholder: 'e.g. Gmail, Facebook, iCloud...' },
@@ -334,7 +334,7 @@ const AssetOverview: React.FC = () => {
                                 ]}
                             />
                             <DynamicAssetList
-                                title="💰 Online Banking & Fintech"
+                                title={t('auto_online_banking_') || '💰 Online Banking & Fintech'}
                                 itemKey="online_banking"
                                 fields={[
                                     { key: 'name', label: 'Bank / App', placeholder: 'e.g. N26, Revolut, PayPal...' },
@@ -371,11 +371,11 @@ const AssetOverview: React.FC = () => {
                         </div>
                         <div className="form-group">
                             <label>Preferred Location / Cemetery</label>
-                            <input type="text" placeholder="e.g. Vienna Central Cemetery, hometown..." {...funeralLocation} />
+                            <input type="text" placeholder={t('auto_e_g_vienna_cent') || 'e.g. Vienna Central Cemetery, hometown...'} {...funeralLocation} />
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '20px' }}>
                             <DynamicAssetList
-                                title="🎵 Music & Ceremony Wishes"
+                                title={t('auto_music_ceremony_') || '🎵 Music & Ceremony Wishes'}
                                 itemKey="funeral_music"
                                 fields={[
                                     { key: 'name', label: 'Song / Piece', placeholder: 'e.g. Ave Maria, Beethoven 7th...' },
@@ -383,7 +383,7 @@ const AssetOverview: React.FC = () => {
                                 ]}
                             />
                             <DynamicAssetList
-                                title="👥 People to Notify / Invite"
+                                title={t('auto_people_to_notif') || '👥 People to Notify / Invite'}
                                 itemKey="funeral_people"
                                 fields={[
                                     { key: 'name', label: 'Name', placeholder: 'e.g. Old school friends' },
@@ -391,7 +391,7 @@ const AssetOverview: React.FC = () => {
                                 ]}
                             />
                             <DynamicAssetList
-                                title="🌸 Flowers & Donations"
+                                title={t('auto_flowers_donatio') || '🌸 Flowers & Donations'}
                                 itemKey="funeral_flowers"
                                 fields={[
                                     { key: 'name', label: 'Preference', placeholder: 'e.g. White roses, or donations to charity X' },
@@ -402,7 +402,7 @@ const AssetOverview: React.FC = () => {
                             <label>Additional Wishes & Notes</label>
                             <textarea
                                 rows={4}
-                                placeholder="Any other personal wishes for your funeral, tribute, or memorial..."
+                                placeholder={t('auto_any_other_perso') || 'Any other personal wishes for your funeral, tribute, or memorial...'}
                                 value={funeralNotes.value}
                                 onChange={funeralNotes.onChange as any}
                                 style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text-color)', borderRadius: '8px', resize: 'vertical', boxSizing: 'border-box' }}
@@ -426,7 +426,7 @@ const AssetOverview: React.FC = () => {
                         </p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '20px' }}>
                             <DynamicAssetList
-                                title="💎 Sentimental Items & Heirlooms"
+                                title={t('auto_sentimental_ite') || '💎 Sentimental Items & Heirlooms'}
                                 itemKey="sentimental_items"
                                 fields={[
                                     { key: 'name', label: 'Item', placeholder: 'e.g. Grandmother\'s ring, old watch...' },
@@ -435,7 +435,7 @@ const AssetOverview: React.FC = () => {
                                 ]}
                             />
                             <DynamicAssetList
-                                title="🐾 Pets"
+                                title={t('auto_pets') || '🐾 Pets'}
                                 itemKey="pets"
                                 fields={[
                                     { key: 'name', label: 'Pet name', placeholder: 'e.g. Max the golden retriever' },
@@ -447,7 +447,7 @@ const AssetOverview: React.FC = () => {
                             <label>General Notes & Other Wishes</label>
                             <textarea
                                 rows={5}
-                                placeholder="Any other thoughts, wishes, or notes you'd like to document..."
+                                placeholder={t('auto_any_other_thoug') || 'Any other thoughts, wishes, or notes you\'d like to document...'}
                                 value={othersNotes.value}
                                 onChange={othersNotes.onChange as any}
                                 style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text-color)', borderRadius: '8px', resize: 'vertical', boxSizing: 'border-box' }}
@@ -456,7 +456,7 @@ const AssetOverview: React.FC = () => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <button className="btn" onClick={() => setStep(5)}>← Back</button>
-                        <button className="btn" style={{ background: 'var(--accent-gold)', color: 'var(--bg-color)', fontWeight: 700 }} onClick={() => alert('✅ All your data is saved automatically to your local storage!')}>
+                        <button className="btn" style={{ background: 'var(--accent-gold)', color: 'var(--bg-color)', fontWeight: 700 }} onClick={() => alert(t('auto_all_your_data_i') || '✅ All your data is saved automatically to your local storage!')}>
                             ✓ Complete & Save
                         </button>
                     </div>

@@ -271,7 +271,7 @@ const LegalDocs: React.FC = () => {
                                             type="text"
                                             value={record.location || ''}
                                             onChange={e => updateLocation(doc.key, e.target.value)}
-                                            placeholder="e.g. Home safe, notary office, bank vault..."
+                                            placeholder={t('auto_e_g_home_safe_n') || 'e.g. Home safe, notary office, bank vault...'}
                                             style={{
                                                 width: '100%', padding: '10px 14px', borderRadius: '8px', boxSizing: 'border-box',
                                                 border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)',

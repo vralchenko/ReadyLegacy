@@ -35,6 +35,7 @@ interface ChatMessage {
 }
 
 const AIChatWidget: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+    const { t } = useLanguage();
     const [messages, setMessages] = useState<ChatMessage[]>([
         { sender: 'bot', text: 'Hello! I\'m your Continuum assistant. I can help you navigate the platform, fill in forms, and answer questions about estate planning. What would you like to know?', time: formatTime() }
     ]);
@@ -144,7 +145,7 @@ const AIChatWidget: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
-                    placeholder="Ask me anything..."
+                    placeholder={t('auto_ask_me_anything') || 'Ask me anything...'}
                     style={{
                         flex: 1, padding: '10px 14px', borderRadius: '12px',
                         border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.05)',
@@ -326,7 +327,7 @@ const BereavementSupport: React.FC = () => {
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         transition: 'transform 0.2s, box-shadow 0.2s'
                     }}
-                    title="Open AI Chat Assistant"
+                    title={t('auto_open_ai_chat_as') || 'Open AI Chat Assistant'}
                 >
                     💬
                 </button>

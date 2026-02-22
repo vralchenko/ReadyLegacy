@@ -103,10 +103,10 @@ nav {
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: var(--text-color);
-    padding: 6px 10px;
+    padding: 8px 12px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.7rem;
+    font-size: 1.35rem;
     font-weight: 500;
     transition: var(--transition);
 }
@@ -129,12 +129,12 @@ nav {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 32px;
     margin: 0 auto;
 }
 
 .nav-links a {
-    font-size: 0.85rem;
+    font-size: 1.5rem;
     font-weight: 500;
     color: var(--link-color);
     transition: var(--transition);
@@ -153,8 +153,8 @@ nav {
 }
 
 .header-btn {
-    padding: 10px 20px !important;
-    font-size: 0.75rem !important;
+    padding: 12px 24px !important;
+    font-size: 1.2rem !important;
 }
 
 .theme-toggle-btn {
@@ -315,7 +315,7 @@ nav {
 
 .logo {
     font-family: var(--font-heading);
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     color: var(--accent-gold);
     letter-spacing: 1px;
 }
@@ -327,7 +327,8 @@ nav {
 .nav-container {
     display: flex;
     align-items: center;
-    gap: 32px;
+    flex: 1;
+    justify-content: space-between;
 }
 
 .mobile-toggle {
@@ -359,7 +360,7 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 
 /* Hero Section */
 .hero {
-    padding-top: 80px;
+    padding-top: 0px;
     padding-bottom: 0px;
     position: relative;
     overflow: hidden;
@@ -398,21 +399,22 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 }
 
 .hero h1 {
-    font-size: 2.2rem;
+    font-size: 3.8rem;
     line-height: 1.2;
-    margin-bottom: 4px;
+    margin-bottom: 12px;
     background: linear-gradient(to right, #ffffff, #d4af37);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    white-space: nowrap;
 }
 
 .hero p {
-    font-size: 0.95rem;
+    font-size: 1.5rem;
     margin-bottom: 8px;
     color: var(--text-muted);
     max-width: 100%;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
 /* Intro / Problem */
@@ -421,16 +423,17 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 }
 
 .intro h2 {
-    font-size: 2.5rem;
+    font-size: 4.5rem;
     margin-bottom: 24px;
     color: var(--accent-gold);
 }
 
 .intro p {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
-    font-size: 1.25rem;
+    font-size: 1.8rem;
     color: var(--text-muted);
+    line-height: 1.6;
 }
 
 .heading-block p {
@@ -485,13 +488,13 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 }
 
 .card-number {
-    font-size: 1rem;
+    font-size: 1.3rem;
     color: var(--accent-gold);
     opacity: 0.8;
 }
 
 .product-card h3 {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     margin-bottom: 0;
     color: #ffffff;
 }
@@ -499,13 +502,13 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 .product-card p {
     color: var(--text-muted);
     margin-bottom: 24px;
-    font-size: 0.9rem;
+    font-size: 1.15rem;
     line-height: 1.5;
     flex-grow: 1;
 }
 
 .product-tag {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: var(--accent-gold);
@@ -528,11 +531,12 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 
 .tech-item h4 {
     margin-bottom: 8px;
+    font-size: 1.3rem;
     color: var(--accent-gold);
 }
 
 .tech-item p {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: var(--text-muted);
 }
 
@@ -540,11 +544,12 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 .founders {
     text-align: center;
     justify-content: flex-start !important;
-    padding-top: 20px !important;
+    padding-top: 0 !important;
+    margin-top: -40px;
 }
 
 .founders h2 {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     margin-bottom: 30px;
     margin-top: 0;
 }
@@ -578,8 +583,8 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 }
 
 .founder h3 {
-    font-size: 1.4rem;
-    margin-bottom: 0;
+    font-size: 2rem;
+    margin-bottom: 6px;
     color: #fff;
 }
 
@@ -593,18 +598,18 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 
 .founder span {
     color: var(--accent-gold);
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     opacity: 0.8;
 }
 
 .founder-bio {
-    font-size: 0.8rem;
+    font-size: 1.15rem;
     color: var(--text-muted);
-    line-height: 1.5;
+    line-height: 1.6;
     margin-bottom: 16px;
     max-width: 320px;
     margin-left: auto;
@@ -694,11 +699,12 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 }
 
 .cta h2 {
-    font-size: 3rem;
+    font-size: 4rem;
     margin-bottom: 24px;
 }
 
 .cta p {
+    font-size: 1.5rem;
     margin-bottom: 48px;
     max-width: 600px;
     margin-left: auto;
@@ -874,7 +880,7 @@ footer {
 .tools-layout {
     display: grid;
     grid-template-columns: 280px 1fr;
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .tools-sidebar {
@@ -897,7 +903,7 @@ footer {
     border-radius: 12px;
     cursor: pointer;
     transition: var(--transition);
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: var(--text-color);
     opacity: 0.6;
 }
@@ -925,7 +931,7 @@ footer {
 }
 
 .tools-content {
-    padding: 30px 40px;
+    padding: 10px 40px;
     max-width: 1000px;
 }
 
@@ -1060,7 +1066,7 @@ footer {
     text-align: center;
     padding-bottom: 12px;
     border-bottom: 2px solid var(--glass-border);
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: rgba(224, 230, 237, 0.4);
 }
 
@@ -1160,13 +1166,14 @@ footer {
 }
 
 .lang-btn {
-    padding: 4px 8px;
-    font-size: 0.75rem;
-    border: 1px solid var(--glass-border);
+    padding: 8px 14px;
+    font-size: 1.25rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     background: transparent;
     color: var(--text-color);
     cursor: pointer;
-    border-radius: 2px;
+    border-radius: 6px;
     transition: all 0.3s ease;
 }
 

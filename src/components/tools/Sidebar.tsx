@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool }) => {
                     <div className="group-title">03 Legal & Formalities</div>
                     <NavItem tool="legal-docs" label={t('tag_legal') || 'Legal Framework'} number="03" />
                     <NavItem tool="death-checklist" label={t('tag_checklist') || 'After Death Guide'} number="04" />
-                    <NavItem tool="executor" label="ToDo List" number="05" />
+                    <NavItem tool="executor" label={t('auto_todo_list') || 'ToDo List'} number="05" />
                     <NavItem tool="templates" label={t('tag_templates') || 'Request Templates'} number="06" />
                 </div>
 
@@ -55,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool }) => {
                 <div className="nav-group">
                     <div className="group-title">{t('p2_title') || 'Leave Behind'}</div>
                     <NavItem tool="leave-behind" label={t('tag_legacy') || 'Digital Legacy'} />
-                    <NavItem tool="ai-avatar" label="🤖 AI Avatar" />
+                    <NavItem tool="ai-avatar" label={t('auto_ai_avatar') || '🤖 AI Avatar'} />
                 </div>
 
                 {/* Be Honored */}
@@ -72,7 +72,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool }) => {
                 {/* Utilities */}
                 <div className="nav-group">
                     <div className="group-title">Utilities</div>
-                    <NavItem tool="reminders" label="📧 Email Reminders" />
+                    <NavItem tool="reminders" label={t('auto_email_reminders') || '📧 Email Reminders'} />
                     <Link to="/profile" style={{ display: 'block', padding: '11px 16px', borderRadius: '8px', fontSize: '0.88rem', color: 'var(--text-muted)', transition: 'all 0.2s', marginBottom: '2px' }}
                         onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'rgba(255,215,0,0.05)'; }}
                         onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}

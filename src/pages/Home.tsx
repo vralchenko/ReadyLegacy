@@ -39,9 +39,9 @@ const Home: React.FC = () => {
             <section id="products" className="products section-padding">
                 <img src={productsBg} alt="Abstract Geometry" className="products-bg" />
                 <div className="container">
-                    <div className="heading-block" style={{ textAlign: 'center', marginBottom: '16px' }}>
-                        <h2>{t('eco_title') || 'Our Ecosystem'}</h2>
-                        <p>{t('eco_subtitle') || 'A complete digital platform for every stage.'}</p>
+                    <div className="heading-block" style={{ textAlign: 'center', marginBottom: '24px' }}>
+                        <h2 style={{ fontSize: '3rem', margin: 0 }}>{t('eco_title') || 'Our Ecosystem'}</h2>
+                        <p style={{ fontSize: '1.2rem', margin: '12px 0 0 0' }}>{t('eco_subtitle') || 'A complete digital platform for every stage.'}</p>
                     </div>
 
                     <div className="products-grid">
@@ -52,7 +52,7 @@ const Home: React.FC = () => {
                                 <div className="product-tag">{t('p1_tag') || 'Preparation & Structure'}</div>
                             </div>
                             <p>{t('p1_desc')}</p>
-                            <Link to="/tools" className="btn" style={{ fontSize: '0.7rem', padding: '10px 20px' }}>
+                            <Link to="/tools" className="btn" style={{ fontSize: '1rem', padding: '12px 24px' }}>
                                 {t('p1_btn') || 'Launch Tools'}
                             </Link>
                         </div>
@@ -64,7 +64,7 @@ const Home: React.FC = () => {
                                 <div className="product-tag">{t('p2_tag') || 'Conscious Legacy'}</div>
                             </div>
                             <p>{t('p2_desc')}</p>
-                            <Link to="/tools?tool=leave-behind" className="btn" style={{ fontSize: '0.7rem', padding: '10px 20px' }}>
+                            <Link to="/tools?tool=leave-behind" className="btn" style={{ fontSize: '1rem', padding: '12px 24px' }}>
                                 {t('p2_btn') || 'Create Legacy'}
                             </Link>
                         </div>
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
                                 <div className="product-tag">{t('p3_tag') || 'Dignified Remembrance'}</div>
                             </div>
                             <p>{t('p3_desc')}</p>
-                            <Link to="/tools?tool=bereavement-support" className="btn" style={{ fontSize: '0.7rem', padding: '10px 20px' }}>
+                            <Link to="/tools?tool=bereavement-support" className="btn" style={{ fontSize: '1rem', padding: '12px 24px' }}>
                                 {t('nav_bereavement') || 'Bereavement Support'}
                             </Link>
                         </div>
