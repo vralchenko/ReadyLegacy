@@ -163,13 +163,13 @@ const ChatWidget: React.FC = () => {
         <div className="chat-window" role="dialog" aria-label="Chat Assistant">
           {/* Header */}
           <div className="chat-header">
-            <button className="chat-back-btn" onClick={() => setIsOpen(false)} aria-label="Minimize chat">←</button>
+            <button className="chat-back-btn" onClick={() => setMessages([])} aria-label="Back to start">←</button>
             <div className="chat-header-icon">✦</div>
             <div className="chat-header-info">
               <div className="chat-header-title">{t('chat_title') || 'Continuum Assistant'}</div>
               <div className="chat-header-status">● {t('chat_online') || 'Online'}</div>
             </div>
-            <button className="chat-close-btn" onClick={() => { setMessages([]); setIsOpen(false); }} aria-label="Close and clear chat">×</button>
+            <button className="chat-close-btn" onClick={() => setIsOpen(false)} aria-label="Close chat">×</button>
           </div>
 
           {/* Messages */}
