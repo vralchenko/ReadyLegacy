@@ -76,6 +76,11 @@ const ChatWidget: React.FC = () => {
 
   const lang = (language || 'en') as 'en' | 'de' | 'ru' | 'ua';
 
+  // Get follow-ups from the last bot message, or show default quick questions
+  const lastBotMsg = [...messages].reverse().find(m => m.sender === 'bot');
+  const followUps = lastBotMsg?.followUps;
+  const showFollowUps = followUps && followUps.length > 0;
+
   // Auto-scroll to bottom
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -111,10 +116,10 @@ const ChatWidget: React.FC = () => {
         text: data.answer,
         time: formatTime(),
         sources: data.sources?.filter(s => s.route) || [],
+        followUps: data.followUps || [],
       };
       setMessages(prev => [...prev, botMsg]);
     } catch {
-      // Fallback for local dev without serverless
       const fallbackTexts: Record<string, string> = {
         en: 'Sorry, I\'m having trouble connecting. Please try again later or explore the Tools section directly.',
         de: 'Entschuldigung, es gibt ein Verbindungsproblem. Bitte versuchen Sie es später oder erkunden Sie den Tools-Bereich direkt.',
@@ -139,10 +144,6 @@ const ChatWidget: React.FC = () => {
     }
   };
 
-  const clearHistory = () => {
-    setMessages([]);
-  };
-
   return (
     <>
       {/* Floating Action Button */}
@@ -162,7 +163,6 @@ const ChatWidget: React.FC = () => {
         <div className="chat-window" role="dialog" aria-label="Chat Assistant">
           {/* Header */}
           <div className="chat-header">
-            <button className="chat-back-btn" onClick={() => setIsOpen(false)} aria-label="Back">←</button>
             <div className="chat-header-icon">✦</div>
             <div className="chat-header-info">
               <div className="chat-header-title">{t('chat_title') || 'Continuum Assistant'}</div>
@@ -221,18 +221,30 @@ const ChatWidget: React.FC = () => {
             <div ref={bottomRef} />
           </div>
 
-          {/* Quick Questions */}
+          {/* Quick Questions / Follow-ups */}
           <div className="chat-quick">
-            {QUICK_QUESTIONS.slice(0, 3).map(q => (
-              <button
-                key={q.key}
-                className="chat-quick-btn"
-                onClick={() => sendMessage(q[lang] || q.en)}
-                disabled={isTyping}
-              >
-                {q[lang] || q.en}
-              </button>
-            ))}
+            {showFollowUps
+              ? followUps.map((q, i) => (
+                  <button
+                    key={i}
+                    className="chat-quick-btn"
+                    onClick={() => sendMessage(q)}
+                    disabled={isTyping}
+                  >
+                    {q}
+                  </button>
+                ))
+              : QUICK_QUESTIONS.map(q => (
+                  <button
+                    key={q.key}
+                    className="chat-quick-btn"
+                    onClick={() => sendMessage(q[lang] || q.en)}
+                    disabled={isTyping}
+                  >
+                    {q[lang] || q.en}
+                  </button>
+                ))
+            }
           </div>
 
           {/* Input */}

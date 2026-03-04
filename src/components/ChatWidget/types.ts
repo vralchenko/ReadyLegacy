@@ -3,6 +3,7 @@ export interface ChatMessage {
   text: string;
   time: string;
   sources?: ChatSource[];
+  followUps?: string[];
 }
 
 export interface ChatSource {
@@ -15,6 +16,7 @@ export interface ChatApiResponse {
   answer: string;
   sources: ChatSource[];
   type: 'greeting' | 'result' | 'fallback';
+  followUps?: string[];
 }
 
 export interface QuickQuestion {

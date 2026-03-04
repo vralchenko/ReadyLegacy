@@ -82,9 +82,77 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     score: Math.round(r.score * 10) / 10,
   }));
 
+  // Generate follow-up questions based on the top result's category
+  const category = top.chunk.category;
+  const followUps = getFollowUps(category, lang);
+
   return res.status(200).json({
     answer,
     sources,
     type: 'result',
+    followUps,
   });
+}
+
+// ─── Contextual follow-up questions by category ──────────────────────────────
+const FOLLOW_UPS: Record<string, Record<string, string[]>> = {
+  platform: {
+    en: ['What are the 3 pillars?', 'Who is on the team?', 'What tools are available?'],
+    de: ['Was sind die 3 Säulen?', 'Wer ist im Team?', 'Welche Tools gibt es?'],
+    ru: ['Какие 3 столпа?', 'Кто в команде?', 'Какие есть инструменты?'],
+    ua: ['Які 3 стовпи?', 'Хто в команді?', 'Які є інструменти?'],
+  },
+  tool: {
+    en: ['How to write a will?', 'What templates exist?', 'Is my data safe?'],
+    de: ['Wie schreibe ich ein Testament?', 'Welche Vorlagen gibt es?', 'Sind meine Daten sicher?'],
+    ru: ['Как составить завещание?', 'Какие есть шаблоны?', 'Мои данные в безопасности?'],
+    ua: ['Як скласти заповіт?', 'Які є шаблони?', 'Мої дані в безпеці?'],
+  },
+  legal: {
+    en: ['What is a Living Will?', 'How to write a will?', 'What templates exist?'],
+    de: ['Was ist eine Patientenverfügung?', 'Wie schreibe ich ein Testament?', 'Welche Vorlagen gibt es?'],
+    ru: ['Что такое завещание при жизни?', 'Как составить завещание?', 'Какие есть шаблоны?'],
+    ua: ['Що таке заповіт за життя?', 'Як скласти заповіт?', 'Які є шаблони?'],
+  },
+  checklist: {
+    en: ['What are the first steps?', 'Who to notify?', 'How to cope with grief?'],
+    de: ['Was sind die ersten Schritte?', 'Wen benachrichtigen?', 'Wie mit Trauer umgehen?'],
+    ru: ['Какие первые шаги?', 'Кого уведомить?', 'Как справиться с горем?'],
+    ua: ['Які перші кроки?', 'Кого повідомити?', 'Як впоратися з горем?'],
+  },
+  team: {
+    en: ['What is Continuum?', 'What tools are available?', 'How to get started?'],
+    de: ['Was ist Continuum?', 'Welche Tools gibt es?', 'Wie fange ich an?'],
+    ru: ['Что такое Continuum?', 'Какие есть инструменты?', 'Как начать?'],
+    ua: ['Що таке Continuum?', 'Які є інструменти?', 'Як почати?'],
+  },
+  pricing: {
+    en: ['What tools are available?', 'How to get started?', 'Is my data safe?'],
+    de: ['Welche Tools gibt es?', 'Wie fange ich an?', 'Sind meine Daten sicher?'],
+    ru: ['Какие есть инструменты?', 'Как начать?', 'Мои данные в безопасности?'],
+    ua: ['Які є інструменти?', 'Як почати?', 'Мої дані в безпеці?'],
+  },
+  account: {
+    en: ['What plans are available?', 'Where are my documents?', 'Is my data safe?'],
+    de: ['Welche Pläne gibt es?', 'Wo sind meine Dokumente?', 'Sind meine Daten sicher?'],
+    ru: ['Какие есть тарифы?', 'Где мои документы?', 'Мои данные в безопасности?'],
+    ua: ['Які є тарифи?', 'Де мої документи?', 'Мої дані в безпеці?'],
+  },
+  support: {
+    en: ['What support groups exist?', 'What to do after death?', 'What tools are available?'],
+    de: ['Welche Selbsthilfegruppen gibt es?', 'Was tun im Todesfall?', 'Welche Tools gibt es?'],
+    ru: ['Какие есть группы поддержки?', 'Что делать после смерти?', 'Какие есть инструменты?'],
+    ua: ['Які є групи підтримки?', 'Що робити після смерті?', 'Які є інструменти?'],
+  },
+  faq: {
+    en: ['What tools are available?', 'How to write a will?', 'Who is on the team?'],
+    de: ['Welche Tools gibt es?', 'Wie schreibe ich ein Testament?', 'Wer ist im Team?'],
+    ru: ['Какие есть инструменты?', 'Как составить завещание?', 'Кто в команде?'],
+    ua: ['Які є інструменти?', 'Як скласти заповіт?', 'Хто в команді?'],
+  },
+};
+
+function getFollowUps(category: string, lang: string): string[] {
+  const cat = FOLLOW_UPS[category] || FOLLOW_UPS.faq;
+  return cat[lang] || cat.en;
 }
