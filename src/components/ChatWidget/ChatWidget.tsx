@@ -162,6 +162,7 @@ const ChatWidget: React.FC = () => {
         <div className="chat-window" role="dialog" aria-label="Chat Assistant">
           {/* Header */}
           <div className="chat-header">
+            <button className="chat-back-btn" onClick={() => setIsOpen(false)} aria-label="Back">←</button>
             <div className="chat-header-icon">✦</div>
             <div className="chat-header-info">
               <div className="chat-header-title">{t('chat_title') || 'Continuum Assistant'}</div>

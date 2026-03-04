@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { search } from './knowledge/search';
-import { KNOWLEDGE_BASE } from './knowledge/base';
 
 const GREETINGS: Record<string, RegExp> = {
   en: /^(hi|hello|hey|good\s*(morning|afternoon|evening)|howdy|greetings)\b/i,
