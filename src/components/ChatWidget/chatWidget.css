@@ -93,6 +93,22 @@
   color: #6fcf97;
 }
 
+.chat-back-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 2px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.chat-back-btn:hover {
+  color: var(--text-color);
+}
+
 .chat-close-btn {
   background: none;
   border: none;
@@ -320,10 +336,12 @@
   border-bottom-color: rgba(180, 83, 9, 0.15);
 }
 
+[data-theme="light"] .chat-back-btn,
 [data-theme="light"] .chat-close-btn {
   color: rgba(0, 0, 0, 0.4);
 }
 
+[data-theme="light"] .chat-back-btn:hover,
 [data-theme="light"] .chat-close-btn:hover {
   color: var(--text-color);
 }
