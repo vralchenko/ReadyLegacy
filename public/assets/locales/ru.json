@@ -192,6 +192,8 @@
   "chat_q_checklist": "Что делать после смерти?",
   "chat_q_templates": "Какие есть шаблоны?",
   "chat_q_data": "Мои данные в безопасности?",
+  "chat_back": "Назад",
+  "chat_home": "В начало",
   "chat_clear": "Очистить историю",
   "chat_powered_by": "На платформе Continuum"
 }

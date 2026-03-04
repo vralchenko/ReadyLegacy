@@ -192,6 +192,8 @@
   "chat_q_checklist": "What to do after death?",
   "chat_q_templates": "What templates exist?",
   "chat_q_data": "Is my data safe?",
+  "chat_back": "Back",
+  "chat_home": "Home",
   "chat_clear": "Clear history",
   "chat_powered_by": "Powered by Continuum"
 }

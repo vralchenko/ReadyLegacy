@@ -192,6 +192,8 @@
   "chat_q_checklist": "Was tun im Todesfall?",
   "chat_q_templates": "Welche Vorlagen gibt es?",
   "chat_q_data": "Sind meine Daten sicher?",
+  "chat_back": "Zurück",
+  "chat_home": "Start",
   "chat_clear": "Verlauf löschen",
   "chat_powered_by": "Bereitgestellt von Continuum"
 }

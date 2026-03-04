@@ -144,6 +144,24 @@ const ChatWidget: React.FC = () => {
     }
   };
 
+  // Go back one level: remove last user+bot message pair
+  const goBack = () => {
+    if (messages.length === 0) return;
+    setMessages(prev => {
+      const copy = [...prev];
+      // Remove last bot message
+      if (copy.length > 0 && copy[copy.length - 1].sender === 'bot') copy.pop();
+      // Remove last user message
+      if (copy.length > 0 && copy[copy.length - 1].sender === 'user') copy.pop();
+      return copy;
+    });
+  };
+
+  // Reset to welcome screen
+  const goHome = () => setMessages([]);
+
+  const depth = Math.floor(messages.filter(m => m.sender === 'user').length);
+
   return (
     <>
       {/* Floating Action Button */}
@@ -163,7 +181,14 @@ const ChatWidget: React.FC = () => {
         <div className="chat-window" role="dialog" aria-label="Chat Assistant">
           {/* Header */}
           <div className="chat-header">
-            <button className="chat-back-btn" onClick={() => setMessages([])} aria-label="Back to start">←</button>
+            <div className="chat-header-nav">
+              {depth > 0 && (
+                <button className="chat-nav-btn" onClick={goBack} aria-label="Go back one level" title={t('chat_back') || 'Back'}>←</button>
+              )}
+              {depth > 1 && (
+                <button className="chat-nav-btn" onClick={goHome} aria-label="Back to start" title={t('chat_home') || 'Home'}>⌂</button>
+              )}
+            </div>
             <div className="chat-header-icon">✦</div>
             <div className="chat-header-info">
               <div className="chat-header-title">{t('chat_title') || 'Continuum Assistant'}</div>
