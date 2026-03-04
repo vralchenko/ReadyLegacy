@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import usePersistedState from '../../hooks/usePersistedState';
 
@@ -11,165 +11,10 @@ const SUPPORT_GROUPS = [
     { name: 'Online Grief Support', region: 'Global', type: 'Online', url: '#', desc: '24/7 forums and chat groups for those in grief.' },
 ];
 
-// ─── AI Chat Widget ───────────────────────────────────────────────────────────
-const QUICK_QUESTIONS = [
-    'How do I fill in the legal forms?',
-    'What happens to digital assets?',
-    'How can I cope with grief?',
-    'What is a Living Will?',
-    'How to notify authorities?',
-];
-
-const BOT_RESPONSES: Record<string, string> = {
-    'How do I fill in the legal forms?': 'Go to the **Legal Framework** section (section 02). You\'ll find Living Will and Advance Care Directive templates there. Each card walks you through what\'s needed.',
-    'What happens to digital assets?': 'In the **Digital Legacy** section you can document your crypto wallets, exchange accounts, and other digital assets. It\'s important to leave access instructions securely.',
-    'How can I cope with grief?': 'Grief is unique to every person. This **Bereavement Path** section has resources to help — from self-help guides to professional support groups. You\'re not alone.',
-    'What is a Living Will?': 'A Living Will (Patientenverfügung) is a legal document where you specify your wishes regarding medical treatment if you become unable to make decisions yourself.',
-    'How to notify authorities?': 'The **After Death Guide** (section 03) has a complete checklist. In the first week, you\'ll need to notify the civil registry, banks, insurers, and the employer.',
-};
-
-interface ChatMessage {
-    sender: 'user' | 'bot';
-    text: string;
-    time: string;
-}
-
-const AIChatWidget: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-    const { t } = useLanguage();
-    const [messages, setMessages] = useState<ChatMessage[]>([
-        { sender: 'bot', text: 'Hello! I\'m your Continuum assistant. I can help you navigate the platform, fill in forms, and answer questions about estate planning. What would you like to know?', time: formatTime() }
-    ]);
-    const [input, setInput] = useState('');
-    const [isTyping, setIsTyping] = useState(false);
-    const bottomRef = useRef<HTMLDivElement>(null);
-
-    function formatTime() {
-        return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }
-
-    useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages, isTyping]);
-
-    const sendMessage = (text: string) => {
-        if (!text.trim()) return;
-        const userMsg: ChatMessage = { sender: 'user', text, time: formatTime() };
-        setMessages(prev => [...prev, userMsg]);
-        setInput('');
-        setIsTyping(true);
-        setTimeout(() => {
-            const response = BOT_RESPONSES[text] || 'Thank you for your question. This is a demonstration — in the full version, I\'ll be connected to a real AI to give you personalized guidance. For now, please explore the sections in the sidebar or choose a quick question below.';
-            setMessages(prev => [...prev, { sender: 'bot', text: response, time: formatTime() }]);
-            setIsTyping(false);
-        }, 1200);
-    };
-
-    return (
-        <div style={{
-            position: 'fixed', bottom: '90px', right: '28px', width: '360px', maxHeight: '520px',
-            background: 'rgba(18, 16, 28, 0.97)', border: '1px solid rgba(255,215,0,0.2)',
-            borderRadius: '20px', boxShadow: '0 20px 60px rgba(0,0,0,0.6)', zIndex: 9999,
-            display: 'flex', flexDirection: 'column', overflow: 'hidden',
-            backdropFilter: 'blur(20px)'
-        }}>
-            {/* Header */}
-            <div style={{
-                padding: '16px 20px', background: 'linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,215,0,0.04))',
-                borderBottom: '1px solid rgba(255,215,0,0.15)', display: 'flex', alignItems: 'center', gap: '12px'
-            }}>
-                <div style={{
-                    width: '36px', height: '36px', borderRadius: '50%',
-                    background: 'linear-gradient(135deg, var(--accent-gold), #c8941a)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0
-                }}>✦</div>
-                <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>Continuum Assistant</div>
-                    <div style={{ fontSize: '0.72rem', color: '#6fcf97' }}>● Online</div>
-                </div>
-                <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', fontSize: '1.3rem', cursor: 'pointer', lineHeight: 1 }}>×</button>
-            </div>
-
-            {/* Messages */}
-            <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {messages.map((msg, i) => (
-                    <div key={i} style={{ display: 'flex', flexDirection: msg.sender === 'user' ? 'row-reverse' : 'row', gap: '8px', alignItems: 'flex-end' }}>
-                        {msg.sender === 'bot' && (
-                            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent-gold), #c8941a)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', flexShrink: 0 }}>✦</div>
-                        )}
-                        <div style={{
-                            maxWidth: '80%', padding: '10px 14px', borderRadius: msg.sender === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                            background: msg.sender === 'user' ? 'var(--accent-gold)' : 'rgba(255,255,255,0.07)',
-                            color: msg.sender === 'user' ? '#000' : 'var(--text-color)',
-                            fontSize: '0.85rem', lineHeight: '1.5'
-                        }}>
-                            {msg.text}
-                            <div style={{ fontSize: '0.65rem', opacity: 0.5, marginTop: '4px', textAlign: 'right' }}>{msg.time}</div>
-                        </div>
-                    </div>
-                ))}
-                {isTyping && (
-                    <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent-gold), #c8941a)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>✦</div>
-                        <div style={{ padding: '10px 14px', borderRadius: '16px 16px 16px 4px', background: 'rgba(255,255,255,0.07)', fontSize: '0.85rem' }}>
-                            <span style={{ display: 'inline-flex', gap: '4px' }}>
-                                {[0, 1, 2].map(i => (
-                                    <span key={i} style={{
-                                        width: '6px', height: '6px', borderRadius: '50%',
-                                        background: 'rgba(255,215,0,0.6)',
-                                        animation: `pulse-dot 1.2s ${i * 0.2}s infinite`
-                                    }} />
-                                ))}
-                            </span>
-                        </div>
-                    </div>
-                )}
-                <div ref={bottomRef} />
-            </div>
-
-            {/* Quick questions */}
-            <div style={{ padding: '8px 12px', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                {QUICK_QUESTIONS.slice(0, 3).map(q => (
-                    <button key={q} onClick={() => sendMessage(q)} style={{
-                        fontSize: '0.7rem', padding: '4px 10px', borderRadius: '12px',
-                        border: '1px solid rgba(255,215,0,0.2)', background: 'rgba(255,215,0,0.05)',
-                        color: 'rgba(255,215,0,0.8)', cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap'
-                    }}>
-                        {q}
-                    </button>
-                ))}
-            </div>
-
-            {/* Input */}
-            <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', gap: '8px' }}>
-                <input
-                    value={input}
-                    onChange={e => setInput(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
-                    placeholder={t('auto_ask_me_anything') || 'Ask me anything...'}
-                    style={{
-                        flex: 1, padding: '10px 14px', borderRadius: '12px',
-                        border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.05)',
-                        color: 'var(--text-color)', fontSize: '0.85rem'
-                    }}
-                />
-                <button
-                    onClick={() => sendMessage(input)}
-                    style={{
-                        padding: '10px 16px', borderRadius: '12px', border: 'none',
-                        background: 'var(--accent-gold)', color: '#000', cursor: 'pointer',
-                        fontWeight: 700, fontSize: '0.85rem', transition: 'opacity 0.2s'
-                    }}
-                >↑</button>
-            </div>
-        </div>
-    );
-};
-
 // ─── Main Component ───────────────────────────────────────────────────────────
 const BereavementSupport: React.FC = () => {
     const { t } = useLanguage();
     const [checks, setChecks] = usePersistedState<Record<string, boolean>>('bereavement_checks', {});
-    const [chatOpen, setChatOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<'emotional' | 'groups'>('emotional');
 
     const toggle = (key: string) => setChecks({ ...checks, [key]: !checks[key] });
@@ -292,53 +137,6 @@ const BereavementSupport: React.FC = () => {
                 </div>
             )}
 
-            {/* Connect with Specialist / AI Chat CTA */}
-            <div style={{
-                marginTop: '36px', padding: '28px', background: 'linear-gradient(135deg, rgba(255,215,0,0.06), rgba(255,215,0,0.02))',
-                borderRadius: '16px', border: '1px solid rgba(255,215,0,0.15)', textAlign: 'center'
-            }}>
-                <div style={{ fontSize: '2rem', marginBottom: '12px' }}>✦</div>
-                <h3 style={{ marginBottom: '12px' }}>Connect with a Specialist</h3>
-                <p style={{ marginBottom: '24px', opacity: 0.65, maxWidth: '360px', margin: '0 auto 24px' }}>
-                    Our AI assistant is available 24/7 to help you navigate the platform, answer questions about estate planning, or simply listen.
-                </p>
-                <button
-                    className="btn"
-                    onClick={() => setChatOpen(true)}
-                    style={{ background: 'var(--accent-gold)', color: '#000', fontWeight: 700, padding: '14px 32px', borderRadius: '12px', border: 'none', cursor: 'pointer', fontSize: '0.95rem' }}
-                >
-                    💬 Open Chat Assistant
-                </button>
-            </div>
-
-            {/* AI Chat Widget */}
-            {chatOpen && <AIChatWidget onClose={() => setChatOpen(false)} />}
-
-            {/* Floating chat button (always visible when chat is closed) */}
-            {!chatOpen && (
-                <button
-                    onClick={() => setChatOpen(true)}
-                    style={{
-                        position: 'fixed', bottom: '28px', right: '28px',
-                        width: '56px', height: '56px', borderRadius: '50%',
-                        background: 'linear-gradient(135deg, var(--accent-gold), #c8941a)',
-                        border: 'none', cursor: 'pointer', fontSize: '1.4rem',
-                        boxShadow: '0 6px 24px rgba(255,215,0,0.3)', zIndex: 9998,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        transition: 'transform 0.2s, box-shadow 0.2s'
-                    }}
-                    title={t('auto_open_ai_chat_as') || 'Open AI Chat Assistant'}
-                >
-                    💬
-                </button>
-            )}
-
-            <style>{`
-                @keyframes pulse-dot {
-                    0%, 100% { opacity: 0.3; transform: scale(0.8); }
-                    50% { opacity: 1; transform: scale(1.2); }
-                }
-            `}</style>
         </div>
     );
 };

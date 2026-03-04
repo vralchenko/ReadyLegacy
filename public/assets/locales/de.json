@@ -178,5 +178,20 @@
   "docs_btn_will": "Testament-Ersteller",
   "docs_btn_print": "Drucken",
   "docs_empty_state": "Noch keine Dokumente. Verwenden Sie den Vorlagen-Assistenten, um Ihr erstes Dokument zu erstellen.",
-  "nav_logout": "Abmelden"
+  "nav_logout": "Abmelden",
+  "chat_title": "Continuum Assistent",
+  "chat_online": "Online",
+  "chat_open": "Chat-Assistent öffnen",
+  "chat_placeholder": "Stellen Sie mir eine Frage...",
+  "chat_welcome": "Hallo! Ich bin der **Continuum-Assistent**. Ich kann Ihnen bei Nachlassplanung, Rechtsdokumenten, Navigation und mehr helfen. Was möchten Sie wissen?",
+  "chat_learn_more": "Mehr erfahren →",
+  "chat_error": "Entschuldigung, etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+  "chat_q_start": "Wie fange ich an?",
+  "chat_q_will": "Wie schreibe ich ein Testament?",
+  "chat_q_tools": "Welche Tools gibt es?",
+  "chat_q_checklist": "Was tun im Todesfall?",
+  "chat_q_templates": "Welche Vorlagen gibt es?",
+  "chat_q_data": "Sind meine Daten sicher?",
+  "chat_clear": "Verlauf löschen",
+  "chat_powered_by": "Bereitgestellt von Continuum"
 }

@@ -178,5 +178,20 @@
   "docs_btn_will": "Will Builder",
   "docs_btn_print": "Print",
   "docs_empty_state": "No documents yet. Use the Templates wizard to create your first document.",
-  "nav_logout": "Sign Out"
+  "nav_logout": "Sign Out",
+  "chat_title": "Continuum Assistant",
+  "chat_online": "Online",
+  "chat_open": "Open Chat Assistant",
+  "chat_placeholder": "Ask me anything...",
+  "chat_welcome": "Hello! I'm the **Continuum Assistant**. I can help you with estate planning, legal documents, navigation, and more. What would you like to know?",
+  "chat_learn_more": "Learn more →",
+  "chat_error": "Sorry, something went wrong. Please try again.",
+  "chat_q_start": "How do I get started?",
+  "chat_q_will": "How to write a will?",
+  "chat_q_tools": "What tools are available?",
+  "chat_q_checklist": "What to do after death?",
+  "chat_q_templates": "What templates exist?",
+  "chat_q_data": "Is my data safe?",
+  "chat_clear": "Clear history",
+  "chat_powered_by": "Powered by Continuum"
 }

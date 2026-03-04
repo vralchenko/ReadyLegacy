@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function usePersistedState<T>(key: string, initialValue: T): [T, (value: T) => void] {
+function usePersistedState<T>(key: string, initialValue: T): [T, (value: T | ((prev: T) => T)) => void] {
     const [state, setState] = useState<T>(() => {
         try {
             const item = localStorage.getItem('continuum_' + key);
