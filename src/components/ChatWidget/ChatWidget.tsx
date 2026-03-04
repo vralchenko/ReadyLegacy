@@ -183,10 +183,14 @@ const ChatWidget: React.FC = () => {
           <div className="chat-header">
             <div className="chat-header-nav">
               {depth > 0 && (
-                <button className="chat-nav-btn" onClick={goBack} aria-label="Go back one level" title={t('chat_back') || 'Back'}>←</button>
+                <button className="chat-nav-btn" onClick={goBack} aria-label="Go back one level" title={t('chat_back') || 'Back'}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
               )}
               {depth > 1 && (
-                <button className="chat-nav-btn" onClick={goHome} aria-label="Back to start" title={t('chat_home') || 'Home'}>⌂</button>
+                <button className="chat-nav-btn" onClick={goHome} aria-label="Back to start" title={t('chat_home') || 'Home'}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l6-5.5L14 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M3.5 9v4.5a1 1 0 001 1h7a1 1 0 001-1V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
               )}
             </div>
             <div className="chat-header-icon">✦</div>
@@ -194,7 +198,9 @@ const ChatWidget: React.FC = () => {
               <div className="chat-header-title">{t('chat_title') || 'Continuum Assistant'}</div>
               <div className="chat-header-status">● {t('chat_online') || 'Online'}</div>
             </div>
-            <button className="chat-close-btn" onClick={() => setIsOpen(false)} aria-label="Close chat">×</button>
+            <button className="chat-close-btn" onClick={() => setIsOpen(false)} aria-label="Close chat">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+            </button>
           </div>
 
           {/* Messages */}

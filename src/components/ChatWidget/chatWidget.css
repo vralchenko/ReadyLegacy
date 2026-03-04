@@ -102,34 +102,38 @@
 .chat-nav-btn {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.45);
   cursor: pointer;
-  line-height: 1;
-  padding: 4px 5px;
-  border-radius: 6px;
+  padding: 6px;
+  border-radius: 8px;
   transition: color 0.2s, background 0.2s;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chat-nav-btn:hover {
-  color: var(--text-color);
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--accent-gold);
+  background: rgba(255, 215, 0, 0.08);
 }
 
 .chat-close-btn {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.45);
   cursor: pointer;
-  line-height: 1;
-  padding: 4px;
-  transition: color 0.2s;
+  padding: 6px;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chat-close-btn:hover {
   color: var(--text-color);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* ─── Messages ────────────────────────────────────────────────────────────── */
@@ -350,12 +354,13 @@
 }
 
 [data-theme="light"] .chat-nav-btn:hover {
-  color: var(--text-color);
-  background: rgba(0, 0, 0, 0.06);
+  color: var(--accent-gold);
+  background: rgba(180, 83, 9, 0.08);
 }
 
 [data-theme="light"] .chat-close-btn:hover {
   color: var(--text-color);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 [data-theme="light"] .chat-bubble--bot {
