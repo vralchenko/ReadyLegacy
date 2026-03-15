@@ -32,12 +32,30 @@ const DEMO_DOCS: Document[] = [
     },
     {
         id: 'demo2',
-        title: 'Power of Attorney — Draft',
+        title: 'Power of Attorney',
         type: 'Power of Attorney',
         icon: '⚖️',
         createdAt: '21.02.2026',
         status: 'draft',
         data: { note: 'Use the Request Templates wizard (section 06) to fill this in step-by-step.' }
+    },
+    {
+        id: 'demo3',
+        title: 'Asset Overview',
+        type: 'Financial Summary',
+        icon: '📊',
+        createdAt: '08.03.2026',
+        status: 'ready',
+        data: { note: 'Complete overview of assets, liabilities, and estate value.' }
+    },
+    {
+        id: 'demo4',
+        title: 'Funeral Directive',
+        type: 'End-of-Life',
+        icon: '🕊️',
+        createdAt: '12.03.2026',
+        status: 'draft',
+        data: { note: 'Personal wishes for funeral arrangements and memorial.' }
     },
 ];
 
