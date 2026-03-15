@@ -1275,20 +1275,20 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 
 /* Footer */
 footer {
-    padding: 24px 0;
+    padding: 12px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     margin-top: auto;
 }
 
 .footer-badges {
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
 }
 
 .footer-badges .badge {
@@ -1302,9 +1302,9 @@ footer {
 }
 
 .footer-security {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     opacity: 0.5;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 [data-theme="light"] footer {
