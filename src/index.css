@@ -134,12 +134,11 @@ nav {
 }
 
 .nav-links a {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 500;
     color: var(--link-color);
     transition: var(--transition);
     min-width: auto !important;
-    /* Reset width for better spacing */
 }
 
 .nav-links a.active {
@@ -153,8 +152,8 @@ nav {
 }
 
 .header-btn {
-    padding: 12px 24px !important;
-    font-size: 1.2rem !important;
+    padding: 8px 18px !important;
+    font-size: 0.9rem !important;
 }
 
 .theme-toggle-btn {
@@ -315,7 +314,7 @@ nav {
 
 .logo {
     font-family: var(--font-heading);
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     color: var(--accent-gold);
     letter-spacing: 1px;
 }
