@@ -195,5 +195,18 @@
   "chat_back": "Назад",
   "chat_home": "В начало",
   "chat_clear": "Очистить историю",
-  "chat_powered_by": "На платформе Ready Legacy"
+  "chat_powered_by": "На платформе Ready Legacy",
+  "stats_title": "Ваше спокойствие имеет значение",
+  "stat_1_num": "84%",
+  "stat_1_text": "менее продуктивны, когда чувствуют беспорядок",
+  "stat_2_num": "86%",
+  "stat_2_text": "менее напряжены, когда всё организовано",
+  "stat_3_num": "65%",
+  "stat_3_text": "людей испытывают тревогу, когда важная информация разбросана",
+  "cta_start": "Начать сейчас",
+  "footer_security": "Ваши данные зашифрованы и хранятся безопасно",
+  "footer_compliance_hipaa": "HIPAA",
+  "footer_compliance_soc": "SOC 2",
+  "footer_compliance_gdpr": "GDPR",
+  "footer_compliance_ndsg": "nDSG"
 }

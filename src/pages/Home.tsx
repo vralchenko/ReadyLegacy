@@ -13,6 +13,7 @@ const Home: React.FC = () => {
                     <div className="hero-content">
                         <h1>{t('hero_h1')}</h1>
                         <p>{t('hero_p')}</p>
+                        <Link to="/tools" className="btn hero-cta">{t('cta_start') || 'Start Now'}</Link>
                     </div>
                 </div>
             </section>
@@ -80,6 +81,33 @@ const Home: React.FC = () => {
                                 {t('nav_bereavement') || 'Bereavement Support'}
                             </Link>
                         </div>
+                    </div>
+
+                    <div className="section-cta">
+                        <Link to="/tools" className="btn">{t('cta_start') || 'Start Now'}</Link>
+                    </div>
+                </div>
+            </section>
+
+            <section className="stats-section section-padding">
+                <div className="container">
+                    <h2 className="stats-title">{t('stats_title') || 'Your peace of mind matters'}</h2>
+                    <div className="stats-grid">
+                        <div className="stat-item">
+                            <span className="stat-number">{t('stat_1_num')}</span>
+                            <p className="stat-text">{t('stat_1_text')}</p>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-number">{t('stat_2_num')}</span>
+                            <p className="stat-text">{t('stat_2_text')}</p>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-number">{t('stat_3_num')}</span>
+                            <p className="stat-text">{t('stat_3_text')}</p>
+                        </div>
+                    </div>
+                    <div className="section-cta">
+                        <Link to="/tools" className="btn">{t('cta_start') || 'Start Now'}</Link>
                     </div>
                 </div>
             </section>

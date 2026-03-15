@@ -711,9 +711,80 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
     margin-right: auto;
 }
 
+/* Stats Section */
+.stats-section {
+    text-align: center;
+}
+
+.stats-title {
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+    color: var(--text-color);
+    margin-bottom: 48px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.stat-item {
+    padding: 32px 24px;
+    border-radius: 20px;
+    background: var(--secondary-bg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-gold);
+}
+
+.stat-number {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 16px;
+}
+
+.stat-text {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+[data-theme="light"] .stat-item {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .stat-item:hover {
+    border-color: var(--accent-gold);
+}
+
+/* Section CTA */
+.section-cta {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.hero-cta {
+    margin-top: 32px;
+    font-size: 1.1rem;
+    padding: 14px 36px;
+}
+
 /* Footer */
 footer {
-    padding: 16px 0;
+    padding: 24px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
     color: var(--text-muted);
@@ -721,8 +792,37 @@ footer {
     margin-top: auto;
 }
 
+.footer-badges {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.footer-badges .badge {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+}
+
+.footer-security {
+    font-size: 0.8rem;
+    opacity: 0.5;
+    margin-bottom: 8px;
+}
+
 [data-theme="light"] footer {
     border-top-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .footer-badges .badge {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Animations */
@@ -818,6 +918,24 @@ footer {
 
     .tech-item {
         width: 100%;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .stats-title {
+        font-size: 1.8rem;
+        margin-bottom: 32px;
+    }
+
+    .stat-number {
+        font-size: 2.8rem;
+    }
+
+    .footer-badges {
+        gap: 8px;
     }
 
     .founder-names {
