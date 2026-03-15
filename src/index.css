@@ -725,6 +725,11 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
     flex-grow: 1;
 }
 
+.product-card .btn {
+    margin-top: auto;
+    align-self: flex-start;
+}
+
 .product-tag {
     font-size: 0.9rem;
     text-transform: uppercase;
