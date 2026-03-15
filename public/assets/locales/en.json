@@ -249,5 +249,26 @@
   "newsletter_desc": "Get tips on estate planning, digital legacy, and updates from Ready Legacy.",
   "newsletter_placeholder": "Enter your email",
   "newsletter_btn": "Subscribe",
-  "newsletter_success": "Thank you for subscribing!"
+  "newsletter_success": "Thank you for subscribing!",
+
+  "hero_tagline": "The Future of Legacy",
+  "hero_h1_new": "All the pieces of your life — in one safe place",
+  "hero_p_new": "Ready Legacy organizes your documents, preserves your memories, and supports your loved ones — so nothing important is ever lost.",
+
+  "logos_title": "Supported by",
+
+  "quiz_title": "How prepared are you?",
+  "quiz_subtitle": "Take 60 seconds to find out your readiness score",
+  "quiz_q1": "Do you have a written will?",
+  "quiz_q2": "Are your important documents organized in one place?",
+  "quiz_q3": "Does someone you trust know where to find your key information?",
+  "quiz_q4": "Have you documented your digital accounts and passwords?",
+  "quiz_q5": "Have you left personal messages or wishes for your loved ones?",
+  "quiz_yes": "Yes",
+  "quiz_no": "Not yet",
+  "quiz_result_title": "Your Readiness Score",
+  "quiz_result_low": "There's room to improve. Ready Legacy can help you get organized step by step.",
+  "quiz_result_mid": "Good start! A few more steps and you'll have full peace of mind.",
+  "quiz_result_high": "Excellent! You're well prepared. Ready Legacy can help you maintain and share your plan.",
+  "quiz_cta": "Start Your Plan"
 }

@@ -249,5 +249,26 @@
   "newsletter_desc": "Tipps zur Nachlassplanung, digitalem Erbe und Neuigkeiten von Ready Legacy.",
   "newsletter_placeholder": "Ihre E-Mail-Adresse",
   "newsletter_btn": "Abonnieren",
-  "newsletter_success": "Vielen Dank für Ihre Anmeldung!"
+  "newsletter_success": "Vielen Dank für Ihre Anmeldung!",
+
+  "hero_tagline": "Die Zukunft des Vermächtnisses",
+  "hero_h1_new": "Alles Wichtige in Ihrem Leben — an einem sicheren Ort",
+  "hero_p_new": "Ready Legacy organisiert Ihre Dokumente, bewahrt Ihre Erinnerungen und unterstützt Ihre Liebsten — damit nichts Wichtiges verloren geht.",
+
+  "logos_title": "Unterstützt von",
+
+  "quiz_title": "Wie gut sind Sie vorbereitet?",
+  "quiz_subtitle": "Finden Sie in 60 Sekunden Ihren Bereitschafts-Score heraus",
+  "quiz_q1": "Haben Sie ein schriftliches Testament?",
+  "quiz_q2": "Sind Ihre wichtigen Dokumente an einem Ort organisiert?",
+  "quiz_q3": "Weiß eine Vertrauensperson, wo Ihre wichtigen Unterlagen sind?",
+  "quiz_q4": "Haben Sie Ihre digitalen Konten und Passwörter dokumentiert?",
+  "quiz_q5": "Haben Sie persönliche Nachrichten oder Wünsche für Ihre Liebsten hinterlassen?",
+  "quiz_yes": "Ja",
+  "quiz_no": "Noch nicht",
+  "quiz_result_title": "Ihr Bereitschafts-Score",
+  "quiz_result_low": "Es gibt Verbesserungspotenzial. Ready Legacy hilft Ihnen Schritt für Schritt.",
+  "quiz_result_mid": "Guter Anfang! Noch ein paar Schritte für vollständige Sicherheit.",
+  "quiz_result_high": "Ausgezeichnet! Sie sind gut vorbereitet. Ready Legacy hilft Ihnen, Ihren Plan zu pflegen und zu teilen.",
+  "quiz_cta": "Planung starten"
 }

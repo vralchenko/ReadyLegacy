@@ -21,10 +21,25 @@ const FEATURES = [
     )},
 ];
 
+const QUIZ_KEYS = ['quiz_q1', 'quiz_q2', 'quiz_q3', 'quiz_q4', 'quiz_q5'];
+
+const LOGOS = [
+    { name: 'HSLU', text: 'HSLU Smart-Up' },
+    { name: 'Vercel', text: 'Vercel' },
+    { name: 'Swiss Made', text: 'Swiss Made Software' },
+    { name: 'React', text: 'React' },
+    { name: 'TypeScript', text: 'TypeScript' },
+    { name: 'AI Powered', text: 'AI Powered' },
+];
+
 const Home: React.FC = () => {
     const { t } = useLanguage();
     const [email, setEmail] = useState('');
     const [subscribed, setSubscribed] = useState(false);
+
+    // Quiz state
+    const [quizStep, setQuizStep] = useState(-1); // -1 = not started
+    const [quizAnswers, setQuizAnswers] = useState<boolean[]>([]);
 
     const handleNewsletter = (e: React.FormEvent) => {
         e.preventDefault();
@@ -34,14 +49,53 @@ const Home: React.FC = () => {
         }
     };
 
+    const handleQuizAnswer = (yes: boolean) => {
+        const newAnswers = [...quizAnswers, yes];
+        setQuizAnswers(newAnswers);
+        setQuizStep(quizStep + 1);
+    };
+
+    const quizScore = quizAnswers.filter(Boolean).length;
+    const quizDone = quizAnswers.length === QUIZ_KEYS.length;
+
+    const getQuizResult = () => {
+        if (quizScore <= 1) return t('quiz_result_low');
+        if (quizScore <= 3) return t('quiz_result_mid');
+        return t('quiz_result_high');
+    };
+
+    const resetQuiz = () => {
+        setQuizStep(-1);
+        setQuizAnswers([]);
+    };
+
     return (
         <div className="home-page">
-            <section className="hero">
+            {/* Hero — Redesigned */}
+            <section className="hero hero-redesigned">
                 <div className="container">
                     <div className="hero-content">
-                        <h1>{t('hero_h1')}</h1>
-                        <p>{t('hero_p')}</p>
-                        <Link to="/tools" className="btn hero-cta">{t('cta_start') || 'Start Now'}</Link>
+                        <span className="hero-tagline">{t('hero_tagline') || 'The Future of Legacy'}</span>
+                        <h1>{t('hero_h1_new') || t('hero_h1')}</h1>
+                        <p className="hero-desc">{t('hero_p_new') || t('hero_p')}</p>
+                        <div className="hero-actions">
+                            <Link to="/tools" className="btn hero-cta">{t('cta_start') || 'Start Now'}</Link>
+                            <a href="#products" className="btn btn-outline hero-cta">{t('hero_btn') || 'Explore the Ecosystem'}</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Logos Slider */}
+            <section className="logos-section">
+                <div className="container">
+                    <p className="logos-label">{t('logos_title') || 'Supported by'}</p>
+                    <div className="logos-track">
+                        <div className="logos-slide">
+                            {[...LOGOS, ...LOGOS].map((logo, i) => (
+                                <span className="logo-item" key={i}>{logo.text}</span>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -134,6 +188,60 @@ const Home: React.FC = () => {
 
                     <div className="section-cta">
                         <Link to="/tools" className="btn">{t('cta_start') || 'Start Now'}</Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Quiz */}
+            <section className="quiz-section section-padding">
+                <div className="container">
+                    <div className="quiz-box">
+                        {quizStep === -1 && !quizDone && (
+                            <>
+                                <h2>{t('quiz_title') || 'How prepared are you?'}</h2>
+                                <p>{t('quiz_subtitle')}</p>
+                                <button className="btn" onClick={() => setQuizStep(0)}>
+                                    {t('cta_start') || 'Start Now'}
+                                </button>
+                            </>
+                        )}
+
+                        {quizStep >= 0 && !quizDone && (
+                            <>
+                                <div className="quiz-progress">
+                                    {QUIZ_KEYS.map((_, i) => (
+                                        <div key={i} className={`quiz-dot ${i < quizAnswers.length ? 'done' : ''} ${i === quizAnswers.length ? 'active' : ''}`} />
+                                    ))}
+                                </div>
+                                <h3 className="quiz-question">{t(QUIZ_KEYS[quizAnswers.length])}</h3>
+                                <div className="quiz-buttons">
+                                    <button className="btn" onClick={() => handleQuizAnswer(true)}>
+                                        {t('quiz_yes') || 'Yes'}
+                                    </button>
+                                    <button className="btn btn-outline" onClick={() => handleQuizAnswer(false)}>
+                                        {t('quiz_no') || 'Not yet'}
+                                    </button>
+                                </div>
+                            </>
+                        )}
+
+                        {quizDone && (
+                            <div className="quiz-result">
+                                <h3>{t('quiz_result_title') || 'Your Readiness Score'}</h3>
+                                <div className="quiz-score">
+                                    <span className="quiz-score-number">{quizScore}</span>
+                                    <span className="quiz-score-total">/ {QUIZ_KEYS.length}</span>
+                                </div>
+                                <div className="quiz-score-bar">
+                                    <div className="quiz-score-fill" style={{ width: `${(quizScore / QUIZ_KEYS.length) * 100}%` }} />
+                                </div>
+                                <p className="quiz-result-text">{getQuizResult()}</p>
+                                <div className="quiz-result-actions">
+                                    <Link to="/tools" className="btn">{t('quiz_cta') || 'Start Your Plan'}</Link>
+                                    <button className="btn btn-outline" onClick={resetQuiz}>{t('quiz_subtitle') ? '↻' : '↻'} Retry</button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>

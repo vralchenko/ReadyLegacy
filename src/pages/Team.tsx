@@ -2,7 +2,7 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import innaImg from '../assets/images/inna.png';
 import olgaImg from '../assets/images/olga.png';
-import viktorImg from '../assets/images/viktor.png';
+import viktorImg from '../assets/images/viktor_new.jpg';
 import innaQr from '../assets/images/qrcodes/inna_qr.png';
 import olgaQr from '../assets/images/qrcodes/olga_qr.png';
 import viktorQr from '../assets/images/qrcodes/viktor_qr.png';
