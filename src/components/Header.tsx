@@ -49,14 +49,14 @@ const Header: React.FC = () => {
 
                         <div className="header-right">
                             {isLoggedIn && (
-                                <Link to="/profile" onClick={closeMenu} style={{ fontSize: '1.5rem', color: 'var(--text-muted)', marginRight: '8px' }}>👤</Link>
+                                <Link to="/profile" onClick={closeMenu} style={{ fontSize: '1.2rem', color: 'var(--text-muted)', marginRight: '4px' }}>👤</Link>
                             )}
                             {isLoggedIn ? (
-                                <a href="/" onClick={handleLogout} style={{ fontSize: '1.5rem', color: 'var(--text-muted)', marginRight: '16px', cursor: 'pointer', textDecoration: 'none' }}>{t('nav_logout') || 'Sign Out'}</a>
+                                <a href="/" onClick={handleLogout} style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginRight: '8px', cursor: 'pointer', textDecoration: 'none', whiteSpace: 'nowrap' }}>{t('nav_logout') || 'Sign Out'}</a>
                             ) : (
-                                <Link to="/login" onClick={closeMenu} style={{ fontSize: '1.5rem', color: 'var(--text-muted)', marginRight: '16px' }}>{t('nav_login') || 'Sign In'}</Link>
+                                <Link to="/login" onClick={closeMenu} style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginRight: '8px', whiteSpace: 'nowrap' }}>{t('nav_login') || 'Sign In'}</Link>
                             )}
-                            <Link to="/contact" onClick={closeMenu} className="btn header-btn">{t('nav_contact') || 'Get in Touch'}</Link>
+                            <Link to="/contact" onClick={closeMenu} className="btn header-btn" style={{ whiteSpace: 'nowrap', fontSize: '0.85rem', padding: '8px 16px' }}>{t('nav_contact') || 'Get in Touch'}</Link>
                         </div>
                     </div>
                 </nav>
