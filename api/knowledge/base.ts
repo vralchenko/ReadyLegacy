@@ -613,7 +613,7 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['ольга', 'coo', 'фінанси', 'операції', 'банки']
     },
     content: {
-      en: '**Olga Sushchinskaya** is the Co-Founder & COO of Ready Legacy. A seasoned financial executive with extensive experience as COO in global banking and securities. EMBA alumna of Stockholm School of Economics. She leads operational excellence and business strategy.',
+      en: '**Olga Sushchinskaya** is the Co-Founder & COO of Ready Legacy. A Senior financial executive with extensive experience as COO in global banking and markets. EMBA alumna of Stockholm School of Economics. She leads operational excellence and business strategy.',
       de: '**Olga Sushchinskaya** ist Mitbegründerin & COO von Ready Legacy. Eine erfahrene Finanzexpertin mit umfangreicher Erfahrung im globalen Banken- und Wertpapiergeschäft. EMBA-Absolventin der Stockholm School of Economics. Sie leitet die operative Exzellenz.',
       ru: '**Ольга Сущинская** — соучредитель и операционный директор Ready Legacy. Опытный финансовый руководитель с обширным опытом работы COO в глобальном банкинге и ценных бумагах. Выпускница EMBA Стокгольмской школы экономики. Она курирует операционную деятельность и бизнес-стратегию.',
       ua: '**Ольга Сущинська** — співзасновниця та операційний директор Ready Legacy. Досвідчений фінансовий керівник з великим досвідом роботи COO у глобальному банкінгу та цінних паперах. Випускниця EMBA Стокгольмської школи економіки. Вона курує операційну діяльність та бізнес-стратегію.'

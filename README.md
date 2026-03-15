@@ -57,7 +57,7 @@ api/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/vralchenko/continuum-core.git
+   git clone https://github.com/vralchenko/ReadyLegacy.git
    ```
 
 2. Install dependencies:
