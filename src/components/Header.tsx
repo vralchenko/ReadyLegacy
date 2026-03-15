@@ -24,7 +24,7 @@ const Header: React.FC = () => {
         <header className={isMenuOpen ? 'menu-open' : ''}>
             <div className="container">
                 <nav>
-                    <div className="logo"><Link to="/" onClick={closeMenu}>{t('logo') || 'Continuum'}</Link></div>
+                    <div className="logo"><Link to="/" onClick={closeMenu}>{t('logo') || 'Ready Legacy'}</Link></div>
 
                     <div className="mobile-toggle" onClick={toggleMenu}>
                         <div className="bar"></div>

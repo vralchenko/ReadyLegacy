@@ -1,7 +1,7 @@
 {
   "name": "continuumcore",
   "version": "1.0.0",
-  "description": "Continuum | The Future of Legacy - React Application",
+  "description": "Ready Legacy | The Future of Legacy - React Application",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

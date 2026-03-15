@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ready Legacy — Quiz</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a1a;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+    .header {
+      text-align: center;
+      padding: 40px 24px 24px;
+      background: linear-gradient(135deg, #1a1a3e 0%, #0a0a1a 100%);
+      border-bottom: 1px solid rgba(100, 100, 255, 0.15);
+    }
+    .header h1 {
+      font-size: 2rem;
+      background: linear-gradient(90deg, #7b7bff, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .header p { color: #888; font-size: 0.95rem; margin-bottom: 16px; }
+    .lang-switcher {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+    .lang-btn {
+      padding: 6px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(100, 100, 255, 0.2);
+      background: transparent;
+      color: #888;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    .lang-btn:hover { border-color: rgba(123, 123, 255, 0.4); color: #bbb; }
+    .lang-btn.active {
+      background: linear-gradient(135deg, #7b7bff, #a855f7);
+      color: #fff;
+      border-color: transparent;
+    }
+    .progress-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: #0a0a1a;
+      padding: 12px 24px;
+      border-bottom: 1px solid rgba(100, 100, 255, 0.1);
+    }
+    .progress-track {
+      width: 100%; height: 6px;
+      background: #1a1a3e; border-radius: 3px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #7b7bff, #a855f7);
+      border-radius: 3px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+    .progress-text {
+      text-align: center; font-size: 0.8rem; color: #888; margin-top: 6px;
+    }
+    .container { max-width: 800px; margin: 0 auto; padding: 24px; }
+    .section-label {
+      font-size: 0.8rem; color: #a855f7;
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .question-card {
+      background: rgba(26, 26, 62, 0.5);
+      border: 1px solid rgba(100, 100, 255, 0.1);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.3s;
+    }
+    .question-card.correct { border-color: #22c55e; background: rgba(34, 197, 94, 0.05); }
+    .question-card.wrong { border-color: #ef4444; background: rgba(239, 68, 68, 0.05); }
+    .question-number {
+      font-size: 0.75rem; color: #666;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+    }
+    .question-text {
+      font-size: 1.05rem; font-weight: 500; margin-bottom: 16px; line-height: 1.5;
+    }
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .option {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      background: rgba(10, 10, 26, 0.6);
+      border: 1px solid rgba(100, 100, 255, 0.08);
+      border-radius: 8px; cursor: pointer;
+      transition: all 0.2s; font-size: 0.95rem;
+    }
+    .option:hover:not(.disabled) {
+      border-color: rgba(123, 123, 255, 0.3);
+      background: rgba(123, 123, 255, 0.05);
+    }
+    .option.selected { border-color: #7b7bff; background: rgba(123, 123, 255, 0.1); }
+    .option.correct-answer { border-color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+    .option.wrong-answer { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); opacity: 0.7; }
+    .option.disabled { cursor: default; }
+    .radio-dot {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2px solid #444; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .option.selected .radio-dot { border-color: #7b7bff; }
+    .option.selected .radio-dot::after {
+      content: ''; width: 8px; height: 8px; border-radius: 50%; background: #7b7bff;
+    }
+    .option.correct-answer .radio-dot { border-color: #22c55e; background: #22c55e; }
+    .option.correct-answer .radio-dot::after {
+      content: '\2713'; color: #fff; font-size: 11px; font-weight: bold;
+    }
+    .option.wrong-answer .radio-dot { border-color: #ef4444; background: #ef4444; }
+    .option.wrong-answer .radio-dot::after {
+      content: '\2717'; color: #fff; font-size: 11px;
+    }
+    .explanation {
+      margin-top: 12px; padding: 12px 16px;
+      background: rgba(168, 85, 247, 0.05);
+      border-left: 3px solid #a855f7;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem; color: #aaa; line-height: 1.5;
+      display: none;
+    }
+    .explanation.visible { display: block; }
+    .btn {
+      padding: 14px 48px; font-size: 1rem; font-weight: 600;
+      border: none; border-radius: 10px; cursor: pointer;
+      transition: all 0.3s;
+      background: linear-gradient(135deg, #7b7bff, #a855f7);
+      color: #fff;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(123, 123, 255, 0.3); }
+    .btn-reset {
+      background: transparent;
+      border: 1px solid rgba(100, 100, 255, 0.2);
+      color: #888; margin-left: 12px; padding: 14px 32px;
+    }
+    .btn-reset:hover { border-color: rgba(100, 100, 255, 0.4); color: #bbb; }
+    .results {
+      display: none; text-align: center; padding: 48px 24px; margin: 24px 0;
+      background: rgba(26, 26, 62, 0.5);
+      border: 1px solid rgba(100, 100, 255, 0.15); border-radius: 16px;
+    }
+    .results.visible { display: block; }
+    .results .score { font-size: 3.5rem; font-weight: 700; margin: 16px 0 8px; }
+    .results .score.excellent {
+      background: linear-gradient(90deg, #22c55e, #4ade80);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .results .score.good {
+      background: linear-gradient(90deg, #7b7bff, #a855f7);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .results .score.average {
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .results .score.poor {
+      background: linear-gradient(90deg, #ef4444, #f87171);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .results .verdict { font-size: 1.2rem; color: #aaa; margin-bottom: 24px; }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px;
+    }
+    .stat-box {
+      padding: 16px; background: rgba(10, 10, 26, 0.5);
+      border-radius: 10px; border: 1px solid rgba(100, 100, 255, 0.08);
+    }
+    .stat-box .val { font-size: 1.5rem; font-weight: 700; color: #7b7bff; }
+    .stat-box .label { font-size: 0.78rem; color: #666; margin-top: 4px; }
+    .submit-area { text-align: center; padding: 40px 24px; }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .container { padding: 16px; }
+      .question-card { padding: 16px; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Ready Legacy | The Future of Legacy</h1>
+  <p id="subtitle"></p>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('de')">DE</button>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-text" id="progressText"></div>
+</div>
+
+<div class="container">
+  <div id="quizArea"></div>
+
+  <div class="results" id="results">
+    <div style="font-size: 1rem; color: #666;" id="resultLabel"></div>
+    <div class="score" id="scoreValue">0%</div>
+    <div class="verdict" id="verdict"></div>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="val" id="statCorrect">0</div>
+        <div class="label" id="labelCorrect"></div>
+      </div>
+      <div class="stat-box">
+        <div class="val" id="statWrong">0</div>
+        <div class="label" id="labelWrong"></div>
+      </div>
+      <div class="stat-box">
+        <div class="val" id="statPct">0%</div>
+        <div class="label" id="labelPct"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-area">
+    <button class="btn btn-reset" id="resetBtn" onclick="resetQuiz()" style="display:none;"></button>
+  </div>
+</div>
+
+<script>
+// ========== UI TRANSLATIONS ==========
+const ui = {
+  ru: {
+    subtitle: 'Тест на знание проекта: технологии, архитектура, возможности',
+    qOf: 'Вопрос',
+    of: 'из',
+    next: 'Следующий вопрос \u2192',
+    showResult: 'Показать результат \u2192',
+    resultLabel: 'Ваш результат',
+    correct: 'Правильных',
+    wrong: 'Неправильных',
+    pct: 'Точность',
+    restart: 'Пройти заново',
+    excellent: 'Превосходно! Вы отлично знаете проект.',
+    good: 'Хороший результат! Есть небольшие пробелы.',
+    average: 'Средний результат. Стоит изучить проект подробнее.',
+    poor: 'Нужно больше практики с проектом.',
+  },
+  en: {
+    subtitle: 'Project knowledge test: tech stack, architecture, features',
+    qOf: 'Question',
+    of: 'of',
+    next: 'Next question \u2192',
+    showResult: 'Show result \u2192',
+    resultLabel: 'Your result',
+    correct: 'Correct',
+    wrong: 'Wrong',
+    pct: 'Accuracy',
+    restart: 'Try again',
+    excellent: 'Excellent! You know the project inside out.',
+    good: 'Good result! A few gaps here and there.',
+    average: 'Average. Worth studying the project more.',
+    poor: 'Needs more practice with the project.',
+  },
+  de: {
+    subtitle: 'Wissenstest zum Projekt: Technologien, Architektur, Funktionen',
+    qOf: 'Frage',
+    of: 'von',
+    next: 'N\u00e4chste Frage \u2192',
+    showResult: 'Ergebnis anzeigen \u2192',
+    resultLabel: 'Ihr Ergebnis',
+    correct: 'Richtig',
+    wrong: 'Falsch',
+    pct: 'Genauigkeit',
+    restart: 'Nochmal starten',
+    excellent: 'Hervorragend! Sie kennen das Projekt bestens.',
+    good: 'Gutes Ergebnis! Kleine L\u00fccken vorhanden.',
+    average: 'Durchschnitt. Es lohnt sich, das Projekt genauer zu studieren.',
+    poor: 'Mehr Praxis mit dem Projekt erforderlich.',
+  }
+};
+
+// ========== QUESTIONS DATA ==========
+const questions = [
+  {
+    section: { ru: 'Технологии и стек', en: 'Tech stack', de: 'Technologie-Stack' },
+    q: {
+      ru: 'На каком JavaScript-фреймворке/библиотеке построен Ready Legacy?',
+      en: 'Which JavaScript framework/library is Ready Legacy built with?',
+      de: 'Auf welchem JavaScript-Framework/Bibliothek basiert Ready Legacy?'
+    },
+    options: {
+      ru: ['Vue.js 3', 'React 19', 'Angular 17', 'Svelte 5'],
+      en: ['Vue.js 3', 'React 19', 'Angular 17', 'Svelte 5'],
+      de: ['Vue.js 3', 'React 19', 'Angular 17', 'Svelte 5']
+    },
+    correct: 1,
+    explanation: {
+      ru: 'Проект использует React 19.2 с React DOM для рендеринга UI.',
+      en: 'The project uses React 19.2 with React DOM for UI rendering.',
+      de: 'Das Projekt verwendet React 19.2 mit React DOM f\u00fcr das UI-Rendering.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какой сборщик используется в проекте?',
+      en: 'Which bundler is used in the project?',
+      de: 'Welcher Bundler wird im Projekt verwendet?'
+    },
+    options: {
+      ru: ['Webpack 5', 'Parcel', 'Vite 7', 'Rollup'],
+      en: ['Webpack 5', 'Parcel', 'Vite 7', 'Rollup'],
+      de: ['Webpack 5', 'Parcel', 'Vite 7', 'Rollup']
+    },
+    correct: 2,
+    explanation: {
+      ru: 'Vite 7.3 используется как сборщик и dev-сервер. Команда запуска: <code>npm run dev</code>.',
+      en: 'Vite 7.3 is used as the bundler and dev server. Start command: <code>npm run dev</code>.',
+      de: 'Vite 7.3 wird als Bundler und Dev-Server verwendet. Startbefehl: <code>npm run dev</code>.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какая версия TypeScript используется?',
+      en: 'Which TypeScript version is used?',
+      de: 'Welche TypeScript-Version wird verwendet?'
+    },
+    options: {
+      ru: ['TypeScript 4.9', 'TypeScript 5.0', 'TypeScript 5.5', 'TypeScript 5.9'],
+      en: ['TypeScript 4.9', 'TypeScript 5.0', 'TypeScript 5.5', 'TypeScript 5.9'],
+      de: ['TypeScript 4.9', 'TypeScript 5.0', 'TypeScript 5.5', 'TypeScript 5.9']
+    },
+    correct: 3,
+    explanation: {
+      ru: 'В package.json указан <code>"typescript": "^5.9.3"</code>.',
+      en: 'The package.json specifies <code>"typescript": "^5.9.3"</code>.',
+      de: 'In der package.json steht <code>"typescript": "^5.9.3"</code>.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какой CSS-фреймворк используется для стилизации?',
+      en: 'Which CSS framework is used for styling?',
+      de: 'Welches CSS-Framework wird f\u00fcr das Styling verwendet?'
+    },
+    options: {
+      ru: ['Никакой \u2014 кастомный CSS', 'Tailwind CSS', 'Material UI', 'Bootstrap 5'],
+      en: ['None \u2014 custom CSS', 'Tailwind CSS', 'Material UI', 'Bootstrap 5'],
+      de: ['Keins \u2014 eigenes CSS', 'Tailwind CSS', 'Material UI', 'Bootstrap 5']
+    },
+    correct: 0,
+    explanation: {
+      ru: 'Проект не использует CSS-фреймворки. Вся стилизация \u2014 кастомный CSS и inline-стили.',
+      en: 'No CSS framework is used. All styling is custom CSS and inline styles in React components.',
+      de: 'Es wird kein CSS-Framework verwendet. Das gesamte Styling erfolgt \u00fcber eigenes CSS und Inline-Styles.'
+    }
+  },
+  {
+    q: {
+      ru: 'Где развёрнут (задеплоен) проект?',
+      en: 'Where is the project deployed?',
+      de: 'Wo ist das Projekt deployed?'
+    },
+    options: {
+      ru: ['AWS Amplify', 'Vercel', 'Netlify', 'Firebase Hosting'],
+      en: ['AWS Amplify', 'Vercel', 'Netlify', 'Firebase Hosting'],
+      de: ['AWS Amplify', 'Vercel', 'Netlify', 'Firebase Hosting']
+    },
+    correct: 1,
+    explanation: {
+      ru: 'Проект деплоится на Vercel. В зависимостях есть <code>@vercel/node</code>.',
+      en: 'The project is deployed on Vercel. Dependencies include <code>@vercel/node</code>.',
+      de: 'Das Projekt wird auf Vercel deployed. Die Abh\u00e4ngigkeiten enthalten <code>@vercel/node</code>.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какая библиотека используется для маршрутизации (роутинга)?',
+      en: 'Which library is used for routing?',
+      de: 'Welche Bibliothek wird f\u00fcr das Routing verwendet?'
+    },
+    options: {
+      ru: ['TanStack Router', 'Next.js Router', 'React Router DOM 7', 'Wouter'],
+      en: ['TanStack Router', 'Next.js Router', 'React Router DOM 7', 'Wouter'],
+      de: ['TanStack Router', 'Next.js Router', 'React Router DOM 7', 'Wouter']
+    },
+    correct: 2,
+    explanation: {
+      ru: '<code>react-router-dom</code> версии 7.13 \u2014 единственная зависимость для роутинга.',
+      en: '<code>react-router-dom</code> v7.13 is the only routing dependency.',
+      de: '<code>react-router-dom</code> v7.13 ist die einzige Routing-Abh\u00e4ngigkeit.'
+    }
+  },
+  {
+    q: {
+      ru: 'Где хранятся данные пользователя в текущей версии (MVP)?',
+      en: 'Where is user data stored in the current MVP version?',
+      de: 'Wo werden Benutzerdaten in der aktuellen MVP-Version gespeichert?'
+    },
+    options: {
+      ru: ['PostgreSQL', 'Firebase Firestore', 'MongoDB Atlas', 'localStorage браузера'],
+      en: ['PostgreSQL', 'Firebase Firestore', 'MongoDB Atlas', 'Browser localStorage'],
+      de: ['PostgreSQL', 'Firebase Firestore', 'MongoDB Atlas', 'Browser localStorage']
+    },
+    correct: 3,
+    explanation: {
+      ru: 'Все данные хранятся в localStorage с префиксом <code>continuum_</code>. Бэкенд-БД отсутствует.',
+      en: 'All data is stored in localStorage with the <code>continuum_</code> prefix. No backend database.',
+      de: 'Alle Daten werden im localStorage mit dem Pr\u00e4fix <code>continuum_</code> gespeichert. Keine Backend-DB.'
+    }
+  },
+  {
+    section: { ru: 'Архитектура проекта', en: 'Project architecture', de: 'Projektarchitektur' },
+    q: {
+      ru: 'Какой тип приложения представляет собой Ready Legacy?',
+      en: 'What type of application is Ready Legacy?',
+      de: 'Welcher Anwendungstyp ist Ready Legacy?'
+    },
+    options: {
+      ru: ['SSR (серверный рендеринг)', 'SPA (одностраничное приложение)', 'MPA (многостраничное)', 'PWA (прогрессивное)'],
+      en: ['SSR (Server-Side Rendering)', 'SPA (Single Page Application)', 'MPA (Multi-Page Application)', 'PWA (Progressive Web App)'],
+      de: ['SSR (Server-Side Rendering)', 'SPA (Single Page Application)', 'MPA (Multi-Page Application)', 'PWA (Progressive Web App)']
+    },
+    correct: 1,
+    explanation: {
+      ru: 'Ready Legacy \u2014 классический React SPA. Весь рендеринг происходит на клиенте.',
+      en: 'Ready Legacy is a classic React SPA. All rendering happens client-side.',
+      de: 'Ready Legacy ist eine klassische React SPA. Das gesamte Rendering erfolgt clientseitig.'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько страниц (routes) определено в роутере приложения?',
+      en: 'How many pages (routes) are defined in the app router?',
+      de: 'Wie viele Seiten (Routes) sind im App-Router definiert?'
+    },
+    options: {
+      ru: ['8', '5', '12', '3'],
+      en: ['8', '5', '12', '3'],
+      de: ['8', '5', '12', '3']
+    },
+    correct: 0,
+    explanation: {
+      ru: '8 маршрутов: Home, Mission, Tools, Team, Contact, Login, Documents, Profile.',
+      en: '8 routes: Home, Mission, Tools, Team, Contact, Login, Documents, Profile.',
+      de: '8 Routes: Home, Mission, Tools, Team, Contact, Login, Documents, Profile.'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько контекст-провайдеров (Context) используется в приложении?',
+      en: 'How many Context providers are used in the application?',
+      de: 'Wie viele Context-Provider werden in der Anwendung verwendet?'
+    },
+    options: {
+      ru: ['1 \u2014 только тема', '3 \u2014 тема, язык, авторизация', '2 \u2014 тема и язык', '4 \u2014 тема, язык, авторизация, чат'],
+      en: ['1 \u2014 theme only', '3 \u2014 theme, language, auth', '2 \u2014 theme and language', '4 \u2014 theme, language, auth, chat'],
+      de: ['1 \u2014 nur Theme', '3 \u2014 Theme, Sprache, Auth', '2 \u2014 Theme und Sprache', '4 \u2014 Theme, Sprache, Auth, Chat']
+    },
+    correct: 2,
+    explanation: {
+      ru: 'Два провайдера: <code>ThemeContext</code> (тёмная/светлая тема) и <code>LanguageContext</code> (i18n).',
+      en: 'Two providers: <code>ThemeContext</code> (dark/light theme) and <code>LanguageContext</code> (i18n).',
+      de: 'Zwei Provider: <code>ThemeContext</code> (Dark/Light-Theme) und <code>LanguageContext</code> (i18n).'
+    }
+  },
+  {
+    q: {
+      ru: 'Как называется кастомный хук для сохранения состояния в localStorage?',
+      en: 'What is the name of the custom hook for persisting state to localStorage?',
+      de: 'Wie hei\u00dft der Custom Hook zum Speichern des Zustands im localStorage?'
+    },
+    options: {
+      ru: ['useLocalStorage', 'useSavedState', 'usePersist', 'usePersistedState'],
+      en: ['useLocalStorage', 'useSavedState', 'usePersist', 'usePersistedState'],
+      de: ['useLocalStorage', 'useSavedState', 'usePersist', 'usePersistedState']
+    },
+    correct: 3,
+    explanation: {
+      ru: 'Хук <code>usePersistedState</code> из <code>src/hooks/usePersistedState.ts</code>.',
+      en: 'The <code>usePersistedState</code> hook from <code>src/hooks/usePersistedState.ts</code>.',
+      de: 'Der <code>usePersistedState</code> Hook aus <code>src/hooks/usePersistedState.ts</code>.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какой префикс используется для ключей в localStorage?',
+      en: 'What prefix is used for localStorage keys?',
+      de: 'Welches Pr\u00e4fix wird f\u00fcr localStorage-Schl\u00fcssel verwendet?'
+    },
+    options: {
+      ru: ['app_', 'continuum_', 'legacy_', 'ct_'],
+      en: ['app_', 'continuum_', 'legacy_', 'ct_'],
+      de: ['app_', 'continuum_', 'legacy_', 'ct_']
+    },
+    correct: 1,
+    explanation: {
+      ru: 'Все ключи имеют префикс <code>continuum_</code>, например: <code>continuum_lang</code>, <code>continuum_theme</code>.',
+      en: 'All keys use the <code>continuum_</code> prefix, e.g.: <code>continuum_lang</code>, <code>continuum_theme</code>.',
+      de: 'Alle Schl\u00fcssel verwenden das Pr\u00e4fix <code>continuum_</code>, z.B.: <code>continuum_lang</code>, <code>continuum_theme</code>.'
+    }
+  },
+  {
+    q: {
+      ru: 'Где расположены серверные функции (API)?',
+      en: 'Where are the serverless API functions located?',
+      de: 'Wo befinden sich die serverlosen API-Funktionen?'
+    },
+    options: {
+      ru: ['api/ (корень проекта)', 'src/api/', 'server/routes/', 'functions/'],
+      en: ['api/ (project root)', 'src/api/', 'server/routes/', 'functions/'],
+      de: ['api/ (Projektstamm)', 'src/api/', 'server/routes/', 'functions/']
+    },
+    correct: 0,
+    explanation: {
+      ru: 'Серверные функции Vercel расположены в <code>api/</code> в корне проекта.',
+      en: 'Vercel serverless functions are located in the <code>api/</code> folder at the project root.',
+      de: 'Vercel Serverless-Funktionen befinden sich im <code>api/</code>-Ordner im Projektstamm.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какой алгоритм поиска используется в базе знаний чат-бота?',
+      en: 'Which search algorithm is used in the chatbot knowledge base?',
+      de: 'Welcher Suchalgorithmus wird in der Chatbot-Wissensdatenbank verwendet?'
+    },
+    options: {
+      ru: ['TF-IDF', 'Substring matching (indexOf)', 'BM25 (Okapi BM25)', 'Cosine similarity с embeddings'],
+      en: ['TF-IDF', 'Substring matching (indexOf)', 'BM25 (Okapi BM25)', 'Cosine similarity with embeddings'],
+      de: ['TF-IDF', 'Substring-Matching (indexOf)', 'BM25 (Okapi BM25)', 'Kosinus\u00e4hnlichkeit mit Embeddings']
+    },
+    correct: 2,
+    explanation: {
+      ru: 'Поиск реализован через BM25 с поддержкой Unicode и мультиязычных стоп-слов.',
+      en: 'Search is implemented via BM25 with Unicode support and multilingual stopwords.',
+      de: 'Die Suche ist \u00fcber BM25 mit Unicode-Unterst\u00fctzung und mehrsprachigen Stoppw\u00f6rtern implementiert.'
+    }
+  },
+  {
+    section: { ru: 'Функциональность', en: 'Features', de: 'Funktionalit\u00e4t' },
+    q: {
+      ru: 'Какова основная тематика / назначение проекта Ready Legacy?',
+      en: 'What is the main purpose of the Ready Legacy project?',
+      de: 'Was ist der Hauptzweck des Ready Legacy-Projekts?'
+    },
+    options: {
+      ru: ['Управление финансами', 'Планирование наследства и цифровое наследие', 'Социальная сеть', 'Онлайн-образование'],
+      en: ['Financial management', 'Estate planning and digital legacy', 'Social network', 'Online education'],
+      de: ['Finanzverwaltung', 'Nachlassplanung und digitales Erbe', 'Soziales Netzwerk', 'Online-Bildung']
+    },
+    correct: 1,
+    explanation: {
+      ru: 'Ready Legacy \u2014 платформа для планирования наследства, создания цифрового наследия и поддержки в период утраты.',
+      en: 'Ready Legacy is a platform for estate planning, creating a digital legacy, and bereavement support.',
+      de: 'Ready Legacy ist eine Plattform f\u00fcr Nachlassplanung, Erstellung eines digitalen Erbes und Trauerunterst\u00fctzung.'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько основных \u00abстолпов\u00bb (pillars) у продукта?',
+      en: 'How many core pillars does the product have?',
+      de: 'Wie viele Kernpfeiler (Pillars) hat das Produkt?'
+    },
+    options: {
+      ru: ['2', '4', '3', '5'],
+      en: ['2', '4', '3', '5'],
+      de: ['2', '4', '3', '5']
+    },
+    correct: 2,
+    explanation: {
+      ru: '3 столпа: Be Ready, Leave Behind, Be Honored.',
+      en: '3 pillars: Be Ready, Leave Behind, Be Honored.',
+      de: '3 Säulen: Be Ready, Leave Behind, Be Honored.'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько инструментов (tools) доступно на странице Tools?',
+      en: 'How many tools are available on the Tools page?',
+      de: 'Wie viele Tools sind auf der Tools-Seite verf\u00fcgbar?'
+    },
+    options: {
+      ru: ['5', '7', '8', '10'],
+      en: ['5', '7', '8', '10'],
+      de: ['5', '7', '8', '10']
+    },
+    correct: 3,
+    explanation: {
+      ru: '10 инструментов: Asset Overview, Will Builder, Legal Docs, Death Checklist, Executor, Templates, Leave Behind, Bereavement Support, Reminders, AI Avatar.',
+      en: '10 tools: Asset Overview, Will Builder, Legal Docs, Death Checklist, Executor, Templates, Leave Behind, Bereavement Support, Reminders, AI Avatar.',
+      de: '10 Tools: Asset Overview, Will Builder, Legal Docs, Death Checklist, Executor, Templates, Leave Behind, Bereavement Support, Reminders, AI Avatar.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какие языки поддерживает приложение?',
+      en: 'Which languages does the application support?',
+      de: 'Welche Sprachen unterst\u00fctzt die Anwendung?'
+    },
+    options: {
+      ru: ['Английский, немецкий, русский, украинский', 'Английский, немецкий, французский', 'Английский, русский', 'Английский, немецкий, русский, украинский, французский'],
+      en: ['English, German, Russian, Ukrainian', 'English, German, French', 'English, Russian', 'English, German, Russian, Ukrainian, French'],
+      de: ['Englisch, Deutsch, Russisch, Ukrainisch', 'Englisch, Deutsch, Franz\u00f6sisch', 'Englisch, Russisch', 'Englisch, Deutsch, Russisch, Ukrainisch, Franz\u00f6sisch']
+    },
+    correct: 0,
+    explanation: {
+      ru: '4 языка: EN, DE, RU, UA. Файлы переводов \u2014 <code>public/assets/locales/</code>.',
+      en: '4 languages: EN, DE, RU, UA. Translation files in <code>public/assets/locales/</code>.',
+      de: '4 Sprachen: EN, DE, RU, UA. \u00dcbersetzungsdateien in <code>public/assets/locales/</code>.'
+    }
+  },
+  {
+    q: {
+      ru: 'Что такое \u00abLeave Behind\u00bb (цифровое хранилище наследия)?',
+      en: 'What is "Leave Behind" (digital legacy vault)?',
+      de: 'Was ist "Leave Behind" (digitaler Nachlass-Tresor)?'
+    },
+    options: {
+      ru: ['Генератор юридических документов', 'Хранилище для сообщений, фото, видео и аудио для наследников', 'Система автоматических напоминаний', 'Сервис для создания AI-аватаров'],
+      en: ['Legal document generator', 'Vault for messages, photos, videos and audio for heirs', 'Automatic reminder system', 'AI avatar creation service'],
+      de: ['Generator f\u00fcr juristische Dokumente', 'Tresor f\u00fcr Nachrichten, Fotos, Videos und Audio f\u00fcr Erben', 'Automatisches Erinnerungssystem', 'KI-Avatar-Erstellungsdienst']
+    },
+    correct: 1,
+    explanation: {
+      ru: 'Leave Behind (Legacy Vault) \u2014 хранилище текстов, фото, видео, аудио и ссылок для близких.',
+      en: 'Leave Behind (Legacy Vault) stores texts, photos, videos, audio, and links for loved ones.',
+      de: 'Leave Behind (Legacy Vault) speichert Texte, Fotos, Videos, Audio und Links f\u00fcr Angeh\u00f6rige.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какие OAuth-провайдеры поддерживаются для входа?',
+      en: 'Which OAuth providers are supported for login?',
+      de: 'Welche OAuth-Provider werden f\u00fcr den Login unterst\u00fctzt?'
+    },
+    options: {
+      ru: ['Google и GitHub', 'Google и Facebook', 'Google, Facebook и Apple', 'Google, Apple и Microsoft'],
+      en: ['Google and GitHub', 'Google and Facebook', 'Google, Facebook and Apple', 'Google, Apple and Microsoft'],
+      de: ['Google und GitHub', 'Google und Facebook', 'Google, Facebook und Apple', 'Google, Apple und Microsoft']
+    },
+    correct: 2,
+    explanation: {
+      ru: 'Login поддерживает Google, Facebook и Apple (в демо-режиме через setTimeout).',
+      en: 'Login supports Google, Facebook and Apple (demo mode via setTimeout).',
+      de: 'Login unterst\u00fctzt Google, Facebook und Apple (Demo-Modus via setTimeout).'
+    }
+  },
+  {
+    q: {
+      ru: 'Что происходит при переходе на страницу Profile без авторизации?',
+      en: 'What happens when accessing the Profile page without authentication?',
+      de: 'Was passiert beim Zugriff auf die Profilseite ohne Authentifizierung?'
+    },
+    options: {
+      ru: ['Показывается пустой профиль', 'Выбрасывается ошибка 403', 'Показывается модальное окно входа', 'Редирект на страницу Login'],
+      en: ['Empty profile is shown', '403 error is thrown', 'Login modal is displayed', 'Redirect to Login page'],
+      de: ['Leeres Profil wird angezeigt', '403-Fehler wird ausgel\u00f6st', 'Login-Modal wird angezeigt', 'Weiterleitung zur Login-Seite']
+    },
+    correct: 3,
+    explanation: {
+      ru: 'Если в localStorage нет <code>continuum_user</code>, происходит редирект на <code>/login</code>.',
+      en: 'If <code>continuum_user</code> is not in localStorage, the user is redirected to <code>/login</code>.',
+      de: 'Wenn <code>continuum_user</code> nicht im localStorage ist, wird zur <code>/login</code>-Seite weitergeleitet.'
+    }
+  },
+  {
+    q: {
+      ru: 'Что представляет собой \u00abReadiness Score\u00bb в профиле?',
+      en: 'What is the "Readiness Score" in the profile?',
+      de: 'Was ist der "Readiness Score" im Profil?'
+    },
+    options: {
+      ru: ['Процент заполненности данных по наследству', 'Рейтинг пользователя на платформе', 'Баллы за активность', 'Оценка безопасности аккаунта'],
+      en: ['Percentage of estate data completion', 'User ranking on the platform', 'Activity points', 'Account security score'],
+      de: ['Prozentsatz der ausgef\u00fcllten Nachlassdaten', 'Benutzer-Ranking auf der Plattform', 'Aktivit\u00e4tspunkte', 'Kontosicherheitsbewertung']
+    },
+    correct: 0,
+    explanation: {
+      ru: 'Readiness Score \u2014 процент завершённости подготовки наследства.',
+      en: 'Readiness Score is the completion percentage of estate preparation.',
+      de: 'Readiness Score ist der Fertigstellungsgrad der Nachlassvorbereitung.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какой компонент отвечает за AI-чат?',
+      en: 'Which component handles the AI chat?',
+      de: 'Welche Komponente ist f\u00fcr den KI-Chat zust\u00e4ndig?'
+    },
+    options: {
+      ru: ['AIAssistant', 'ChatWidget', 'ChatBot', 'SupportChat'],
+      en: ['AIAssistant', 'ChatWidget', 'ChatBot', 'SupportChat'],
+      de: ['AIAssistant', 'ChatWidget', 'ChatBot', 'SupportChat']
+    },
+    correct: 1,
+    explanation: {
+      ru: '<code>ChatWidget</code> \u2014 <code>src/components/ChatWidget/ChatWidget.tsx</code>, плавающий виджет.',
+      en: '<code>ChatWidget</code> in <code>src/components/ChatWidget/ChatWidget.tsx</code>, a floating widget.',
+      de: '<code>ChatWidget</code> in <code>src/components/ChatWidget/ChatWidget.tsx</code>, ein schwebendes Widget.'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько быстрых вопросов (quick questions) отображается в чат-виджете?',
+      en: 'How many quick questions are shown in the chat widget?',
+      de: 'Wie viele Schnellfragen werden im Chat-Widget angezeigt?'
+    },
+    options: {
+      ru: ['3', '4', '6', '8'],
+      en: ['3', '4', '6', '8'],
+      de: ['3', '4', '6', '8']
+    },
+    correct: 2,
+    explanation: {
+      ru: 'В ChatWidget отображаются 6 предзаготовленных быстрых вопросов.',
+      en: '6 predefined quick questions are displayed in the ChatWidget.',
+      de: '6 vordefinierte Schnellfragen werden im ChatWidget angezeigt.'
+    }
+  },
+  {
+    section: { ru: 'Бэкенд и API', en: 'Backend & API', de: 'Backend & API' },
+    q: {
+      ru: 'Какой эндпоинт обрабатывает запросы к чат-боту?',
+      en: 'Which endpoint handles chatbot requests?',
+      de: 'Welcher Endpunkt verarbeitet Chatbot-Anfragen?'
+    },
+    options: {
+      ru: ['POST /api/assistant', 'POST /api/query', 'GET /api/search', 'POST /api/chat'],
+      en: ['POST /api/assistant', 'POST /api/query', 'GET /api/search', 'POST /api/chat'],
+      de: ['POST /api/assistant', 'POST /api/query', 'GET /api/search', 'POST /api/chat']
+    },
+    correct: 3,
+    explanation: {
+      ru: 'Чат-бот отправляет запросы на <code>POST /api/chat</code> с телом <code>{ query, language }</code>.',
+      en: 'The chatbot sends requests to <code>POST /api/chat</code> with body <code>{ query, language }</code>.',
+      de: 'Der Chatbot sendet Anfragen an <code>POST /api/chat</code> mit Body <code>{ query, language }</code>.'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько примерно чанков (записей) содержит база знаний чат-бота?',
+      en: 'Approximately how many chunks does the chatbot knowledge base contain?',
+      de: 'Wie viele Chunks enth\u00e4lt die Chatbot-Wissensdatenbank ungef\u00e4hr?'
+    },
+    options: {
+      ru: ['100+', '20-30', '500+', '10-15'],
+      en: ['100+', '20-30', '500+', '10-15'],
+      de: ['100+', '20-30', '500+', '10-15']
+    },
+    correct: 0,
+    explanation: {
+      ru: 'База знаний в <code>api/knowledge/base.ts</code> содержит более 100 чанков.',
+      en: 'The knowledge base in <code>api/knowledge/base.ts</code> contains 100+ chunks.',
+      de: 'Die Wissensdatenbank in <code>api/knowledge/base.ts</code> enth\u00e4lt \u00fcber 100 Chunks.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какие типы ответов может вернуть чат API?',
+      en: 'What response types can the chat API return?',
+      de: 'Welche Antworttypen kann die Chat-API zur\u00fcckgeben?'
+    },
+    options: {
+      ru: ['success и error', 'greeting, result и fallback', 'answer и suggestion', 'text, image и link'],
+      en: ['success and error', 'greeting, result and fallback', 'answer and suggestion', 'text, image and link'],
+      de: ['success und error', 'greeting, result und fallback', 'answer und suggestion', 'text, image und link']
+    },
+    correct: 1,
+    explanation: {
+      ru: 'API возвращает <code>type</code>: <code>greeting</code>, <code>result</code> или <code>fallback</code>.',
+      en: 'The API returns <code>type</code>: <code>greeting</code>, <code>result</code>, or <code>fallback</code>.',
+      de: 'Die API gibt <code>type</code> zur\u00fcck: <code>greeting</code>, <code>result</code> oder <code>fallback</code>.'
+    }
+  },
+  {
+    section: { ru: 'Команда и общие', en: 'Team & general', de: 'Team & Allgemeines' },
+    q: {
+      ru: 'Сколько основателей (founders) указано на странице Team?',
+      en: 'How many founders are listed on the Team page?',
+      de: 'Wie viele Gr\u00fcnder sind auf der Team-Seite aufgef\u00fchrt?'
+    },
+    options: {
+      ru: ['2', '4', '3', '5'],
+      en: ['2', '4', '3', '5'],
+      de: ['2', '4', '3', '5']
+    },
+    correct: 2,
+    explanation: {
+      ru: 'Три основателя: Inna, Olga и Viktor.',
+      en: 'Three founders: Inna, Olga, and Viktor.',
+      de: 'Drei Gr\u00fcnder: Inna, Olga und Viktor.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какая тема (theme) поддерживается помимо светлой?',
+      en: 'Which theme is supported besides light?',
+      de: 'Welches Theme wird neben Light unterst\u00fctzt?'
+    },
+    options: {
+      ru: ['Тёмная (dark)', 'Синяя (blue)', 'Системная (auto)', 'Sepia'],
+      en: ['Dark', 'Blue', 'System (auto)', 'Sepia'],
+      de: ['Dunkel (dark)', 'Blau (blue)', 'System (auto)', 'Sepia']
+    },
+    correct: 0,
+    explanation: {
+      ru: 'ThemeContext поддерживает <code>dark</code> и <code>light</code>. Атрибут <code>data-theme</code> на <code>&lt;html&gt;</code>.',
+      en: 'ThemeContext supports <code>dark</code> and <code>light</code>. Sets <code>data-theme</code> on <code>&lt;html&gt;</code>.',
+      de: 'ThemeContext unterst\u00fctzt <code>dark</code> und <code>light</code>. Setzt <code>data-theme</code> auf <code>&lt;html&gt;</code>.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какая команда собирает проект для production?',
+      en: 'Which command builds the project for production?',
+      de: 'Welcher Befehl baut das Projekt f\u00fcr Production?'
+    },
+    options: {
+      ru: ['npm run compile', 'npm run dist', 'npm run prod', 'npm run build'],
+      en: ['npm run compile', 'npm run dist', 'npm run prod', 'npm run build'],
+      de: ['npm run compile', 'npm run dist', 'npm run prod', 'npm run build']
+    },
+    correct: 3,
+    explanation: {
+      ru: '<code>npm run build</code> запускает <code>tsc && vite build</code> \u2014 проверка типов + сборка.',
+      en: '<code>npm run build</code> runs <code>tsc && vite build</code> \u2014 type checking + bundling.',
+      de: '<code>npm run build</code> f\u00fchrt <code>tsc && vite build</code> aus \u2014 Typpr\u00fcfung + Bundling.'
+    }
+  },
+  // ===== 20 NEW THEMATIC QUESTIONS =====
+  {
+    section: { ru: 'Инструменты: Asset Overview', en: 'Tools: Asset Overview', de: 'Tools: Asset Overview' },
+    q: {
+      ru: 'Сколько шагов (категорий) содержит мастер Asset Overview?',
+      en: 'How many steps (categories) does the Asset Overview wizard have?',
+      de: 'Wie viele Schritte (Kategorien) hat der Asset-Overview-Assistent?'
+    },
+    options: {
+      ru: ['3', '4', '6', '8'],
+      en: ['3', '4', '6', '8'],
+      de: ['3', '4', '6', '8']
+    },
+    correct: 2,
+    explanation: {
+      ru: '6 шагов: Personal, Assets, Liabilities, Digital Legacy, Funeral Wishes, Others.',
+      en: '6 steps: Personal, Assets, Liabilities, Digital Legacy, Funeral Wishes, Others.',
+      de: '6 Schritte: Personal, Assets, Liabilities, Digital Legacy, Funeral Wishes, Others.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какие варианты типа похорон (funeral type) доступны в Asset Overview?',
+      en: 'Which funeral type options are available in Asset Overview?',
+      de: 'Welche Bestattungsarten stehen in der Asset Overview zur Verf\u00fcgung?'
+    },
+    options: {
+      ru: ['Только кремация и погребение', 'Погребение, кремация, зелёное, морское, без предпочтений', 'Кремация, погребение, космическое', 'Погребение и кремация с 10 подвариантами'],
+      en: ['Only cremation and burial', 'Burial, cremation, natural/green, sea, no preference', 'Cremation, burial, space burial', 'Burial and cremation with 10 sub-options'],
+      de: ['Nur Einäscherung und Erdbestattung', 'Erdbestattung, Einäscherung, Naturbestattung, Seebestattung, keine Präferenz', 'Einäscherung, Erdbestattung, Weltraumbestattung', 'Erdbestattung und Einäscherung mit 10 Untervarianten']
+    },
+    correct: 1,
+    explanation: {
+      ru: '5 вариантов: Traditional Burial, Cremation, Natural/Green Burial, Sea/Water Burial, No preference.',
+      en: '5 options: Traditional Burial, Cremation, Natural/Green Burial, Sea/Water Burial, No preference.',
+      de: '5 Optionen: Erdbestattung, Einäscherung, Naturbestattung, Seebestattung, Keine Präferenz.'
+    }
+  },
+  {
+    section: { ru: 'Инструменты: Will Builder', en: 'Tools: Will Builder', de: 'Tools: Will Builder' },
+    q: {
+      ru: 'Сколько шагов в мастере Will Builder (конструктор завещания)?',
+      en: 'How many steps does the Will Builder wizard have?',
+      de: 'Wie viele Schritte hat der Will-Builder-Assistent?'
+    },
+    options: {
+      ru: ['2', '3', '4', '6'],
+      en: ['2', '3', '4', '6'],
+      de: ['2', '3', '4', '6']
+    },
+    correct: 2,
+    explanation: {
+      ru: '4 шага: Creator (данные завещателя), Heirs (наследники), Legacies (конкретные завещания), Form (формальности).',
+      en: '4 steps: Creator (testator info), Heirs (allocation), Legacies (specific items), Form (formality checklist).',
+      de: '4 Schritte: Creator (Erblasser-Daten), Heirs (Zuteilung), Legacies (Vermächtnisse), Form (Formalitäten).'
+    }
+  },
+  {
+    q: {
+      ru: 'Что включает чек-лист формальностей в Will Builder?',
+      en: 'What does the formality checklist in Will Builder include?',
+      de: 'Was enthält die Formalitäten-Checkliste im Will Builder?'
+    },
+    options: {
+      ru: ['Нотариальное заверение и два свидетеля', 'Рукописность и подпись с датой', 'Цифровая подпись и шифрование', 'Печать и три свидетеля'],
+      en: ['Notarization and two witnesses', 'Must be handwritten, dated and signed', 'Digital signature and encryption', 'Stamp and three witnesses'],
+      de: ['Notarielle Beglaubigung und zwei Zeugen', 'Handschriftlich, datiert und unterschrieben', 'Digitale Signatur und Verschlüsselung', 'Stempel und drei Zeugen']
+    },
+    correct: 1,
+    explanation: {
+      ru: 'Два пункта: «Я понимаю, что завещание должно быть рукописным» и «Я помню о необходимости даты и подписи».',
+      en: 'Two items: "I understand it must be handwritten" and "I remember to date and sign".',
+      de: 'Zwei Punkte: "Muss handschriftlich sein" und "Datum und Unterschrift nicht vergessen".'
+    }
+  },
+  {
+    section: { ru: 'Инструменты: Legal Docs', en: 'Tools: Legal Docs', de: 'Tools: Legal Docs' },
+    q: {
+      ru: 'Сколько юридических документов отслеживается в Legal Framework?',
+      en: 'How many legal documents are tracked in the Legal Framework?',
+      de: 'Wie viele juristische Dokumente werden im Legal Framework verfolgt?'
+    },
+    options: {
+      ru: ['4', '6', '8', '10'],
+      en: ['4', '6', '8', '10'],
+      de: ['4', '6', '8', '10']
+    },
+    correct: 2,
+    explanation: {
+      ru: '8 документов: Living Will, Advance Care Directive, Power of Attorney, Last Will, Organ Donation, Burial Directive, Insurance Register, Digital Testament.',
+      en: '8 documents: Living Will, Advance Care Directive, Power of Attorney, Last Will, Organ Donation, Burial Directive, Insurance Register, Digital Testament.',
+      de: '8 Dokumente: Patientenverfügung, Vorsorgeauftrag, Vollmacht, Testament, Organspende, Bestattungsverfügung, Versicherungsregister, Digitales Erbe.'
+    }
+  },
+  {
+    q: {
+      ru: 'Какие 4 статуса может иметь юридический документ в Legal Framework?',
+      en: 'What are the 4 statuses a legal document can have in the Legal Framework?',
+      de: 'Welche 4 Status kann ein juristisches Dokument im Legal Framework haben?'
+    },
+    options: {
+      ru: ['Черновик, Готов, Отправлен, Архив', 'Не начат, В процессе, Завершён, Подшит', 'Открыт, Закрыт, На проверке, Утверждён', 'Новый, Активный, Подписан, Удалён'],
+      en: ['Draft, Ready, Sent, Archive', 'Not Started, In Progress, Completed, Filed & Stored', 'Open, Closed, Under Review, Approved', 'New, Active, Signed, Deleted'],
+      de: ['Entwurf, Bereit, Gesendet, Archiv', 'Nicht begonnen, In Bearbeitung, Abgeschlossen, Abgelegt', 'Offen, Geschlossen, In Prüfung, Genehmigt', 'Neu, Aktiv, Unterschrieben, Gelöscht']
+    },
+    correct: 1,
+    explanation: {
+      ru: '4 статуса: <code>not_started</code>, <code>in_progress</code>, <code>completed</code>, <code>filed</code> (подшит и хранится).',
+      en: '4 statuses: <code>not_started</code>, <code>in_progress</code>, <code>completed</code>, <code>filed</code> (filed & stored).',
+      de: '4 Status: <code>not_started</code>, <code>in_progress</code>, <code>completed</code>, <code>filed</code> (abgelegt).'
+    }
+  },
+  {
+    q: {
+      ru: 'Какой документ в Legal Framework имеет пометку «Modern» (важность)?',
+      en: 'Which document in the Legal Framework is marked as "Modern" importance?',
+      de: 'Welches Dokument im Legal Framework ist mit der Wichtigkeit "Modern" gekennzeichnet?'
+    },
+    options: {
+      ru: ['AI Avatar', 'Organ Donation Declaration', 'Digital Testament', 'Insurance Register'],
+      en: ['AI Avatar', 'Organ Donation Declaration', 'Digital Testament', 'Insurance Register'],
+      de: ['AI Avatar', 'Organspendeerklärung', 'Digitales Testament', 'Versicherungsregister']
+    },
+    correct: 2,
+    explanation: {
+      ru: 'Digital Testament (Digitales Erbe) — единственный документ с важностью «Modern». Включает управление аккаунтами и цифровым наследием.',
+      en: 'Digital Testament (Digitales Erbe) is the only document marked "Modern". Covers managing accounts and digital legacy.',
+      de: 'Digitales Testament (Digitales Erbe) ist das einzige Dokument mit der Wichtigkeit "Modern". Umfasst Kontoverwaltung und digitales Erbe.'
+    }
+  },
+  {
+    section: { ru: 'Инструменты: Death Checklist', en: 'Tools: Death Checklist', de: 'Tools: Death Checklist' },
+    q: {
+      ru: 'Сколько фаз содержит Death Checklist (чек-лист после смерти)?',
+      en: 'How many phases does the Death Checklist have?',
+      de: 'Wie viele Phasen hat die Death Checklist?'
+    },
+    options: {
+      ru: ['2', '3', '4', '6'],
+      en: ['2', '3', '4', '6'],
+      de: ['2', '3', '4', '6']
+    },
+    correct: 2,
+    explanation: {
+      ru: '4 фазы: Первые 24 часа, Первая неделя, Первый месяц, Постоянно (Ongoing).',
+      en: '4 phases: First 24 Hours, First Week, First Month, Ongoing.',
+      de: '4 Phasen: Erste 24 Stunden, Erste Woche, Erster Monat, Laufend (Ongoing).'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько всего пунктов в Death Checklist по всем фазам?',
+      en: 'How many total items are in the Death Checklist across all phases?',
+      de: 'Wie viele Gesamtpunkte enthält die Death Checklist über alle Phasen?'
+    },
+    options: {
+      ru: ['10', '13', '17', '22'],
+      en: ['10', '13', '17', '22'],
+      de: ['10', '13', '17', '22']
+    },
+    correct: 2,
+    explanation: {
+      ru: '17 пунктов: 4 (24 часа) + 5 (неделя) + 5 (месяц) + 3 (постоянно) + доп. пункт о горевании.',
+      en: '17 items: 4 (24h) + 5 (week) + 5 (month) + 3 (ongoing) + grief counseling item.',
+      de: '17 Punkte: 4 (24h) + 5 (Woche) + 5 (Monat) + 3 (laufend) + Trauerberatung.'
+    }
+  },
+  {
+    section: { ru: 'Инструменты: Legacy Vault', en: 'Tools: Legacy Vault', de: 'Tools: Legacy Vault' },
+    q: {
+      ru: 'Сколько типов медиа поддерживает Digital Legacy Vault (Leave Behind)?',
+      en: 'How many media types does the Digital Legacy Vault (Leave Behind) support?',
+      de: 'Wie viele Medientypen unterstützt der Digital Legacy Vault (Leave Behind)?'
+    },
+    options: {
+      ru: ['3', '4', '5', '7'],
+      en: ['3', '4', '5', '7'],
+      de: ['3', '4', '5', '7']
+    },
+    correct: 2,
+    explanation: {
+      ru: '5 типов: Text (текст), Photo (фото), Video (видео), Audio (аудио), Link (ссылка).',
+      en: '5 types: Text, Photo, Video, Audio, Link.',
+      de: '5 Typen: Text, Foto, Video, Audio, Link.'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько шагов в мастере создания записи Legacy Vault?',
+      en: 'How many steps are in the Legacy Vault entry creation wizard?',
+      de: 'Wie viele Schritte hat der Erstellungsassistent für Legacy-Vault-Einträge?'
+    },
+    options: {
+      ru: ['2', '3', '4', '5'],
+      en: ['2', '3', '4', '5'],
+      de: ['2', '3', '4', '5']
+    },
+    correct: 2,
+    explanation: {
+      ru: '4 шага: Выбор типа, Детали (заголовок, контент, теги), Получатель (опц.), Предпросмотр.',
+      en: '4 steps: Type Selection, Details (title, content, tags), Recipient (optional), Review.',
+      de: '4 Schritte: Typauswahl, Details (Titel, Inhalt, Tags), Empfänger (optional), Vorschau.'
+    }
+  },
+  {
+    section: { ru: 'Инструменты: Bereavement & Support', en: 'Tools: Bereavement & Support', de: 'Tools: Trauer & Unterstützung' },
+    q: {
+      ru: 'Сколько вкладок (табов) в разделе Bereavement Support?',
+      en: 'How many tabs does the Bereavement Support section have?',
+      de: 'Wie viele Tabs hat der Bereich Bereavement Support?'
+    },
+    options: {
+      ru: ['1', '2', '3', '4'],
+      en: ['1', '2', '3', '4'],
+      de: ['1', '2', '3', '4']
+    },
+    correct: 1,
+    explanation: {
+      ru: '2 вкладки: Emotional Support (эмоциональная поддержка) и Support Groups (группы поддержки).',
+      en: '2 tabs: Emotional Support and Support Groups.',
+      de: '2 Tabs: Emotionale Unterstützung und Selbsthilfegruppen.'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько групп поддержки перечислено в Bereavement Support?',
+      en: 'How many support groups are listed in Bereavement Support?',
+      de: 'Wie viele Selbsthilfegruppen sind im Bereavement Support aufgeführt?'
+    },
+    options: {
+      ru: ['3', '5', '7', '10'],
+      en: ['3', '5', '7', '10'],
+      de: ['3', '5', '7', '10']
+    },
+    correct: 1,
+    explanation: {
+      ru: '5 групп: Verwaiste Eltern, Grief Share, The Compassionate Friends, Caritas Grief Counseling, Online Grief Support.',
+      en: '5 groups: Verwaiste Eltern, Grief Share, The Compassionate Friends, Caritas Grief Counseling, Online Grief Support.',
+      de: '5 Gruppen: Verwaiste Eltern, Grief Share, The Compassionate Friends, Caritas Trauerberatung, Online Grief Support.'
+    }
+  },
+  {
+    section: { ru: 'Инструменты: AI Avatar & Reminders', en: 'Tools: AI Avatar & Reminders', de: 'Tools: KI-Avatar & Erinnerungen' },
+    q: {
+      ru: 'Какой статус имеет функция AI Avatar в приложении?',
+      en: 'What is the status of the AI Avatar feature in the app?',
+      de: 'Welchen Status hat die KI-Avatar-Funktion in der App?'
+    },
+    options: {
+      ru: ['Полноценная версия', 'Beta Access', 'Coming Soon (скоро)', 'Удалена из проекта'],
+      en: ['Full release', 'Beta Access', 'Coming Soon', 'Removed from the project'],
+      de: ['Vollversion', 'Beta-Zugang', 'Demnächst verfügbar', 'Aus dem Projekt entfernt']
+    },
+    correct: 1,
+    explanation: {
+      ru: 'AI Avatar отмечен как "Beta Access". Полная отрисовка требует Premium-плана.',
+      en: 'AI Avatar is marked as "Beta Access". High-fidelity rendering requires the Premium Plan.',
+      de: 'AI Avatar ist als "Beta-Zugang" markiert. Hochauflösendes Rendering erfordert den Premium-Plan.'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько типов напоминаний (reminders) доступно в инструменте Reminders?',
+      en: 'How many reminder types are available in the Reminders tool?',
+      de: 'Wie viele Erinnerungstypen sind im Reminders-Tool verfügbar?'
+    },
+    options: {
+      ru: ['2', '3', '4', '6'],
+      en: ['2', '3', '4', '6'],
+      de: ['2', '3', '4', '6']
+    },
+    correct: 2,
+    explanation: {
+      ru: '4 типа: Annual Review (ежегодный обзор), Incomplete Section (незавершённый раздел), Custom Date (своя дата), Anniversary/Birthday (годовщина).',
+      en: '4 types: Annual Review, Incomplete Section, Custom Date, Anniversary/Birthday.',
+      de: '4 Typen: Jährliche Überprüfung, Unvollständiger Abschnitt, Eigenes Datum, Jahrestag/Geburtstag.'
+    }
+  },
+  {
+    section: { ru: 'Инструменты: Templates', en: 'Tools: Templates', de: 'Tools: Vorlagen' },
+    q: {
+      ru: 'Сколько шаблонов документов доступно в инструменте Templates?',
+      en: 'How many document templates are available in the Templates tool?',
+      de: 'Wie viele Dokumentvorlagen sind im Templates-Tool verfügbar?'
+    },
+    options: {
+      ru: ['3', '5', '7', '10'],
+      en: ['3', '5', '7', '10'],
+      de: ['3', '5', '7', '10']
+    },
+    correct: 1,
+    explanation: {
+      ru: '5 шаблонов: Power of Attorney, Funeral Directive, Inheritance Waiver, Gift Declaration, Advance Care Directive.',
+      en: '5 templates: Power of Attorney, Funeral Directive, Inheritance Waiver, Gift Declaration, Advance Care Directive.',
+      de: '5 Vorlagen: Vollmacht, Bestattungsanordnung, Erbverzichtserklärung, Schenkungserklärung, Vorsorgeauftrag.'
+    }
+  },
+  {
+    section: { ru: 'Профиль и подписки', en: 'Profile & subscriptions', de: 'Profil & Abonnements' },
+    q: {
+      ru: 'Сколько вкладок содержит страница Profile?',
+      en: 'How many tabs does the Profile page have?',
+      de: 'Wie viele Tabs hat die Profilseite?'
+    },
+    options: {
+      ru: ['2', '3', '4', '5'],
+      en: ['2', '3', '4', '5'],
+      de: ['2', '3', '4', '5']
+    },
+    correct: 1,
+    explanation: {
+      ru: '3 вкладки: Overview (личные данные), Settings (настройки), Plan (подписка).',
+      en: '3 tabs: Overview (personal info), Settings, Plan (subscription).',
+      de: '3 Tabs: Übersicht (persönliche Daten), Einstellungen, Plan (Abonnement).'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько пунктов учитывается при расчёте Legacy Readiness Score?',
+      en: 'How many items are tracked for the Legacy Readiness Score calculation?',
+      de: 'Wie viele Punkte werden für die Berechnung des Legacy Readiness Score berücksichtigt?'
+    },
+    options: {
+      ru: ['4', '5', '7', '10'],
+      en: ['4', '5', '7', '10'],
+      de: ['4', '5', '7', '10']
+    },
+    correct: 2,
+    explanation: {
+      ru: '7 пунктов: профиль заполнен, активы задокументированы, юр. документы, цифровое наследие, задачи, крипто-кошельки, пожелания к похоронам.',
+      en: '7 items: profile filled, assets documented, legal docs, digital legacy, tasks, crypto wallets, funeral wishes.',
+      de: '7 Punkte: Profil ausgefüllt, Vermögenswerte dokumentiert, Rechtsdokumente, digitales Erbe, Aufgaben, Krypto-Wallets, Bestattungswünsche.'
+    }
+  },
+  {
+    q: {
+      ru: 'Сколько тарифных планов (подписок) предлагает Ready Legacy?',
+      en: 'How many subscription plans does Ready Legacy offer?',
+      de: 'Wie viele Abonnement-Pläne bietet Ready Legacy an?'
+    },
+    options: {
+      ru: ['2 (Free и Pro)', '3 (Free, Premium, Family)', '4 (Free, Basic, Pro, Enterprise)', '1 (только бесплатный)'],
+      en: ['2 (Free and Pro)', '3 (Free, Premium, Family)', '4 (Free, Basic, Pro, Enterprise)', '1 (free only)'],
+      de: ['2 (Free und Pro)', '3 (Free, Premium, Family)', '4 (Free, Basic, Pro, Enterprise)', '1 (nur kostenlos)']
+    },
+    correct: 1,
+    explanation: {
+      ru: '3 плана: Free (€0), Premium (€9.90/мес), Family (€17.90/мес).',
+      en: '3 plans: Free (€0), Premium (€9.90/mo), Family (€17.90/mo).',
+      de: '3 Pläne: Free (€0), Premium (€9,90/Monat), Family (€17,90/Monat).'
+    }
+  },
+  {
+    section: { ru: 'Главная и навигация', en: 'Home & navigation', de: 'Startseite & Navigation' },
+    q: {
+      ru: 'Какие 3 технологические карточки представлены на главной странице?',
+      en: 'Which 3 technology cards are shown on the Home page?',
+      de: 'Welche 3 Technologie-Karten werden auf der Startseite angezeigt?'
+    },
+    options: {
+      ru: ['React, Node.js, MongoDB', 'Secure Cloud, AI-Powered Content, Immersive Web', 'Blockchain, Machine Learning, IoT', 'Encryption, Chatbot, Dashboard'],
+      en: ['React, Node.js, MongoDB', 'Secure Cloud, AI-Powered Content, Immersive Web', 'Blockchain, Machine Learning, IoT', 'Encryption, Chatbot, Dashboard'],
+      de: ['React, Node.js, MongoDB', 'Secure Cloud, AI-Powered Content, Immersive Web', 'Blockchain, Machine Learning, IoT', 'Encryption, Chatbot, Dashboard']
+    },
+    correct: 1,
+    explanation: {
+      ru: '3 карточки: Secure Cloud Storage (приватность), AI-Powered Content (голос, текст), Immersive Web (3D-среды).',
+      en: '3 cards: Secure Cloud Storage (privacy), AI-Powered Content (voice, text), Immersive Web (3D environments).',
+      de: '3 Karten: Secure Cloud Storage (Datenschutz), AI-Powered Content (Stimme, Text), Immersive Web (3D-Umgebungen).'
+    }
+  }
+];
+
+// ========== QUIZ ENGINE ==========
+let lang = 'ru';
+let currentQ = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let locked = false;
+let order = [];
+
+function shuffle() {
+  order = questions.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+}
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent === l.toUpperCase());
+  });
+  document.getElementById('subtitle').textContent = ui[lang].subtitle;
+  document.getElementById('resetBtn').textContent = ui[lang].restart;
+  document.getElementById('resultLabel').textContent = ui[lang].resultLabel;
+  document.getElementById('labelCorrect').textContent = ui[lang].correct;
+  document.getElementById('labelWrong').textContent = ui[lang].wrong;
+  document.getElementById('labelPct').textContent = ui[lang].pct;
+  resetQuiz();
+}
+
+function updateProgress() {
+  const answered = correctCount + wrongCount;
+  const total = questions.length;
+  const pct = Math.round((answered / total) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent =
+    answered + ' ' + ui[lang].of + ' ' + total + '  \u00b7  \u2713 ' + correctCount + '  \u2717 ' + wrongCount;
+}
+
+function renderQuestion(idx) {
+  const area = document.getElementById('quizArea');
+  area.innerHTML = '';
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('resetBtn').style.display = 'none';
+
+  if (idx >= questions.length) {
+    showFinalResults();
+    return;
+  }
+
+  const qData = questions[order[idx]];
+  const total = questions.length;
+
+  // Section label
+  if (qData.section) {
+    const sec = document.createElement('div');
+    sec.className = 'section-label';
+    sec.textContent = qData.section[lang];
+    area.appendChild(sec);
+  }
+
+  // Card
+  const card = document.createElement('div');
+  card.className = 'question-card';
+
+  const num = document.createElement('div');
+  num.className = 'question-number';
+  num.textContent = ui[lang].qOf + ' ' + (idx + 1) + ' / ' + total;
+  card.appendChild(num);
+
+  const qText = document.createElement('div');
+  qText.className = 'question-text';
+  qText.textContent = qData.q[lang];
+  card.appendChild(qText);
+
+  const opts = document.createElement('div');
+  opts.className = 'options';
+
+  qData.options[lang].forEach((optText, oi) => {
+    const opt = document.createElement('div');
+    opt.className = 'option';
+    opt.innerHTML = '<div class="radio-dot"></div><span>' + optText + '</span>';
+    opt.addEventListener('click', () => handleAnswer(card, opt, oi, qData));
+    opts.appendChild(opt);
+  });
+
+  card.appendChild(opts);
+
+  const expl = document.createElement('div');
+  expl.className = 'explanation';
+  expl.innerHTML = qData.explanation[lang];
+  card.appendChild(expl);
+
+  area.appendChild(card);
+  locked = false;
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function handleAnswer(card, opt, chosen, qData) {
+  if (locked) return;
+  locked = true;
+
+  opt.classList.add('selected');
+  card.querySelectorAll('.option').forEach(o => o.classList.add('disabled'));
+
+  if (chosen === qData.correct) {
+    correctCount++;
+    card.classList.add('correct');
+    opt.classList.add('correct-answer');
+  } else {
+    wrongCount++;
+    card.classList.add('wrong');
+    opt.classList.add('wrong-answer');
+    card.querySelectorAll('.option')[qData.correct].classList.add('correct-answer');
+  }
+
+  card.querySelector('.explanation').classList.add('visible');
+  updateProgress();
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'btn';
+  nextBtn.style.marginTop = '20px';
+  nextBtn.style.width = '100%';
+  nextBtn.textContent = currentQ < questions.length - 1 ? ui[lang].next : ui[lang].showResult;
+  nextBtn.addEventListener('click', () => {
+    currentQ++;
+    renderQuestion(currentQ);
+  });
+  card.appendChild(nextBtn);
+  nextBtn.focus();
+}
+
+function showFinalResults() {
+  const total = questions.length;
+  const pct = Math.round((correctCount / total) * 100);
+  const results = document.getElementById('results');
+  results.classList.add('visible');
+
+  const scoreEl = document.getElementById('scoreValue');
+  scoreEl.textContent = pct + '%';
+
+  if (pct >= 90) {
+    scoreEl.className = 'score excellent';
+    document.getElementById('verdict').textContent = ui[lang].excellent;
+  } else if (pct >= 70) {
+    scoreEl.className = 'score good';
+    document.getElementById('verdict').textContent = ui[lang].good;
+  } else if (pct >= 50) {
+    scoreEl.className = 'score average';
+    document.getElementById('verdict').textContent = ui[lang].average;
+  } else {
+    scoreEl.className = 'score poor';
+    document.getElementById('verdict').textContent = ui[lang].poor;
+  }
+
+  document.getElementById('statCorrect').textContent = correctCount;
+  document.getElementById('statWrong').textContent = wrongCount;
+  document.getElementById('statPct').textContent = pct + '%';
+  document.getElementById('resetBtn').style.display = 'inline-block';
+  results.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function resetQuiz() {
+  currentQ = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  locked = false;
+  shuffle();
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('resetBtn').style.display = 'none';
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressText').textContent =
+    '0 ' + ui[lang].of + ' ' + questions.length + '  \u00b7  \u2713 0  \u2717 0';
+  renderQuestion(0);
+}
+
+// Init
+setLang('ru');
+</script>
+
+</body>
+</html>

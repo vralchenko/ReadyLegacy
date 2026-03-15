@@ -62,7 +62,7 @@ const Login: React.FC = () => {
                 {/* Logo */}
                 <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                     <Link to="/" style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', color: 'var(--accent-gold)', letterSpacing: '1px', textDecoration: 'none' }}>
-                        Continuum
+                        Ready Legacy
                     </Link>
                     <p style={{ opacity: 0.6, fontSize: '0.8rem', marginTop: '2px' }}>The Future of Legacy</p>
                 </div>

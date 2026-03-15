@@ -1,21 +1,21 @@
-# Continuum Core
+# Ready Legacy
 
-Continuum Core is a modern digital ecosystem designed to redefine how humans handle legacy, estate planning, and remembrance. It provides a structured, empathetic platform for organizing essential decisions and documents before they are needed, and offers guided support for loved ones during bereavement.
+Ready Legacy is a modern digital ecosystem designed to redefine how humans handle legacy, estate planning, and remembrance. It provides a structured, empathetic platform for organizing essential decisions and documents before they are needed, and offers guided support for loved ones during bereavement.
 
-## 🚀 Vision
+## Vision
 
-Innovation is not just about growth; it's about life. Continuum aims to reduce the emotional and organizational burden of the most certain part of existence through clean design, secure data handling, and AI-powered personalization.
+Innovation is not just about growth; it's about life. Ready Legacy aims to reduce the emotional and organizational burden of the most certain part of existence through clean design, secure data handling, and AI-powered personalization.
 
-## 🛠 Technology Stack
+## Technology Stack
 
-- **Framework**: [React 18](https://reactjs.org/)
-- **Build Tool**: [Vite](https://vitejs.dev/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Routing**: [React Router 6](https://reactrouter.com/)
+- **Framework**: React 19 + TypeScript
+- **Build Tool**: Vite
+- **Routing**: React Router 7
 - **Styling**: Vanilla CSS (Custom properties-based design system)
 - **Internationalization**: Custom JSON-based fetching system
+- **Deployment**: Vercel
 
-## ✨ Features
+## Features
 
 - **Multi-language Support**: Full support for English, German, Russian, and Ukrainian.
 - **Dynamic Theme System**: Seamless switching between premium Dark and Light modes.
@@ -24,10 +24,11 @@ Innovation is not just about growth; it's about life. Continuum aims to reduce t
     - **Will Structure Builder**: Guided outline for handwritten wills.
     - **Legal Framework**: Tracking of Living Wills and Advance Care Directives.
     - **Bereavement Path**: Emotional and practical support for those left behind.
-- **Local Persistence**: All user progress in the tools is automatically saved to `localStorage` using a custom React hook.
-- **Subtle Aesthetics**: Premium dark-mode design with glassmorphism, gold accents, and fluid animations.
+- **AI Chat Assistant**: Context-aware assistant for navigating the platform.
+- **Local Persistence**: All user progress is automatically saved to `localStorage`.
+- **Premium Aesthetics**: Dark-mode design with glassmorphism, gold accents, and fluid animations.
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 src/
@@ -39,14 +40,17 @@ src/
 ├── main.tsx         # Application entry point
 └── App.tsx          # Root component & Routing
 public/
-└── assets/locales/  # Translation JSON files
+└── assets/locales/  # Translation JSON files (en, de, ru, ua)
+api/
+├── chat.ts          # Chat API endpoint
+└── knowledge/       # Knowledge base for AI assistant
 ```
 
-## 🛠 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v14 or later)
+- [Node.js](https://nodejs.org/) (v18 or later)
 - [npm](https://www.npmjs.com/)
 
 ### Installation
@@ -71,9 +75,9 @@ public/
    npm run build
    ```
 
-## 📄 License
+## License
 
-Continuum Ecosystem. All Rights Reserved.
+Ready Legacy Ecosystem. All Rights Reserved.
 
 ---
 *Be Ready. Leave Behind. Be Honored.*

@@ -195,7 +195,7 @@ const ChatWidget: React.FC = () => {
             </div>
             <div className="chat-header-icon">✦</div>
             <div className="chat-header-info">
-              <div className="chat-header-title">{t('chat_title') || 'Continuum Assistant'}</div>
+              <div className="chat-header-title">{t('chat_title') || 'Ready Legacy Assistant'}</div>
               <div className="chat-header-status">● {t('chat_online') || 'Online'}</div>
             </div>
             <button className="chat-close-btn" onClick={() => setIsOpen(false)} aria-label="Close chat">
@@ -209,7 +209,7 @@ const ChatWidget: React.FC = () => {
               <div className="chat-msg-row">
                 <div className="chat-msg-avatar">✦</div>
                 <div className="chat-bubble chat-bubble--bot">
-                  {renderBoldText(t('chat_welcome') || 'Hello! I\'m the **Continuum Assistant**. Ask me about estate planning, tools, or documents.')}
+                  {renderBoldText(t('chat_welcome') || 'Hello! I\'m the **Ready Legacy Assistant**. Ask me about estate planning, tools, or documents.')}
                   <div className="chat-bubble-time">{formatTime()}</div>
                 </div>
               </div>

@@ -9,10 +9,10 @@ const GREETINGS: Record<string, RegExp> = {
 };
 
 const GREETING_RESPONSES: Record<string, string> = {
-  en: 'Hello! I\'m the Continuum assistant. I can help you with estate planning, legal documents, tools navigation, and more. What would you like to know?',
-  de: 'Hallo! Ich bin der Continuum-Assistent. Ich kann Ihnen bei Nachlassplanung, Rechtsdokumenten, Navigation und mehr helfen. Was möchten Sie wissen?',
-  ru: 'Привет! Я ассистент Continuum. Могу помочь с планированием наследства, юридическими документами, навигацией по платформе и многим другим. Что бы вы хотели узнать?',
-  ua: 'Привіт! Я асистент Continuum. Можу допомогти з плануванням спадщини, юридичними документами, навігацією платформою та багато чим іншим. Що б ви хотіли дізнатися?',
+  en: 'Hello! I\'m the Ready Legacy assistant. I can help you with estate planning, legal documents, tools navigation, and more. What would you like to know?',
+  de: 'Hallo! Ich bin der Ready Legacy-Assistent. Ich kann Ihnen bei Nachlassplanung, Rechtsdokumenten, Navigation und mehr helfen. Was möchten Sie wissen?',
+  ru: 'Привет! Я ассистент Ready Legacy. Могу помочь с планированием наследства, юридическими документами, навигацией по платформе и многим другим. Что бы вы хотели узнать?',
+  ua: 'Привіт! Я асистент Ready Legacy. Можу допомогти з плануванням спадщини, юридичними документами, навігацією платформою та багато чим іншим. Що б ви хотіли дізнатися?',
 };
 
 const FALLBACK_RESPONSES: Record<string, string> = {
@@ -121,10 +121,10 @@ const FOLLOW_UPS: Record<string, Record<string, string[]>> = {
     ua: ['Які перші кроки?', 'Кого повідомити?', 'Як впоратися з горем?'],
   },
   team: {
-    en: ['What is Continuum?', 'What tools are available?', 'How to get started?'],
-    de: ['Was ist Continuum?', 'Welche Tools gibt es?', 'Wie fange ich an?'],
-    ru: ['Что такое Continuum?', 'Какие есть инструменты?', 'Как начать?'],
-    ua: ['Що таке Continuum?', 'Які є інструменти?', 'Як почати?'],
+    en: ['What is Ready Legacy?', 'What tools are available?', 'How to get started?'],
+    de: ['Was ist Ready Legacy?', 'Welche Tools gibt es?', 'Wie fange ich an?'],
+    ru: ['Что такое Ready Legacy?', 'Какие есть инструменты?', 'Как начать?'],
+    ua: ['Що таке Ready Legacy?', 'Які є інструменти?', 'Як почати?'],
   },
   pricing: {
     en: ['What tools are available?', 'How to get started?', 'Is my data safe?'],

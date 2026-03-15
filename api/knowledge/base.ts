@@ -23,10 +23,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['що таке continuum', 'платформа', 'про нас']
     },
     content: {
-      en: '**Continuum** is a digital platform for estate planning, legacy creation, and bereavement support. It helps you organize legal documents, create personal messages for loved ones, and guides families through the process after loss. Available in English, German, Russian, and Ukrainian.',
-      de: '**Continuum** ist eine digitale Plattform für Nachlassplanung, Vermächtnisgestaltung und Trauerbegleitung. Sie hilft Ihnen, rechtliche Dokumente zu organisieren, persönliche Nachrichten für Ihre Lieben zu erstellen, und begleitet Familien durch den Prozess nach einem Verlust. Verfügbar auf Englisch, Deutsch, Russisch und Ukrainisch.',
-      ru: '**Continuum** — цифровая платформа для планирования наследства, создания наследия и поддержки в период утраты. Помогает организовать юридические документы, создать личные послания для близких и сопровождает семьи через процесс после потери. Доступна на английском, немецком, русском и украинском языках.',
-      ua: '**Continuum** — цифрова платформа для планування спадщини, створення спадку та підтримки у період втрати. Допомагає організувати юридичні документи, створити особисті послання для близьких та супроводжує сім\'ї через процес після втрати. Доступна англійською, німецькою, російською та українською мовами.'
+      en: '**Ready Legacy** is a digital platform for estate planning, legacy creation, and bereavement support. It helps you organize legal documents, create personal messages for loved ones, and guides families through the process after loss. Available in English, German, Russian, and Ukrainian.',
+      de: '**Ready Legacy** ist eine digitale Plattform für Nachlassplanung, Vermächtnisgestaltung und Trauerbegleitung. Sie hilft Ihnen, rechtliche Dokumente zu organisieren, persönliche Nachrichten für Ihre Lieben zu erstellen, und begleitet Familien durch den Prozess nach einem Verlust. Verfügbar auf Englisch, Deutsch, Russisch und Ukrainisch.',
+      ru: '**Ready Legacy** — цифровая платформа для планирования наследства, создания наследия и поддержки в период утраты. Помогает организовать юридические документы, создать личные послания для близких и сопровождает семьи через процесс после потери. Доступна на английском, немецком, русском и украинском языках.',
+      ua: '**Ready Legacy** — цифрова платформа для планування спадщини, створення спадку та підтримки у період втрати. Допомагає організувати юридичні документи, створити особисті послання для близьких та супроводжує сім\'ї через процес після втрати. Доступна англійською, німецькою, російською та українською мовами.'
     },
     route: '/',
     priority: 10
@@ -42,10 +42,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['місія', 'бачення', 'навіщо', 'мета']
     },
     content: {
-      en: 'Our **mission** is to redefine how we handle the most certain part of our existence. Innovation is not just about growth — it\'s about life. We believe preparation is not a niche topic — it\'s a responsibility we all share. Continuum brings structure, dignity, and technology to estate planning and bereavement.',
-      de: 'Unsere **Mission** ist es, den Umgang mit dem sichersten Teil unserer Existenz neu zu definieren. Innovation geht nicht nur um Wachstum — es geht um das Leben. Wir glauben, Vorsorge ist eine Verantwortung für uns alle. Continuum bringt Struktur, Würde und Technologie in die Nachlassplanung und Trauerbegleitung.',
-      ru: 'Наша **миссия** — переосмыслить подход к самому определённому аспекту нашего существования. Инновации — это не только рост, это сама жизнь. Мы верим, что подготовка — это ответственность каждого. Continuum привносит структуру, достоинство и технологии в планирование наследства и поддержку в период утраты.',
-      ua: 'Наша **місія** — переосмислити підхід до найбільш визначеного аспекту нашого існування. Інновації — це не лише зростання, це саме життя. Ми віримо, що підготовка — це відповідальність кожного. Continuum привносить структуру, гідність та технології у планування спадщини та підтримку у період втрати.'
+      en: 'Our **mission** is to redefine how we handle the most certain part of our existence. Innovation is not just about growth — it\'s about life. We believe preparation is not a niche topic — it\'s a responsibility we all share. Ready Legacy brings structure, dignity, and technology to estate planning and bereavement.',
+      de: 'Unsere **Mission** ist es, den Umgang mit dem sichersten Teil unserer Existenz neu zu definieren. Innovation geht nicht nur um Wachstum — es geht um das Leben. Wir glauben, Vorsorge ist eine Verantwortung für uns alle. Ready Legacy bringt Struktur, Würde und Technologie in die Nachlassplanung und Trauerbegleitung.',
+      ru: 'Наша **миссия** — переосмыслить подход к самому определённому аспекту нашего существования. Инновации — это не только рост, это сама жизнь. Мы верим, что подготовка — это ответственность каждого. Ready Legacy привносит структуру, достоинство и технологии в планирование наследства и поддержку в период утраты.',
+      ua: 'Наша **місія** — переосмислити підхід до найбільш визначеного аспекту нашого існування. Інновації — це не лише зростання, це саме життя. Ми віримо, що підготовка — це відповідальність кожного. Ready Legacy привносить структуру, гідність та технології у планування спадщини та підтримку у період втрати.'
     },
     route: '/mission',
     priority: 9
@@ -61,10 +61,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['три стовпи', 'екосистема', 'етапи', 'будьте готові', 'залиште', 'будьте спокійні']
     },
     content: {
-      en: 'Continuum is built on **3 pillars**: 1) **Be Ready (You)** — organize your legal documents, assets, and final wishes. 2) **Leave Behind** — create personal messages, videos, and memories for your loved ones. 3) **Be Comforted (Them)** — support for those left behind with emotional resources, checklists, and your prepared messages.',
-      de: 'Continuum basiert auf **3 Säulen**: 1) **Bereit sein (Sie)** — organisieren Sie Ihre rechtlichen Dokumente, Vermögenswerte und letzten Wünsche. 2) **Hinterlassen** — erstellen Sie persönliche Nachrichten, Videos und Erinnerungen. 3) **Getröstet sein (Die Angehörigen)** — Unterstützung mit emotionalen Ressourcen, Checklisten und Ihren vorbereiteten Botschaften.',
-      ru: 'Continuum построен на **3 столпах**: 1) **Будьте готовы (Вы)** — организуйте юридические документы, активы и последнюю волю. 2) **Оставьте после себя** — создайте личные послания, видео и воспоминания для близких. 3) **Будьте спокойны (Они)** — поддержка оставшихся с помощью эмоциональных ресурсов, чек-листов и ваших подготовленных посланий.',
-      ua: 'Continuum побудований на **3 стовпах**: 1) **Будьте готові (Ви)** — організуйте юридичні документи, активи та останню волю. 2) **Залиште після себе** — створіть особисті послання, відео та спогади для близьких. 3) **Будьте спокійні (Вони)** — підтримка тих, хто залишився, з допомогою емоційних ресурсів, чек-листів та ваших підготовлених послань.'
+      en: 'Ready Legacy is built on **3 pillars**: 1) **Be Ready** — organize your legal documents, assets, and final wishes. 2) **Leave Behind** — create personal messages, videos, and memories for your loved ones. 3) **Be Honored** — support for those left behind with emotional resources, checklists, and your prepared messages.',
+      de: 'Ready Legacy basiert auf **3 Säulen**: 1) **Bereit sein** — organisieren Sie Ihre rechtlichen Dokumente, Vermögenswerte und letzten Wünsche. 2) **Hinterlassen** — erstellen Sie persönliche Nachrichten, Videos und Erinnerungen. 3) **Be Honored** — Unterstützung mit emotionalen Ressourcen, Checklisten und Ihren vorbereiteten Botschaften.',
+      ru: 'Ready Legacy построен на **3 столпах**: 1) **Будьте готовы** — организуйте юридические документы, активы и последнюю волю. 2) **Оставьте после себя** — создайте личные послания, видео и воспоминания для близких. 3) **Be Honored** — поддержка оставшихся с помощью эмоциональных ресурсов, чек-листов и ваших подготовленных посланий.',
+      ua: 'Ready Legacy побудований на **3 стовпах**: 1) **Будьте готові** — організуйте юридичні документи, активи та останню волю. 2) **Залиште після себе** — створіть особисті послання, відео та спогади для близьких. 3) **Be Honored** — підтримка тих, хто залишився, з допомогою емоційних ресурсів, чек-листів та ваших підготовлених послань.'
     },
     route: '/',
     priority: 9
@@ -80,10 +80,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['технології', 'безпека', 'шi', 'хмара', 'шифрування']
     },
     content: {
-      en: 'Continuum uses **3 core technologies**: 1) **Secure Cloud Storage** — your data is encrypted and protected. 2) **AI-Powered Content** — voice, text, and personalization features. 3) **Immersive Web** — 3D environments for unique experiences. Privacy and data protection are our top priorities.',
-      de: 'Continuum nutzt **3 Kerntechnologien**: 1) **Sicherer Cloud-Speicher** — Ihre Daten sind verschlüsselt und geschützt. 2) **KI-gestützte Inhalte** — Sprache, Text und Personalisierung. 3) **Immersives Web** — 3D-Umgebungen für einzigartige Erlebnisse. Datenschutz hat höchste Priorität.',
-      ru: 'Continuum использует **3 ключевые технологии**: 1) **Безопасное облачное хранилище** — ваши данные зашифрованы и защищены. 2) **Контент на базе ИИ** — голос, текст и персонализация. 3) **Иммерсивный веб** — 3D-среда для уникальных впечатлений. Конфиденциальность и защита данных — наш главный приоритет.',
-      ua: 'Continuum використовує **3 ключові технології**: 1) **Безпечне хмарне сховище** — ваші дані зашифровані та захищені. 2) **Контент на базі ШІ** — голос, текст та персоналізація. 3) **Імерсивний веб** — 3D-середовище для унікальних вражень. Конфіденційність та захист даних — наш головний пріоритет.'
+      en: 'Ready Legacy uses **3 core technologies**: 1) **Secure Cloud Storage** — your data is encrypted and protected. 2) **AI-Powered Content** — voice, text, and personalization features. 3) **Immersive Web** — 3D environments for unique experiences. Privacy and data protection are our top priorities.',
+      de: 'Ready Legacy nutzt **3 Kerntechnologien**: 1) **Sicherer Cloud-Speicher** — Ihre Daten sind verschlüsselt und geschützt. 2) **KI-gestützte Inhalte** — Sprache, Text und Personalisierung. 3) **Immersives Web** — 3D-Umgebungen für einzigartige Erlebnisse. Datenschutz hat höchste Priorität.',
+      ru: 'Ready Legacy использует **3 ключевые технологии**: 1) **Безопасное облачное хранилище** — ваши данные зашифрованы и защищены. 2) **Контент на базе ИИ** — голос, текст и персонализация. 3) **Иммерсивный веб** — 3D-среда для уникальных впечатлений. Конфиденциальность и защита данных — наш главный приоритет.',
+      ua: 'Ready Legacy використовує **3 ключові технології**: 1) **Безпечне хмарне сховище** — ваші дані зашифровані та захищені. 2) **Контент на базі ШІ** — голос, текст та персоналізація. 3) **Імерсивний веб** — 3D-середовище для унікальних вражень. Конфіденційність та захист даних — наш головний пріоритет.'
     },
     route: '/',
     priority: 7
@@ -99,10 +99,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['дані', 'зберігання', 'конфіденційність', 'де зберігаються', 'безпечно']
     },
     content: {
-      en: 'Currently, all your data is **saved locally** in your browser\'s storage. Nothing is sent to external servers. In the future, Continuum will offer encrypted cloud storage for premium users, ensuring your documents and messages are accessible from any device while remaining fully secure.',
-      de: 'Aktuell werden alle Ihre Daten **lokal** in Ihrem Browser gespeichert. Nichts wird an externe Server gesendet. In Zukunft wird Continuum verschlüsselten Cloud-Speicher für Premium-Nutzer anbieten, damit Ihre Dokumente und Nachrichten von jedem Gerät sicher zugänglich sind.',
-      ru: 'В настоящее время все ваши данные **сохраняются локально** в хранилище вашего браузера. Ничего не отправляется на внешние серверы. В будущем Continuum предложит зашифрованное облачное хранилище для премиум-пользователей, обеспечивая доступ к документам и сообщениям с любого устройства при полной безопасности.',
-      ua: 'Наразі всі ваші дані **зберігаються локально** у сховищі вашого браузера. Нічого не надсилається на зовнішні сервери. У майбутньому Continuum запропонує зашифроване хмарне сховище для преміум-користувачів, забезпечуючи доступ до документів та повідомлень з будь-якого пристрою при повній безпеці.'
+      en: 'Currently, all your data is **saved locally** in your browser\'s storage. Nothing is sent to external servers. In the future, Ready Legacy will offer encrypted cloud storage for premium users, ensuring your documents and messages are accessible from any device while remaining fully secure.',
+      de: 'Aktuell werden alle Ihre Daten **lokal** in Ihrem Browser gespeichert. Nichts wird an externe Server gesendet. In Zukunft wird Ready Legacy verschlüsselten Cloud-Speicher für Premium-Nutzer anbieten, damit Ihre Dokumente und Nachrichten von jedem Gerät sicher zugänglich sind.',
+      ru: 'В настоящее время все ваши данные **сохраняются локально** в хранилище вашего браузера. Ничего не отправляется на внешние серверы. В будущем Ready Legacy предложит зашифрованное облачное хранилище для премиум-пользователей, обеспечивая доступ к документам и сообщениям с любого устройства при полной безопасности.',
+      ua: 'Наразі всі ваші дані **зберігаються локально** у сховищі вашого браузера. Нічого не надсилається на зовнішні сервери. У майбутньому Ready Legacy запропонує зашифроване хмарне сховище для преміум-користувачів, забезпечуючи доступ до документів та повідомлень з будь-якого пристрою при повній безпеці.'
     },
     route: '/profile',
     priority: 8
@@ -529,7 +529,7 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['довгостроковий', 'меморіал', 'зцілення', 'місяці', 'річниця']
     },
     content: {
-      en: '**Phase 4 — Long Term (Months ahead):** Finalize estate distribution. Set up memorials or foundations. Continue grief support and self-care. Consider professional counseling. Review your own estate plans. Keep connected with the Continuum support community.',
+      en: '**Phase 4 — Long Term (Months ahead):** Finalize estate distribution. Set up memorials or foundations. Continue grief support and self-care. Consider professional counseling. Review your own estate plans. Keep connected with the Ready Legacy support community.',
       de: '**Phase 4 — Langfristig (Monate):** Nachlassverteilung abschließen. Gedenkstätten einrichten. Trauerbegleitung fortsetzen. Professionelle Beratung in Betracht ziehen. Eigene Vorsorge überprüfen.',
       ru: '**Этап 4 — Долгосрочный (Месяцы вперёд):** Завершить распределение наследства. Создать мемориалы или фонды. Продолжить поддержку в горе и заботу о себе. Рассмотреть профессиональное консультирование. Пересмотреть собственные планы наследства.',
       ua: '**Етап 4 — Довгостроковий (Місяці вперед):** Завершити розподіл спадщини. Створити меморіали або фонди. Продовжити підтримку у горі та турботу про себе. Розглянути професійне консультування. Переглянути власні плани спадщини.'
@@ -556,10 +556,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['команда', 'засновники', 'хто', 'люди']
     },
     content: {
-      en: 'Continuum was founded by **3 visionaries** based in Switzerland: **Dr. Inna Praxmarer** (CEO), **Viktor Ralchenko** (CTO), and **Olga Sushchinskaya** (COO). Together they combine expertise in spiritual care, software architecture, and financial operations to build a platform that bridges technology and human needs.',
-      de: 'Continuum wurde von **3 Visionären** aus der Schweiz gegründet: **Dr. Inna Praxmarer** (CEO), **Viktor Ralchenko** (CTO), und **Olga Sushchinskaya** (COO). Gemeinsam vereinen sie Expertise in Seelsorge, Software-Architektur und Finanzoperationen.',
-      ru: 'Continuum основан **3 визионерами** из Швейцарии: **Д-р Инна Праксмарер** (CEO), **Виктор Ральченко** (CTO), и **Ольга Сущинская** (COO). Вместе они объединяют экспертизу в духовном попечительстве, архитектуре ПО и финансовых операциях.',
-      ua: 'Continuum заснований **3 візіонерами** зі Швейцарії: **Д-р Інна Праксмарер** (CEO), **Віктор Ральченко** (CTO), та **Ольга Сущинська** (COO). Разом вони поєднують експертизу в духовній опіці, архітектурі ПЗ та фінансових операціях.'
+      en: 'Ready Legacy was founded by **3 visionaries** based in Switzerland: **Dr. Inna Praxmarer** (CEO), **Viktor Ralchenko** (CTO), and **Olga Sushchinskaya** (COO). Together they combine expertise in spiritual care, software architecture, and financial operations to build a platform that bridges technology and human needs.',
+      de: 'Ready Legacy wurde von **3 Visionären** aus der Schweiz gegründet: **Dr. Inna Praxmarer** (CEO), **Viktor Ralchenko** (CTO), und **Olga Sushchinskaya** (COO). Gemeinsam vereinen sie Expertise in Seelsorge, Software-Architektur und Finanzoperationen.',
+      ru: 'Ready Legacy основан **3 визионерами** из Швейцарии: **Д-р Инна Праксмарер** (CEO), **Виктор Ральченко** (CTO), и **Ольга Сущинская** (COO). Вместе они объединяют экспертизу в духовном попечительстве, архитектуре ПО и финансовых операциях.',
+      ua: 'Ready Legacy заснований **3 візіонерами** зі Швейцарії: **Д-р Інна Праксмарер** (CEO), **Віктор Ральченко** (CTO), та **Ольга Сущинська** (COO). Разом вони поєднують експертизу в духовній опіці, архітектурі ПЗ та фінансових операціях.'
     },
     route: '/team',
     priority: 7
@@ -575,10 +575,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['інна', 'сео', 'духовна', 'турбота', 'засновниця']
     },
     content: {
-      en: '**Dr. Inna Praxmarer** is the Co-Founder & CEO of Continuum. A visionary Seelsorgerin (spiritual caregiver) based in Switzerland, HSLU alumna. She bridges emotional support and digital legacy, ensuring the journey of remembrance is handled with empathy, dignity, and conscious care.',
-      de: '**Dr. Inna Praxmarer** ist Mitbegründerin & CEO von Continuum. Eine visionäre Seelsorgerin aus der Schweiz, HSLU-Absolventin. Sie verbindet emotionale Unterstützung mit digitalem Erbe und sorgt dafür, dass der Weg des Gedenkens mit Empathie und Würde gestaltet wird.',
-      ru: '**Д-р Инна Праксмарер** — соучредитель и CEO Continuum. Визионер-Seelsorgerin (духовный попечитель) из Швейцарии, выпускница HSLU. Она объединяет эмоциональную поддержку с цифровым наследием, обеспечивая путь памяти с сочувствием и достоинством.',
-      ua: '**Д-р Інна Праксмарер** — співзасновниця та CEO Continuum. Візіонер-Seelsorgerin (духовний опікун) зі Швейцарії, випускниця HSLU. Вона поєднує емоційну підтримку з цифровою спадщиною, забезпечуючи шлях пам\'яті зі співчуттям та гідністю.'
+      en: '**Dr. Inna Praxmarer** is the Co-Founder & CEO of Ready Legacy. A visionary Seelsorgerin (spiritual caregiver) based in Switzerland, HSLU alumna. She bridges emotional support and digital legacy, ensuring the journey of remembrance is handled with empathy, dignity, and conscious care.',
+      de: '**Dr. Inna Praxmarer** ist Mitbegründerin & CEO von Ready Legacy. Eine visionäre Seelsorgerin aus der Schweiz, HSLU-Absolventin. Sie verbindet emotionale Unterstützung mit digitalem Erbe und sorgt dafür, dass der Weg des Gedenkens mit Empathie und Würde gestaltet wird.',
+      ru: '**Д-р Инна Праксмарер** — соучредитель и CEO Ready Legacy. Визионер-Seelsorgerin (духовный попечитель) из Швейцарии, выпускница HSLU. Она объединяет эмоциональную поддержку с цифровым наследием, обеспечивая путь памяти с сочувствием и достоинством.',
+      ua: '**Д-р Інна Праксмарер** — співзасновниця та CEO Ready Legacy. Візіонер-Seelsorgerin (духовний опікун) зі Швейцарії, випускниця HSLU. Вона поєднує емоційну підтримку з цифровою спадщиною, забезпечуючи шлях пам\'яті зі співчуттям та гідністю.'
     },
     route: '/team',
     priority: 5
@@ -594,10 +594,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['віктор', 'cto', 'програміст', 'архітектор', 'розробник']
     },
     content: {
-      en: '**Viktor Ralchenko** is the Co-Founder & CTO of Continuum. A Senior Software Architect with 20+ years of experience in enterprise systems, specializing in .NET, Cloud architectures, and AI integration. Based in Switzerland, he leads the technical vision of the platform.',
-      de: '**Viktor Ralchenko** ist Mitbegründer & CTO von Continuum. Ein Senior Software Architekt mit über 20 Jahren Erfahrung in Unternehmenssystemen, spezialisiert auf .NET, Cloud-Architekturen und KI-Integration. Er leitet die technische Vision der Plattform.',
-      ru: '**Виктор Ральченко** — соучредитель и технический директор Continuum. Ведущий архитектор ПО с 20+ годами опыта в корпоративных системах, специализирующийся на .NET, облачных архитектурах и интеграции ИИ. Он определяет техническое видение платформы.',
-      ua: '**Віктор Ральченко** — співзасновник та технічний директор Continuum. Провідний архітектор ПЗ з 20+ роками досвіду в корпоративних системах, що спеціалізується на .NET, хмарних архітектурах та інтеграції ШІ. Він визначає технічне бачення платформи.'
+      en: '**Viktor Ralchenko** is the Co-Founder & CTO of Ready Legacy. A Senior Software Architect with 20+ years of experience in enterprise systems, specializing in .NET, Cloud architectures, and AI integration. Based in Switzerland, he leads the technical vision of the platform.',
+      de: '**Viktor Ralchenko** ist Mitbegründer & CTO von Ready Legacy. Ein Senior Software Architekt mit über 20 Jahren Erfahrung in Unternehmenssystemen, spezialisiert auf .NET, Cloud-Architekturen und KI-Integration. Er leitet die technische Vision der Plattform.',
+      ru: '**Виктор Ральченко** — соучредитель и технический директор Ready Legacy. Ведущий архитектор ПО с 20+ годами опыта в корпоративных системах, специализирующийся на .NET, облачных архитектурах и интеграции ИИ. Он определяет техническое видение платформы.',
+      ua: '**Віктор Ральченко** — співзасновник та технічний директор Ready Legacy. Провідний архітектор ПЗ з 20+ роками досвіду в корпоративних системах, що спеціалізується на .NET, хмарних архітектурах та інтеграції ШІ. Він визначає технічне бачення платформи.'
     },
     route: '/team',
     priority: 5
@@ -613,10 +613,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['ольга', 'coo', 'фінанси', 'операції', 'банки']
     },
     content: {
-      en: '**Olga Sushchinskaya** is the Co-Founder & COO of Continuum. A seasoned financial executive with extensive experience as COO in global banking and securities. EMBA alumna of Stockholm School of Economics. She leads operational excellence and business strategy.',
-      de: '**Olga Sushchinskaya** ist Mitbegründerin & COO von Continuum. Eine erfahrene Finanzexpertin mit umfangreicher Erfahrung im globalen Banken- und Wertpapiergeschäft. EMBA-Absolventin der Stockholm School of Economics. Sie leitet die operative Exzellenz.',
-      ru: '**Ольга Сущинская** — соучредитель и операционный директор Continuum. Опытный финансовый руководитель с обширным опытом работы COO в глобальном банкинге и ценных бумагах. Выпускница EMBA Стокгольмской школы экономики. Она курирует операционную деятельность и бизнес-стратегию.',
-      ua: '**Ольга Сущинська** — співзасновниця та операційний директор Continuum. Досвідчений фінансовий керівник з великим досвідом роботи COO у глобальному банкінгу та цінних паперах. Випускниця EMBA Стокгольмської школи економіки. Вона курує операційну діяльність та бізнес-стратегію.'
+      en: '**Olga Sushchinskaya** is the Co-Founder & COO of Ready Legacy. A seasoned financial executive with extensive experience as COO in global banking and securities. EMBA alumna of Stockholm School of Economics. She leads operational excellence and business strategy.',
+      de: '**Olga Sushchinskaya** ist Mitbegründerin & COO von Ready Legacy. Eine erfahrene Finanzexpertin mit umfangreicher Erfahrung im globalen Banken- und Wertpapiergeschäft. EMBA-Absolventin der Stockholm School of Economics. Sie leitet die operative Exzellenz.',
+      ru: '**Ольга Сущинская** — соучредитель и операционный директор Ready Legacy. Опытный финансовый руководитель с обширным опытом работы COO в глобальном банкинге и ценных бумагах. Выпускница EMBA Стокгольмской школы экономики. Она курирует операционную деятельность и бизнес-стратегию.',
+      ua: '**Ольга Сущинська** — співзасновниця та операційний директор Ready Legacy. Досвідчений фінансовий керівник з великим досвідом роботи COO у глобальному банкінгу та цінних паперах. Випускниця EMBA Стокгольмської школи економіки. Вона курує операційну діяльність та бізнес-стратегію.'
     },
     route: '/team',
     priority: 5
@@ -777,7 +777,7 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['горе', 'сумно', 'допомога', 'впоратися', 'втратив', 'важко']
     },
     content: {
-      en: 'If you\'re grieving, you\'re not alone. Continuum\'s **Bereavement Path** offers practical support: emotional checklists, self-help exercises (journaling, meditation, memory books), and links to professional support groups. Take it one step at a time — there\'s no right or wrong way to grieve.',
+      en: 'If you\'re grieving, you\'re not alone. Ready Legacy\'s **Bereavement Path** offers practical support: emotional checklists, self-help exercises (journaling, meditation, memory books), and links to professional support groups. Take it one step at a time — there\'s no right or wrong way to grieve.',
       de: 'Wenn Sie trauern, sind Sie nicht allein. Der **Pfad der Heilung** bietet praktische Unterstützung: emotionale Checklisten, Selbsthilfe-Übungen und Links zu professionellen Selbsthilfegruppen. Schritt für Schritt — es gibt keinen richtigen oder falschen Weg zu trauern.',
       ru: 'Если вы переживаете утрату, вы не одиноки. **Путь исцеления** предлагает практическую поддержку: эмоциональные чек-листы, упражнения для самопомощи (дневник, медитация, книга воспоминаний) и ссылки на профессиональные группы поддержки. Шаг за шагом — нет правильного или неправильного способа горевать.',
       ua: 'Якщо ви переживаєте втрату, ви не самотні. **Шлях зцілення** пропонує практичну підтримку: емоційні чек-листи, вправи для самодопомоги (щоденник, медитація, книга спогадів) та посилання на професійні групи підтримки. Крок за кроком — немає правильного чи неправильного способу горювати.'
@@ -815,10 +815,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['чат', 'асистент', 'допомога', 'бот', 'шi', 'запитати']
     },
     content: {
-      en: 'I\'m the **Continuum Chat Assistant**! I can help you navigate the platform, explain tools and documents, answer questions about estate planning, and point you to the right sections. I support English, German, Russian, and Ukrainian. Try asking me about any tool or topic!',
-      de: 'Ich bin der **Continuum Chat-Assistent**! Ich kann Ihnen bei der Navigation helfen, Tools und Dokumente erklären, Fragen zur Nachlassplanung beantworten und Sie zu den richtigen Bereichen leiten. Ich unterstütze Deutsch, Englisch, Russisch und Ukrainisch.',
-      ru: 'Я — **Чат-ассистент Continuum**! Я помогу навигировать по платформе, объясню инструменты и документы, отвечу на вопросы о планировании наследства и направлю вас в нужный раздел. Я поддерживаю русский, английский, немецкий и украинский языки.',
-      ua: 'Я — **Чат-асистент Continuum**! Я допоможу навігувати платформою, поясню інструменти та документи, відповім на питання про планування спадщини та направлю вас у потрібний розділ. Я підтримую українську, англійську, німецьку та російську мови.'
+      en: 'I\'m the **Ready Legacy Chat Assistant**! I can help you navigate the platform, explain tools and documents, answer questions about estate planning, and point you to the right sections. I support English, German, Russian, and Ukrainian. Try asking me about any tool or topic!',
+      de: 'Ich bin der **Ready Legacy Chat-Assistent**! Ich kann Ihnen bei der Navigation helfen, Tools und Dokumente erklären, Fragen zur Nachlassplanung beantworten und Sie zu den richtigen Bereichen leiten. Ich unterstütze Deutsch, Englisch, Russisch und Ukrainisch.',
+      ru: 'Я — **Чат-ассистент Ready Legacy**! Я помогу навигировать по платформе, объясню инструменты и документы, отвечу на вопросы о планировании наследства и направлю вас в нужный раздел. Я поддерживаю русский, английский, немецкий и украинский языки.',
+      ua: 'Я — **Чат-асистент Ready Legacy**! Я допоможу навігувати платформою, поясню інструменти та документи, відповім на питання про планування спадщини та направлю вас у потрібний розділ. Я підтримую українську, англійську, німецьку та російську мови.'
     },
     priority: 5
   },
@@ -874,10 +874,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['мова', 'переклад', 'англійська', 'німецька', 'російська', 'українська', 'змінити мову']
     },
     content: {
-      en: 'Continuum supports **4 languages**: English, German (Deutsch), Russian (Русский), and Ukrainian (Українська). Switch languages using the language selector in the top-right corner of the navigation bar. All tools, documents, and this chat assistant work in all 4 languages.',
-      de: 'Continuum unterstützt **4 Sprachen**: Englisch, Deutsch, Russisch und Ukrainisch. Wechseln Sie die Sprache über den Sprachschalter oben rechts in der Navigation. Alle Tools, Dokumente und dieser Chat-Assistent funktionieren in allen 4 Sprachen.',
-      ru: 'Continuum поддерживает **4 языка**: английский, немецкий, русский и украинский. Переключайте язык с помощью селектора в правом верхнем углу навигации. Все инструменты, документы и этот чат-ассистент работают на всех 4 языках.',
-      ua: 'Continuum підтримує **4 мови**: англійську, німецьку, російську та українську. Переключайте мову за допомогою селектора у правому верхньому куті навігації. Всі інструменти, документи та цей чат-асистент працюють усіма 4 мовами.'
+      en: 'Ready Legacy supports **4 languages**: English, German (Deutsch), Russian (Русский), and Ukrainian (Українська). Switch languages using the language selector in the top-right corner of the navigation bar. All tools, documents, and this chat assistant work in all 4 languages.',
+      de: 'Ready Legacy unterstützt **4 Sprachen**: Englisch, Deutsch, Russisch und Ukrainisch. Wechseln Sie die Sprache über den Sprachschalter oben rechts in der Navigation. Alle Tools, Dokumente und dieser Chat-Assistent funktionieren in allen 4 Sprachen.',
+      ru: 'Ready Legacy поддерживает **4 языка**: английский, немецкий, русский и украинский. Переключайте язык с помощью селектора в правом верхнем углу навигации. Все инструменты, документы и этот чат-ассистент работают на всех 4 языках.',
+      ua: 'Ready Legacy підтримує **4 мови**: англійську, німецьку, російську та українську. Переключайте мову за допомогою селектора у правому верхньому куті навігації. Всі інструменти, документи та цей чат-асистент працюють усіма 4 мовами.'
     },
     priority: 7
   },
@@ -911,10 +911,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['швейцарія', 'швейцарське право', 'юрисдикція', 'країна']
     },
     content: {
-      en: 'Continuum\'s legal templates are primarily based on **Swiss law** (e.g., handwritten wills requirement, 3-month inheritance waiver deadline). However, many estate planning principles are universal. Always consult a local lawyer for jurisdiction-specific legal advice.',
-      de: 'Die Rechtsvorlagen von Continuum basieren hauptsächlich auf **Schweizer Recht** (z.B. handschriftliche Testamente, 3-Monats-Frist für Erbausschlagung). Viele Nachlassplanungs-Prinzipien sind jedoch universell. Konsultieren Sie immer einen lokalen Anwalt.',
-      ru: 'Юридические шаблоны Continuum основаны главным образом на **швейцарском праве** (напр., требование рукописного завещания, 3-месячный срок отказа от наследства). Однако многие принципы планирования наследства универсальны. Всегда консультируйтесь с местным юристом.',
-      ua: 'Юридичні шаблони Continuum базуються головним чином на **швейцарському праві** (напр., вимога рукописного заповіту, 3-місячний термін відмови від спадщини). Однак багато принципів планування спадщини є універсальними. Завжди консультуйтеся з місцевим юристом.'
+      en: 'Ready Legacy\'s legal templates are primarily based on **Swiss law** (e.g., handwritten wills requirement, 3-month inheritance waiver deadline). However, many estate planning principles are universal. Always consult a local lawyer for jurisdiction-specific legal advice.',
+      de: 'Die Rechtsvorlagen von Ready Legacy basieren hauptsächlich auf **Schweizer Recht** (z.B. handschriftliche Testamente, 3-Monats-Frist für Erbausschlagung). Viele Nachlassplanungs-Prinzipien sind jedoch universell. Konsultieren Sie immer einen lokalen Anwalt.',
+      ru: 'Юридические шаблоны Ready Legacy основаны главным образом на **швейцарском праве** (напр., требование рукописного завещания, 3-месячный срок отказа от наследства). Однако многие принципы планирования наследства универсальны. Всегда консультируйтесь с местным юристом.',
+      ua: 'Юридичні шаблони Ready Legacy базуються головним чином на **швейцарському праві** (напр., вимога рукописного заповіту, 3-місячний термін відмови від спадщини). Однак багато принципів планування спадщини є універсальними. Завжди консультуйтеся з місцевим юристом.'
     },
     priority: 7
   },
@@ -967,10 +967,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['мобільний', 'телефон', 'планшет', 'додаток']
     },
     content: {
-      en: 'Continuum is a **responsive web application** that works on any device — desktop, tablet, or smartphone. There\'s no separate mobile app needed; just open the website in your mobile browser. All features work on all screen sizes.',
-      de: 'Continuum ist eine **responsive Webanwendung**, die auf jedem Gerät funktioniert — Desktop, Tablet oder Smartphone. Keine separate App nötig; öffnen Sie einfach die Website im mobilen Browser.',
-      ru: 'Continuum — это **адаптивное веб-приложение**, которое работает на любом устройстве — компьютере, планшете или смартфоне. Отдельное мобильное приложение не нужно — просто откройте сайт в мобильном браузере.',
-      ua: 'Continuum — це **адаптивний веб-додаток**, що працює на будь-якому пристрої — комп\'ютері, планшеті чи смартфоні. Окремий мобільний додаток не потрібен — просто відкрийте сайт у мобільному браузері.'
+      en: 'Ready Legacy is a **responsive web application** that works on any device — desktop, tablet, or smartphone. There\'s no separate mobile app needed; just open the website in your mobile browser. All features work on all screen sizes.',
+      de: 'Ready Legacy ist eine **responsive Webanwendung**, die auf jedem Gerät funktioniert — Desktop, Tablet oder Smartphone. Keine separate App nötig; öffnen Sie einfach die Website im mobilen Browser.',
+      ru: 'Ready Legacy — это **адаптивное веб-приложение**, которое работает на любом устройстве — компьютере, планшете или смартфоне. Отдельное мобильное приложение не нужно — просто откройте сайт в мобильном браузере.',
+      ua: 'Ready Legacy — це **адаптивний веб-додаток**, що працює на будь-якому пристрої — комп\'ютері, планшеті чи смартфоні. Окремий мобільний додаток не потрібен — просто відкрийте сайт у мобільному браузері.'
     },
     priority: 5
   },
@@ -1004,10 +1004,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['темна тема', 'світла тема', 'оформлення', 'переключити']
     },
     content: {
-      en: 'Continuum supports **dark and light themes**. Toggle between them using the theme switch button in the navigation header. Your preference is saved automatically. Dark mode is the default and is easier on the eyes.',
-      de: 'Continuum unterstützt **dunkles und helles Design**. Wechseln Sie über den Thema-Schalter in der Navigation. Ihre Präferenz wird automatisch gespeichert.',
-      ru: 'Continuum поддерживает **тёмную и светлую тему**. Переключайтесь между ними кнопкой в навигации. Ваш выбор сохраняется автоматически. Тёмная тема установлена по умолчанию.',
-      ua: 'Continuum підтримує **темну та світлу тему**. Переключайтеся між ними кнопкою у навігації. Ваш вибір зберігається автоматично. Темна тема встановлена за замовчуванням.'
+      en: 'Ready Legacy supports **dark and light themes**. Toggle between them using the theme switch button in the navigation header. Your preference is saved automatically. Dark mode is the default and is easier on the eyes.',
+      de: 'Ready Legacy unterstützt **dunkles und helles Design**. Wechseln Sie über den Thema-Schalter in der Navigation. Ihre Präferenz wird automatisch gespeichert.',
+      ru: 'Ready Legacy поддерживает **тёмную и светлую тему**. Переключайтесь между ними кнопкой в навигации. Ваш выбор сохраняется автоматически. Тёмная тема установлена по умолчанию.',
+      ua: 'Ready Legacy підтримує **темну та світлу тему**. Переключайтеся між ними кнопкою у навігації. Ваш вибір зберігається автоматично. Темна тема встановлена за замовчуванням.'
     },
     priority: 4
   },
