@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import productsBg from '../assets/images/products-bg.png';
 
+const FEATURES = [
+    { key: 'feat_1', icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="6" y="10" width="36" height="28" rx="4" stroke="currentColor" strokeWidth="2"/><path d="M6 18h36" stroke="currentColor" strokeWidth="2"/><path d="M16 26h16M16 32h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+    )},
+    { key: 'feat_2', icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="18" cy="20" r="6" stroke="currentColor" strokeWidth="2"/><circle cx="30" cy="20" r="6" stroke="currentColor" strokeWidth="2"/><path d="M8 38c0-5.523 4.477-10 10-10h12c5.523 0 10 4.477 10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+    )},
+    { key: 'feat_3', icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="6" width="32" height="36" rx="4" stroke="currentColor" strokeWidth="2"/><circle cx="24" cy="22" r="6" stroke="currentColor" strokeWidth="2"/><path d="M20 28l4-3 4 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M16 36h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+    )},
+    { key: 'feat_4', icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 6C14.059 6 6 14.059 6 24s8.059 18 18 18c2.28 0 4.47-.426 6.48-1.2L42 44l-3.2-11.52A17.9 17.9 0 0042 24c0-9.941-8.059-18-18-18z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/><path d="M16 22h16M16 28h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+    )},
+    { key: 'feat_5', icon: (
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 42s-16-8.4-16-20a10 10 0 0116-8 10 10 0 0116 8c0 11.6-16 20-16 20z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/></svg>
+    )},
+];
+
 const Home: React.FC = () => {
     const { t } = useLanguage();
+    const [email, setEmail] = useState('');
+    const [subscribed, setSubscribed] = useState(false);
+
+    const handleNewsletter = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (email) {
+            setSubscribed(true);
+            setEmail('');
+        }
+    };
 
     return (
         <div className="home-page">
@@ -37,6 +65,27 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
+            {/* Features */}
+            <section className="features-section section-padding">
+                <div className="container">
+                    <h2 className="features-title">{t('features_title') || 'Ready Legacy simplifies your life'}</h2>
+                    <p className="features-subtitle">{t('features_subtitle')}</p>
+                    <div className="features-grid">
+                        {FEATURES.map(f => (
+                            <div className="feature-card" key={f.key}>
+                                <div className="feature-icon">{f.icon}</div>
+                                <h4>{t(`${f.key}_title`)}</h4>
+                                <p>{t(`${f.key}_desc`)}</p>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="section-cta">
+                        <Link to="/tools" className="btn">{t('cta_start') || 'Start Now'}</Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Ecosystem / 3 Pillars */}
             <section id="products" className="products section-padding">
                 <img src={productsBg} alt="Abstract Geometry" className="products-bg" />
                 <div className="container">
@@ -89,6 +138,7 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
+            {/* Statistics */}
             <section className="stats-section section-padding">
                 <div className="container">
                     <h2 className="stats-title">{t('stats_title') || 'Your peace of mind matters'}</h2>
@@ -106,8 +156,77 @@ const Home: React.FC = () => {
                             <p className="stat-text">{t('stat_3_text')}</p>
                         </div>
                     </div>
-                    <div className="section-cta">
-                        <Link to="/tools" className="btn">{t('cta_start') || 'Start Now'}</Link>
+                </div>
+            </section>
+
+            {/* Pricing */}
+            <section className="pricing-section section-padding">
+                <div className="container">
+                    <h2 className="pricing-title">{t('pricing_title') || 'Choose your plan'}</h2>
+                    <p className="pricing-subtitle">{t('pricing_subtitle')}</p>
+                    <div className="pricing-grid">
+                        <div className="pricing-card">
+                            <div className="pricing-header">
+                                <h3>{t('pricing_free_name') || 'Free'}</h3>
+                                <div className="pricing-price">
+                                    <span className="price-amount">{t('pricing_free_price') || '0'}</span>
+                                    <span className="price-currency">{t('pricing_currency') || 'CHF'}</span>
+                                </div>
+                                <span className="price-period">{t('pricing_free_period') || 'forever'}</span>
+                            </div>
+                            <ul className="pricing-features">
+                                <li>{t('pricing_free_f1')}</li>
+                                <li>{t('pricing_free_f2')}</li>
+                                <li>{t('pricing_free_f3')}</li>
+                                <li>{t('pricing_free_f4')}</li>
+                            </ul>
+                            <Link to="/login" className="btn btn-outline">{t('pricing_free_btn') || 'Get Started'}</Link>
+                        </div>
+
+                        <div className="pricing-card pricing-card--premium">
+                            <div className="pricing-badge">Popular</div>
+                            <div className="pricing-header">
+                                <h3>{t('pricing_premium_name') || 'Premium'}</h3>
+                                <div className="pricing-price">
+                                    <span className="price-amount">{t('pricing_premium_price') || '15'}</span>
+                                    <span className="price-currency">{t('pricing_currency') || 'CHF'}</span>
+                                </div>
+                                <span className="price-period">{t('pricing_premium_period') || '/month'}</span>
+                            </div>
+                            <ul className="pricing-features">
+                                <li>{t('pricing_premium_f1')}</li>
+                                <li>{t('pricing_premium_f2')}</li>
+                                <li>{t('pricing_premium_f3')}</li>
+                                <li>{t('pricing_premium_f4')}</li>
+                                <li>{t('pricing_premium_f5')}</li>
+                                <li>{t('pricing_premium_f6')}</li>
+                            </ul>
+                            <Link to="/login" className="btn">{t('pricing_premium_btn') || 'Start Premium'}</Link>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Newsletter */}
+            <section className="newsletter-section section-padding">
+                <div className="container">
+                    <div className="newsletter-box">
+                        <h2>{t('newsletter_title') || 'Stay informed'}</h2>
+                        <p>{t('newsletter_desc')}</p>
+                        {subscribed ? (
+                            <p className="newsletter-success">{t('newsletter_success') || 'Thank you for subscribing!'}</p>
+                        ) : (
+                            <form className="newsletter-form" onSubmit={handleNewsletter}>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    placeholder={t('newsletter_placeholder') || 'Enter your email'}
+                                    required
+                                />
+                                <button type="submit" className="btn">{t('newsletter_btn') || 'Subscribe'}</button>
+                            </form>
+                        )}
                     </div>
                 </div>
             </section>
