@@ -21,7 +21,6 @@ const Login: React.FC = () => {
     const handleOAuth = (provider: string) => {
         setLoading(provider);
         setError('');
-        // Demo: simulate successful OAuth redirect
         setTimeout(() => {
             setLoading(null);
             localStorage.setItem('continuum_user', JSON.stringify({
@@ -35,10 +34,9 @@ const Login: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!email || !password) { setError('Please fill in all required fields.'); return; }
+        if (!email || !password) { setError(t('login_error_fields') || 'Please fill in all required fields.'); return; }
         setLoading('email');
         setError('');
-        // Demo: simulate successful email login
         setTimeout(() => {
             setLoading(null);
             localStorage.setItem('continuum_user', JSON.stringify({
@@ -59,21 +57,18 @@ const Login: React.FC = () => {
     return (
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: '0', paddingBottom: '20px', paddingLeft: '20px', paddingRight: '20px', marginTop: '-20px' }}>
             <div style={{ width: '100%', maxWidth: '380px' }}>
-                {/* Logo */}
                 <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                     <Link to="/" style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', color: 'var(--accent-gold)', letterSpacing: '1px', textDecoration: 'none' }}>
                         Ready Legacy
                     </Link>
-                    <p style={{ opacity: 0.6, fontSize: '0.8rem', marginTop: '2px' }}>The Future of Legacy</p>
+                    <p style={{ opacity: 0.6, fontSize: '0.8rem', marginTop: '2px' }}>{t('hero_tagline') || 'The Future of Legacy'}</p>
                 </div>
 
-                {/* Card */}
                 <div style={{
                     background: 'rgba(255,255,255,0.03)', borderRadius: '20px',
                     border: '1px solid rgba(255,255,255,0.08)', padding: '16px 20px',
                     backdropFilter: 'blur(20px)'
                 }}>
-                    {/* Mode toggle */}
                     <div style={{ display: 'flex', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', padding: '4px', marginBottom: '16px' }}>
                         {(['login', 'signup'] as const).map(m => (
                             <button
@@ -86,12 +81,11 @@ const Login: React.FC = () => {
                                     fontWeight: mode === m ? 700 : 400, fontSize: '0.9rem', transition: 'all 0.2s'
                                 }}
                             >
-                                {m === 'login' ? 'Sign In' : 'Create Account'}
+                                {m === 'login' ? (t('login_signin') || 'Sign In') : (t('login_create') || 'Create Account')}
                             </button>
                         ))}
                     </div>
 
-                    {/* OAuth Buttons */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '16px' }}>
                         {OAUTH_PROVIDERS.map(p => (
                             <button
@@ -108,29 +102,27 @@ const Login: React.FC = () => {
                                 }}
                             >
                                 {loading === p.id ? (
-                                    <span style={{ opacity: 0.7 }}>Connecting...</span>
+                                    <span style={{ opacity: 0.7 }}>{t('login_connecting') || 'Connecting...'}</span>
                                 ) : (
                                     <>
                                         <span>{p.icon}</span>
-                                        {mode === 'login' ? 'Continue with' : 'Sign up with'} {p.name}
+                                        {mode === 'login' ? (t('login_continue_with') || 'Continue with') : (t('login_signup_with') || 'Sign up with')} {p.name}
                                     </>
                                 )}
                             </button>
                         ))}
                     </div>
 
-                    {/* Divider */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
                         <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
-                        <span style={{ fontSize: '0.75rem', opacity: 0.4 }}>or with email</span>
+                        <span style={{ fontSize: '0.75rem', opacity: 0.4 }}>{t('login_or_email') || 'or with email'}</span>
                         <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
                     </div>
 
-                    {/* Email form */}
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         {mode === 'signup' && (
                             <div>
-                                <label style={{ fontSize: '0.78rem', opacity: 0.8, display: 'block', marginBottom: '4px' }}>Full Name</label>
+                                <label style={{ fontSize: '0.78rem', opacity: 0.8, display: 'block', marginBottom: '4px' }}>{t('login_fullname') || 'Full Name'}</label>
                                 <input
                                     type="text"
                                     value={name}
@@ -141,7 +133,7 @@ const Login: React.FC = () => {
                             </div>
                         )}
                         <div>
-                            <label style={{ fontSize: '0.78rem', opacity: 0.8, display: 'block', marginBottom: '4px' }}>Email *</label>
+                            <label style={{ fontSize: '0.78rem', opacity: 0.8, display: 'block', marginBottom: '4px' }}>{t('login_email') || 'Email'} *</label>
                             <input
                                 type="email"
                                 value={email}
@@ -151,7 +143,7 @@ const Login: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label style={{ fontSize: '0.78rem', opacity: 0.8, display: 'block', marginBottom: '4px' }}>Password *</label>
+                            <label style={{ fontSize: '0.78rem', opacity: 0.8, display: 'block', marginBottom: '4px' }}>{t('login_password') || 'Password'} *</label>
                             <input
                                 type="password"
                                 value={password}
@@ -177,24 +169,23 @@ const Login: React.FC = () => {
                                 transition: 'all 0.2s', opacity: loading ? 0.7 : 1, marginTop: '2px'
                             }}
                         >
-                            {loading === 'email' ? 'Processing...' : mode === 'login' ? 'Sign In' : 'Create Account'}
+                            {loading === 'email' ? (t('login_processing') || 'Processing...') : mode === 'login' ? (t('login_signin') || 'Sign In') : (t('login_create') || 'Create Account')}
                         </button>
                     </form>
 
                     {mode === 'login' && (
                         <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                            <a href="#" style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', opacity: 0.7 }}>Forgot password?</a>
+                            <a href="#" style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', opacity: 0.7 }}>{t('login_forgot') || 'Forgot password?'}</a>
                         </div>
                     )}
                 </div>
 
-                {/* Security note */}
                 <div style={{ textAlign: 'center', marginTop: '24px', opacity: 0.3, fontSize: '0.78rem' }}>
-                    🔒 Your data is encrypted and stored securely.
+                    {t('login_security_note') || 'Your data is encrypted and stored securely.'}
                 </div>
 
                 <div style={{ textAlign: 'center', marginTop: '12px' }}>
-                    <Link to="/" style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', opacity: 0.6 }}>← Back to Home</Link>
+                    <Link to="/" style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', opacity: 0.6 }}>{t('back_home') || '← Back to Home'}</Link>
                 </div>
             </div>
         </div>

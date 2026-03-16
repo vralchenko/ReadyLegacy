@@ -74,13 +74,13 @@ const Profile: React.FC = () => {
     const completedLegal = Object.values(legalDocs).filter((d: any) => d.status === 'completed' || d.status === 'filed').length;
 
     const scoreItems = [
-        { label: 'Profile filled', done: !!(profile.name && profile.email) },
-        { label: 'Assets documented', done: !!(localStorage.getItem('continuum_list_bank') || localStorage.getItem('continuum_asset_brought')) },
-        { label: 'Legal docs tracked', done: completedLegal > 0 },
-        { label: 'Digital legacy started', done: legacyItems.length > 0 },
-        { label: 'ToDo tasks added', done: todoTasks.length > 0 },
-        { label: 'Crypto wallets documented', done: !!(localStorage.getItem('continuum_list_crypto_wallets')) },
-        { label: 'Funeral wishes recorded', done: !!(localStorage.getItem('continuum_funeral_type')) },
+        { label: t('score_profile') || 'Profile filled', done: !!(profile.name && profile.email) },
+        { label: t('score_assets') || 'Assets documented', done: !!(localStorage.getItem('continuum_list_bank') || localStorage.getItem('continuum_asset_brought')) },
+        { label: t('score_legal') || 'Legal docs tracked', done: completedLegal > 0 },
+        { label: t('score_legacy') || 'Digital legacy started', done: legacyItems.length > 0 },
+        { label: t('score_todo') || 'ToDo tasks added', done: todoTasks.length > 0 },
+        { label: t('score_crypto') || 'Crypto wallets documented', done: !!(localStorage.getItem('continuum_list_crypto_wallets')) },
+        { label: t('score_funeral') || 'Funeral wishes recorded', done: !!(localStorage.getItem('continuum_funeral_type')) },
     ];
     const score = Math.round((scoreItems.filter(s => s.done).length / scoreItems.length) * 100);
 
@@ -107,13 +107,13 @@ const Profile: React.FC = () => {
                 {/* Header bar */}
                 <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap' }}>
                     <Link to="/" style={{ fontSize: '1.1rem', color: 'var(--accent-gold)', opacity: 0.7, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        ← Home
+                        ← {t('back_home') || 'Home'}
                     </Link>
                     <span style={{ opacity: 0.2 }}>/</span>
-                    <span style={{ fontSize: '1.1rem', opacity: 0.4 }}>Your Profile</span>
+                    <span style={{ fontSize: '1.1rem', opacity: 0.4 }}>{t('profile_title') || 'Your Profile'}</span>
                     {saved && (
                         <span style={{ marginLeft: 'auto', color: '#10b981', fontSize: '0.82rem', animation: 'fadeIn 0.3s ease' }}>
-                            ✓ Saved successfully
+                            ✓ {t('profile_saved') || 'Saved successfully'}
                         </span>
                     )}
                 </div>
@@ -137,8 +137,8 @@ const Profile: React.FC = () => {
                             }}>
                                 {initials}
                             </div>
-                            <h2 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{profile.name || 'Your Name'}</h2>
-                            <p style={{ fontSize: '1.1rem', opacity: 0.45, marginBottom: '18px' }}>{profile.email || 'your@email.com'}</p>
+                            <h2 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{profile.name || (t('auto_your_name') || 'Your Name')}</h2>
+                            <p style={{ fontSize: '1.1rem', opacity: 0.45, marginBottom: '18px' }}>{profile.email || (t('auto_your_email_com') || 'your@email.com')}</p>
                             <span style={{
                                 display: 'inline-block', fontSize: '0.9rem', padding: '6px 14px', borderRadius: '12px',
                                 background: planStyle.bg, color: planStyle.color, border: `1px solid ${planStyle.border}`
@@ -152,12 +152,12 @@ const Profile: React.FC = () => {
                             padding: '22px', borderRadius: '20px',
                             background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)'
                         }}>
-                            <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '12px' }}>Legacy Readiness</div>
+                            <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '12px' }}>{t('profile_readiness') || 'Legacy Readiness'}</div>
                             <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '18px' }}>
                                 <span style={{ fontSize: '3rem', fontWeight: 700, color: score >= 70 ? '#10b981' : score >= 40 ? 'var(--accent-gold)' : '#ef4444' }}>
                                     {score}%
                                 </span>
-                                <span style={{ fontSize: '1.2rem', opacity: 0.5 }}>complete</span>
+                                <span style={{ fontSize: '1.2rem', opacity: 0.5 }}>{t('profile_complete') || 'complete'}</span>
                             </div>
                             <div style={{ height: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.08)', marginBottom: '20px' }}>
                                 <div style={{
@@ -178,7 +178,7 @@ const Profile: React.FC = () => {
 
                         {/* Quick nav */}
                         <div style={{ padding: '20px', borderRadius: '20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                            <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '16px' }}>Quick Links</div>
+                            <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '16px' }}>{t('profile_quicklinks') || 'Quick Links'}</div>
                             {[
                                 { to: '/tools', label: '🛠 Tools Dashboard' },
                                 { to: '/documents', label: '📄 My Documents' },
@@ -204,9 +204,9 @@ const Profile: React.FC = () => {
                         {/* Tabs */}
                         <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', background: 'rgba(255,255,255,0.04)', borderRadius: '14px', padding: '4px' }}>
                             {[
-                                { key: 'overview', label: '👤 Personal Info' },
-                                { key: 'settings', label: '⚙️ Settings' },
-                                { key: 'plan', label: '✦ Plan & Subscription' },
+                                { key: 'overview', label: `👤 ${t('profile_tab_info') || 'Personal Info'}` },
+                                { key: 'settings', label: `⚙️ ${t('profile_tab_settings') || 'Settings'}` },
+                                { key: 'plan', label: `✦ ${t('profile_tab_plan') || 'Plan & Subscription'}` },
                             ].map(tab => (
                                 <button
                                     key={tab.key}
@@ -225,15 +225,15 @@ const Profile: React.FC = () => {
                         {activeTab === 'overview' && (
                             <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '28px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                                    <h3 style={{ fontSize: '1.6rem', margin: 0 }}>Personal Information</h3>
+                                    <h3 style={{ fontSize: '1.6rem', margin: 0 }}>{t('profile_personal_info') || 'Personal Information'}</h3>
                                     {!editing ? (
                                         <button onClick={() => { setDraft(profile); setEditing(true); }} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '1.1rem' }}>
-                                            ✏️ Edit
+                                            ✏️ {t('profile_edit') || 'Edit'}
                                         </button>
                                     ) : (
                                         <div style={{ display: 'flex', gap: '8px' }}>
-                                            <button onClick={() => setEditing(false)} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: '1.1rem' }}>Cancel</button>
-                                            <button onClick={saveProfile} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#000', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 700 }}>Save Changes</button>
+                                            <button onClick={() => setEditing(false)} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: '1.1rem' }}>{t('profile_cancel') || 'Cancel'}</button>
+                                            <button onClick={saveProfile} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#000', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 700 }}>{t('profile_save') || 'Save Changes'}</button>
                                         </div>
                                     )}
                                 </div>
@@ -291,9 +291,9 @@ const Profile: React.FC = () => {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                 {/* Language */}
                                 <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '24px' }}>
-                                    <h4 style={{ marginBottom: '16px', fontSize: '1rem' }}>Language</h4>
+                                    <h4 style={{ marginBottom: '16px', fontSize: '1rem' }}>{t('profile_language') || 'Language'}</h4>
                                     <div style={{ display: 'flex', gap: '8px' }}>
-                                        {(['en', 'de', 'ru', 'ua'] as const).map(lang => (
+                                        {(['en', 'de'] as const).map(lang => (
                                             <button
                                                 key={lang}
                                                 onClick={() => setLanguage(lang)}
@@ -311,7 +311,7 @@ const Profile: React.FC = () => {
 
                                 {/* Theme */}
                                 <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '24px' }}>
-                                    <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>Theme</h4>
+                                    <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>{t('profile_theme') || 'Theme'}</h4>
                                     <div style={{ display: 'flex', gap: '12px' }}>
                                         {[{ key: 'dark', label: '🌙 Dark Mode' }, { key: 'light', label: '☀️ Light Mode' }].map(t => (
                                             <button
@@ -331,7 +331,7 @@ const Profile: React.FC = () => {
 
                                 {/* Notifications */}
                                 <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '24px' }}>
-                                    <h4 style={{ marginBottom: '12px', fontSize: '1.4rem' }}>Email Reminders</h4>
+                                    <h4 style={{ marginBottom: '12px', fontSize: '1.4rem' }}>{t('auto_email_reminders') || 'Email Reminders'}</h4>
                                     <p style={{ opacity: 0.5, fontSize: '1.1rem', marginBottom: '16px' }}>Get reminded to keep your estate documents up to date.</p>
                                     <Link to="/tools?tool=reminders" style={{
                                         display: 'inline-block', padding: '12px 24px', borderRadius: '10px',
@@ -344,7 +344,7 @@ const Profile: React.FC = () => {
 
                                 {/* Security */}
                                 <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '28px' }}>
-                                    <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>Security</h4>
+                                    <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>{t('profile_security') || 'Security'}</h4>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         {[
                                             { label: 'Change Password', icon: '🔑' },
@@ -373,7 +373,7 @@ const Profile: React.FC = () => {
                         {activeTab === 'plan' && (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                 <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '28px' }}>
-                                    <h3 style={{ marginBottom: '12px', fontSize: '1.6rem' }}>Current Plan</h3>
+                                    <h3 style={{ marginBottom: '12px', fontSize: '1.6rem' }}>{t('profile_current_plan') || 'Current Plan'}</h3>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
                                         <span style={{
                                             display: 'inline-block', fontSize: '1.1rem', padding: '8px 20px', borderRadius: '20px',
@@ -386,9 +386,9 @@ const Profile: React.FC = () => {
 
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
                                         {[
-                                            { plan: 'free' as const, label: 'Free', price: '€0', features: ['Asset Overview', 'Basic Checklist', 'Legal Framework (view)', '1 Digital Legacy item'] },
-                                            { plan: 'premium' as const, label: 'Premium', price: '€9.90/mo', features: ['Everything in Free', 'Unlimited Legacy items', 'AI Chat Assistant', 'Email Reminders', 'PDF Export', 'Will Builder'] },
-                                            { plan: 'family' as const, label: 'Family', price: '€17.90/mo', features: ['Everything in Premium', 'Up to 5 profiles', 'Shared Legacy Vault', 'Priority support', 'AI Avatar (beta)'] },
+                                            { plan: 'free' as const, label: t('pricing_free_name') || 'Free', price: 'CHF 0', features: [t('pricing_free_f1') || 'Basic document vault (5 files)', t('pricing_free_f2') || 'Readiness score', t('pricing_free_f3') || 'Checklists & guides', t('pricing_free_f4') || '1 trusted contact'] },
+                                            { plan: 'premium' as const, label: t('pricing_premium_name') || 'Premium', price: 'CHF 15/mo', features: [t('pricing_premium_f1') || 'Unlimited document storage', t('pricing_premium_f2') || 'AI assistant & suggestions', t('pricing_premium_f3') || 'Video & audio messages', t('pricing_premium_f4') || 'Unlimited trusted contacts', t('pricing_premium_f5') || 'PDF export & print', t('pricing_premium_f6') || 'Priority support'] },
+                                            { plan: 'family' as const, label: t('profile_family_plan') || 'Family', price: 'CHF 25/mo', features: [t('profile_family_f1') || 'Everything in Premium', t('profile_family_f2') || 'Up to 5 family members', t('profile_family_f3') || 'Shared Legacy Vault', t('profile_family_f4') || 'Priority support', t('profile_family_f5') || 'AI Avatar (beta)'] },
                                         ].map(tier => {
                                             const ts = PLAN_STYLES[tier.plan];
                                             return (
