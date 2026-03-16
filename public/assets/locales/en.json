@@ -398,5 +398,17 @@
   "ber_card_2_title": "Support Networks",
   "ber_card_2_desc": "Connect with verified grief counselors, support groups, and communities who understand.",
   "ber_card_3_title": "Practical Checklists",
-  "ber_card_3_desc": "Step-by-step guides for administrative tasks, notifications, and formalities after loss."
+  "ber_card_3_desc": "Step-by-step guides for administrative tasks, notifications, and formalities after loss.",
+
+  "tools_dashboard_title": "Your Tools",
+  "tools_dashboard_desc": "Everything you need to organize your legacy — choose a tool to get started.",
+  "tools_desc_assets": "Document your assets, savings, and liabilities",
+  "tools_desc_will": "Outline your will structure step by step",
+  "tools_desc_legal": "Track living wills and advance directives",
+  "tools_desc_checklist": "What to do after a loss — step by step",
+  "tools_desc_executor": "Track tasks and to-dos for estate management",
+  "tools_desc_templates": "Generate legal document drafts with guided wizards",
+  "tools_desc_legacy": "Store messages, photos, and memories for loved ones",
+  "tools_desc_avatar": "Create an AI-powered interactive legacy avatar",
+  "tools_desc_bereavement": "Emotional support and grief resources"
 }

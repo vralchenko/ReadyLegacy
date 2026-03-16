@@ -398,5 +398,17 @@
   "ber_card_2_title": "Unterstützungsnetzwerke",
   "ber_card_2_desc": "Verbinden Sie sich mit geprüften Trauerberatern, Selbsthilfegruppen und Gemeinschaften, die verstehen.",
   "ber_card_3_title": "Praktische Checklisten",
-  "ber_card_3_desc": "Schritt-für-Schritt-Anleitungen für administrative Aufgaben, Benachrichtigungen und Formalitäten nach einem Verlust."
+  "ber_card_3_desc": "Schritt-für-Schritt-Anleitungen für administrative Aufgaben, Benachrichtigungen und Formalitäten nach einem Verlust.",
+
+  "tools_dashboard_title": "Ihre Werkzeuge",
+  "tools_dashboard_desc": "Alles, was Sie brauchen, um Ihr Vermächtnis zu organisieren — wählen Sie ein Werkzeug.",
+  "tools_desc_assets": "Dokumentieren Sie Vermögen, Ersparnisse und Verbindlichkeiten",
+  "tools_desc_will": "Skizzieren Sie Ihre Testamentstruktur Schritt für Schritt",
+  "tools_desc_legal": "Patientenverfügung und Vorsorgeauftrag verfolgen",
+  "tools_desc_checklist": "Was nach einem Verlust zu tun ist — Schritt für Schritt",
+  "tools_desc_executor": "Aufgaben und To-dos für die Nachlassverwaltung",
+  "tools_desc_templates": "Rechtsdokument-Entwürfe mit geführten Assistenten erstellen",
+  "tools_desc_legacy": "Nachrichten, Fotos und Erinnerungen für Ihre Liebsten",
+  "tools_desc_avatar": "Erstellen Sie einen KI-gestützten interaktiven Vermächtnis-Avatar",
+  "tools_desc_bereavement": "Emotionale Unterstützung und Trauerressourcen"
 }
