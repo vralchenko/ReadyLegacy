@@ -10,7 +10,14 @@ interface Task {
     createdAt: string;
 }
 
-const CATEGORIES = ['Legal', 'Financial', 'Family', 'Documents', 'Other'];
+const CATEGORIES = ['Legal', 'Financial', 'Family', 'Documents', 'Other'] as const;
+const CATEGORY_KEYS: Record<string, string> = {
+    Legal: 'exec_cat_legal',
+    Financial: 'exec_cat_financial',
+    Family: 'exec_cat_family',
+    Documents: 'exec_cat_documents',
+    Other: 'exec_cat_other',
+};
 
 const Executor: React.FC = () => {
     const { t } = useLanguage();
@@ -63,7 +70,7 @@ const Executor: React.FC = () => {
             {tasks.length > 0 && (
                 <div style={{ marginBottom: '28px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.85rem', opacity: 0.7 }}>
-                        <span>{doneCount} of {tasks.length} completed</span>
+                        <span>{(t('exec_completed') || '{done} of {total} completed').replace('{done}', String(doneCount)).replace('{total}', String(tasks.length))}</span>
                         <span>{progress}%</span>
                     </div>
                     <div style={{ height: '6px', borderRadius: '3px', background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
@@ -94,14 +101,14 @@ const Executor: React.FC = () => {
                         onChange={e => setNewCategory(e.target.value)}
                         style={{ flex: '1', minWidth: '120px', padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'var(--text-color)' }}
                     >
-                        {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                        {CATEGORIES.map(c => <option key={c} value={c}>{t(CATEGORY_KEYS[c]) || c}</option>)}
                     </select>
                     <button
                         className="btn"
                         onClick={addTask}
                         style={{ background: 'var(--accent-gold)', color: 'var(--bg-color)', fontWeight: 700, padding: '10px 24px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
                     >
-                        + Add
+                        {t('exec_add') || '+ Add'}
                     </button>
                 </div>
             </div>
@@ -124,7 +131,7 @@ const Executor: React.FC = () => {
                             transition: 'all 0.2s'
                         }}
                     >
-                        {f.charAt(0).toUpperCase() + f.slice(1)}
+                        {f === 'all' ? (t('exec_all') || 'All') : f === 'open' ? (t('exec_open') || 'Open') : (t('exec_done') || 'Done')}
                     </button>
                 ))}
             </div>
@@ -133,7 +140,7 @@ const Executor: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {filtered.length === 0 && (
                     <div style={{ textAlign: 'center', padding: '40px', opacity: 0.4, fontStyle: 'italic' }}>
-                        {tasks.length === 0 ? 'No tasks yet. Add your first task above.' : 'No tasks in this filter.'}
+                        {tasks.length === 0 ? (t('exec_empty') || 'No tasks yet. Add your first task above.') : (t('exec_no_filter') || 'No tasks in this filter.')}
                     </div>
                 )}
                 {filtered.map(task => (
@@ -179,7 +186,7 @@ const Executor: React.FC = () => {
                             border: '1px solid rgba(255,215,0,0.2)',
                             flexShrink: 0
                         }}>
-                            {task.category}
+                            {t(CATEGORY_KEYS[task.category]) || task.category}
                         </span>
                         <span style={{ fontSize: '0.75rem', opacity: 0.4, flexShrink: 0 }}>{task.createdAt}</span>
                         <button

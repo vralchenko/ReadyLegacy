@@ -47,6 +47,26 @@ const BereavementSupport: React.FC = () => {
                 </p>
             </div>
 
+            {/* What this section offers */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '32px' }}>
+                {[
+                    { icon: '💛', title: t('ber_card_1_title') || 'Emotional Guidance', desc: t('ber_card_1_desc') || 'Structured steps for processing grief — from the first moments to long-term healing.' },
+                    { icon: '🤝', title: t('ber_card_2_title') || 'Support Networks', desc: t('ber_card_2_desc') || 'Connect with verified grief counselors, support groups, and communities who understand.' },
+                    { icon: '📋', title: t('ber_card_3_title') || 'Practical Checklists', desc: t('ber_card_3_desc') || 'Step-by-step guides for administrative tasks, notifications, and formalities after loss.' },
+                ].map((card, i) => (
+                    <div key={i} style={{
+                        padding: '20px', borderRadius: '14px',
+                        background: 'rgba(255,255,255,0.03)',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        textAlign: 'center'
+                    }}>
+                        <div style={{ fontSize: '2rem', marginBottom: '12px' }}>{card.icon}</div>
+                        <h4 style={{ fontSize: '0.95rem', marginBottom: '8px', color: 'var(--accent-gold)' }}>{card.title}</h4>
+                        <p style={{ fontSize: '0.82rem', opacity: 0.6, lineHeight: 1.5 }}>{card.desc}</p>
+                    </div>
+                ))}
+            </div>
+
             {/* Tabs */}
             <div style={{ display: 'flex', gap: '4px', marginBottom: '28px', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', padding: '4px' }}>
                 {[

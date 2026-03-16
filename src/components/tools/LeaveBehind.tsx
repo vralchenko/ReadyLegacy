@@ -13,20 +13,25 @@ interface MemoryItem {
     tags: string[];
 }
 
-// ─── Template wizard steps ────────────────────────────────────────────────────
-const WIZARD_STEPS = ['Type', 'Details', 'Recipient', 'Review'];
-
-const TYPE_OPTIONS = [
-    { key: 'text', icon: '✍️', label: 'Written Message', desc: 'A personal letter or note' },
-    { key: 'photo', icon: '📸', label: 'Photo / Gallery', desc: 'A photo or collection of images' },
-    { key: 'video', icon: '🎥', label: 'Video Message', desc: 'A video recording or memory' },
-    { key: 'audio', icon: '🎙️', label: 'Voice Message', desc: 'An audio recording or voice note' },
-    { key: 'link', icon: '🔗', label: 'Digital Link', desc: 'A URL, playlist, or online resource' },
-];
-
 // ─── Main Component ───────────────────────────────────────────────────────────
 const LeaveBehind: React.FC = () => {
     const { t } = useLanguage();
+
+    // ─── Template wizard steps (translated) ──────────────────────────────────
+    const WIZARD_STEPS = [
+        t('lb_step_type') || 'Type',
+        t('lb_step_details') || 'Details',
+        t('lb_step_recipient') || 'Recipient',
+        t('lb_step_review') || 'Review',
+    ];
+
+    const TYPE_OPTIONS = [
+        { key: 'text', icon: '✍️', label: t('lb_type_text') || 'Written Message', desc: t('lb_type_text_desc') || 'A personal letter or note' },
+        { key: 'photo', icon: '📸', label: t('lb_type_photo') || 'Photo / Gallery', desc: t('lb_type_photo_desc') || 'A photo or collection of images' },
+        { key: 'video', icon: '🎥', label: t('lb_type_video') || 'Video Message', desc: t('lb_type_video_desc') || 'A video recording or memory' },
+        { key: 'audio', icon: '🎙️', label: t('lb_type_audio') || 'Voice Message', desc: t('lb_type_audio_desc') || 'An audio recording or voice note' },
+        { key: 'link', icon: '🔗', label: t('lb_type_link') || 'Digital Link', desc: t('lb_type_link_desc') || 'A URL, playlist, or online resource' },
+    ];
     const [items, setItems] = usePersistedState<MemoryItem[]>('legacy_vault_v2', []);
 
     // Wizard state
@@ -67,7 +72,7 @@ const LeaveBehind: React.FC = () => {
             content: content.trim(),
             recipient: recipient.trim(),
             createdAt: new Date().toLocaleDateString(),
-            tags: tagsInput.split(',').map(t => t.trim()).filter(Boolean),
+            tags: tagsInput.split(',').map(tag => tag.trim()).filter(Boolean),
         };
         setItems([newItem, ...items]);
         resetWizard();
@@ -90,15 +95,15 @@ const LeaveBehind: React.FC = () => {
         <div id="leave-behind" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '32px' }}>
                 <span className="step-tag">{t('p2_title') || 'Leave Behind'}</span>
-                <h2>Digital Legacy Vault</h2>
+                <h2>{t('lb_title') || 'Digital Legacy Vault'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
-                    Create personal messages, photos, videos, and memories to be shared with your loved ones — a living archive of your story.
+                    {t('lb_desc') || 'Create personal messages, photos, videos, and memories to be shared with your loved ones — a living archive of your story.'}
                 </p>
             </div>
 
             {/* Stats bar */}
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '24px' }}>
-                {[{ key: 'all', label: 'All', count: items.length }, ...TYPE_OPTIONS.map(t => ({ key: t.key, label: t.label, count: items.filter(i => i.type === t.key).length }))].map(f => (
+                {[{ key: 'all', label: t('lb_filter_all') || 'All', count: items.length }, ...TYPE_OPTIONS.map(opt => ({ key: opt.key, label: opt.label, count: items.filter(i => i.type === opt.key).length }))].map(f => (
                     f.count > 0 || f.key === 'all' ? (
                         <button
                             key={f.key}
@@ -124,7 +129,7 @@ const LeaveBehind: React.FC = () => {
                         fontWeight: 700, transition: 'all 0.2s'
                     }}
                 >
-                    + Add Memory
+                    {t('lb_add') || '+ Add Memory'}
                 </button>
             </div>
 
@@ -133,7 +138,7 @@ const LeaveBehind: React.FC = () => {
                 <div style={{ textAlign: 'center', padding: '60px 20px', opacity: 0.4 }}>
                     <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✦</div>
                     <p style={{ fontStyle: 'italic' }}>
-                        {items.length === 0 ? 'Your vault is empty. Start creating memories for your loved ones.' : 'No items in this category.'}
+                        {items.length === 0 ? (t('lb_empty') || 'Your vault is empty. Start creating memories for your loved ones.') : (t('lb_no_items') || 'No items in this category.')}
                     </p>
                 </div>
             )}
@@ -170,7 +175,7 @@ const LeaveBehind: React.FC = () => {
                             </p>
                             {item.recipient && (
                                 <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>
-                                    For: <span style={{ color: 'var(--accent-gold)' }}>{item.recipient}</span>
+                                    {t('lb_for') || 'For:'} <span style={{ color: 'var(--accent-gold)' }}>{item.recipient}</span>
                                 </div>
                             )}
                             <div style={{ fontSize: '0.7rem', opacity: 0.3, marginTop: '8px' }}>{item.createdAt}</div>
@@ -194,7 +199,7 @@ const LeaveBehind: React.FC = () => {
                         {/* Modal header */}
                         <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <div>
-                                <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>Add to Legacy Vault</div>
+                                <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>{t('lb_add_title') || 'Add to Legacy Vault'}</div>
                                 <div style={{ fontSize: '0.8rem', opacity: 0.5, marginTop: '2px' }}>Step {wizardStep + 1} of {WIZARD_STEPS.length}: {WIZARD_STEPS[wizardStep]}</div>
                             </div>
                             <button onClick={resetWizard} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '1.5rem', cursor: 'pointer', lineHeight: 1 }}>×</button>
@@ -245,7 +250,7 @@ const LeaveBehind: React.FC = () => {
                             {wizardStep === 1 && (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                     <div>
-                                        <label style={{ fontSize: '0.82rem', opacity: 0.6, display: 'block', marginBottom: '6px' }}>Title *</label>
+                                        <label style={{ fontSize: '0.82rem', opacity: 0.6, display: 'block', marginBottom: '6px' }}>{t('lb_field_title') || 'Title *'}</label>
                                         <input
                                             type="text"
                                             value={title}
@@ -257,26 +262,26 @@ const LeaveBehind: React.FC = () => {
                                     </div>
                                     <div>
                                         <label style={{ fontSize: '0.82rem', opacity: 0.6, display: 'block', marginBottom: '6px' }}>
-                                            {selectedType === 'text' ? 'Your Message *' :
-                                                selectedType === 'link' ? 'URL / Link *' :
-                                                    'Description / Instructions *'}
+                                            {selectedType === 'text' ? (t('lb_field_message') || 'Your Message *') :
+                                                selectedType === 'link' ? (t('lb_field_url') || 'URL / Link *') :
+                                                    (t('lb_field_description') || 'Description / Instructions *')}
                                         </label>
                                         <textarea
                                             value={content}
                                             onChange={e => setContent(e.target.value)}
                                             rows={selectedType === 'text' ? 6 : 3}
                                             placeholder={
-                                                selectedType === 'text' ? 'Write your message here...' :
-                                                    selectedType === 'link' ? 'https://...' :
-                                                        selectedType === 'photo' ? 'Describe the photos, where to find them...' :
-                                                            selectedType === 'video' ? 'Describe the video or where to find it...' :
-                                                                'Describe the audio recording...'
+                                                selectedType === 'text' ? (t('lb_ph_text') || 'Write your message here...') :
+                                                    selectedType === 'link' ? (t('lb_ph_link') || 'https://...') :
+                                                        selectedType === 'photo' ? (t('lb_ph_photo') || 'Describe the photos, where to find them...') :
+                                                            selectedType === 'video' ? (t('lb_ph_video') || 'Describe the video or where to find it...') :
+                                                                (t('lb_ph_audio') || 'Describe the audio recording...')
                                             }
                                             style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: '#fff', boxSizing: 'border-box', resize: 'vertical' }}
                                         />
                                     </div>
                                     <div>
-                                        <label style={{ fontSize: '0.82rem', opacity: 0.6, display: 'block', marginBottom: '6px' }}>Tags (comma separated)</label>
+                                        <label style={{ fontSize: '0.82rem', opacity: 0.6, display: 'block', marginBottom: '6px' }}>{t('lb_tags') || 'Tags (comma separated)'}</label>
                                         <input
                                             type="text"
                                             value={tagsInput}
@@ -291,7 +296,7 @@ const LeaveBehind: React.FC = () => {
                             {/* Step 2: Recipient */}
                             {wizardStep === 2 && (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                    <p style={{ opacity: 0.6, fontSize: '0.88rem' }}>Who is this memory intended for? (optional)</p>
+                                    <p style={{ opacity: 0.6, fontSize: '0.88rem' }}>{t('lb_recipient_question') || 'Who is this memory intended for? (optional)'}</p>
                                     <input
                                         type="text"
                                         value={recipient}
@@ -314,7 +319,7 @@ const LeaveBehind: React.FC = () => {
                                         </div>
                                     </div>
                                     <p style={{ fontSize: '0.88rem', opacity: 0.7, marginBottom: '12px', borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '12px' }}>{content}</p>
-                                    {recipient && <div style={{ fontSize: '0.82rem', opacity: 0.6 }}>For: <strong>{recipient}</strong></div>}
+                                    {recipient && <div style={{ fontSize: '0.82rem', opacity: 0.6 }}>{t('lb_for') || 'For:'} <strong>{recipient}</strong></div>}
                                     {tagsInput && (
                                         <div style={{ marginTop: '10px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                             {tagsInput.split(',').map(tag => tag.trim()).filter(Boolean).map(tag => (
@@ -331,7 +336,7 @@ const LeaveBehind: React.FC = () => {
                                     onClick={() => wizardStep === 0 ? resetWizard() : setWizardStep(s => s - 1)}
                                     style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem' }}
                                 >
-                                    {wizardStep === 0 ? 'Cancel' : '← Back'}
+                                    {wizardStep === 0 ? (t('profile_cancel') || 'Cancel') : (t('lb_back') || '← Back')}
                                 </button>
                                 <button
                                     onClick={() => wizardStep === WIZARD_STEPS.length - 1 ? submitItem() : setWizardStep(s => s + 1)}
@@ -344,7 +349,7 @@ const LeaveBehind: React.FC = () => {
                                         fontSize: '0.85rem', fontWeight: 700, transition: 'all 0.2s'
                                     }}
                                 >
-                                    {wizardStep === WIZARD_STEPS.length - 1 ? '✓ Add to Vault' : 'Next →'}
+                                    {wizardStep === WIZARD_STEPS.length - 1 ? (t('lb_submit') || '✓ Add to Vault') : (t('lb_next') || 'Next →')}
                                 </button>
                             </div>
                         </div>
@@ -387,7 +392,7 @@ const LeaveBehind: React.FC = () => {
                             </div>
                             {viewing.recipient && (
                                 <div style={{ padding: '10px 14px', borderRadius: '8px', background: 'rgba(255,215,0,0.05)', border: '1px solid rgba(255,215,0,0.15)', fontSize: '0.85rem' }}>
-                                    💌 Intended for: <strong style={{ color: 'var(--accent-gold)' }}>{viewing.recipient}</strong>
+                                    💌 {t('lb_intended_for') || 'Intended for:'} <strong style={{ color: 'var(--accent-gold)' }}>{viewing.recipient}</strong>
                                 </div>
                             )}
                             {viewing.tags.length > 0 && (
@@ -401,7 +406,7 @@ const LeaveBehind: React.FC = () => {
                                 onClick={() => { setItems(items.filter(i => i.id !== viewing.id)); setViewing(null); }}
                                 style={{ marginTop: '20px', padding: '8px 16px', borderRadius: '8px', border: '1px solid rgba(255,100,100,0.3)', background: 'transparent', color: 'rgba(255,100,100,0.7)', cursor: 'pointer', fontSize: '0.8rem' }}
                             >
-                                Delete this memory
+                                {t('lb_delete') || 'Delete this memory'}
                             </button>
                         </div>
                     </div>

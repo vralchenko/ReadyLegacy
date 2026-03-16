@@ -187,6 +187,7 @@ const TEMPLATES: Template[] = [
 
 // ─── Wizard Component ─────────────────────────────────────────────────────────
 const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComplete: (data: Record<string, string>) => void }> = ({ template, onClose, onComplete }) => {
+    const { t } = useLanguage();
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState<Record<string, string>>({});
 
@@ -266,7 +267,7 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
                                         onChange={e => updateField(field.key, e.target.value)}
                                         style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: `1px solid ${formData[field.key] ? 'rgba(255,215,0,0.2)' : 'rgba(255,255,255,0.12)'}`, background: '#0d1117', color: '#fff', boxSizing: 'border-box' }}
                                     >
-                                        <option value="">— Select —</option>
+                                        <option value="">{t('tmpl_select') || '— Select —'}</option>
                                         {field.options?.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                                     </select>
                                 ) : (
@@ -289,7 +290,7 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
                         onClick={() => step === 0 ? onClose() : setStep(s => s - 1)}
                         style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem' }}
                     >
-                        {step === 0 ? 'Cancel' : '← Back'}
+                        {step === 0 ? (t('profile_cancel') || 'Cancel') : (t('lb_back') || '← Back')}
                     </button>
                     <button
                         onClick={() => isLastStep ? onComplete(formData) : setStep(s => s + 1)}
@@ -302,7 +303,7 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
                             fontSize: '0.85rem', fontWeight: 700, transition: 'all 0.2s'
                         }}
                     >
-                        {isLastStep ? '✓ Generate Preview' : 'Next →'}
+                        {isLastStep ? (t('tmpl_generate') || '✓ Generate Preview') : (t('lb_next') || 'Next →')}
                     </button>
                 </div>
             </div>
@@ -312,6 +313,7 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
 
 // ─── Completed template preview ───────────────────────────────────────────────
 const TemplatePreview: React.FC<{ template: Template; data: Record<string, string>; onClose: () => void }> = ({ template, data, onClose }) => {
+    const { t } = useLanguage();
     return (
         <div style={{
             position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 9001,
@@ -326,8 +328,8 @@ const TemplatePreview: React.FC<{ template: Template; data: Record<string, strin
                 <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', gap: '12px', alignItems: 'center' }}>
                     <span style={{ fontSize: '1.5rem' }}>{template.icon}</span>
                     <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 700 }}>{template.title} — Preview</div>
-                        <div style={{ fontSize: '0.78rem', color: '#10b981' }}>✓ Template completed</div>
+                        <div style={{ fontWeight: 700 }}>{template.title} — {t('tmpl_preview') || 'Preview'}</div>
+                        <div style={{ fontSize: '0.78rem', color: '#10b981' }}>{t('tmpl_completed') || '✓ Template completed'}</div>
                     </div>
                     <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
@@ -344,15 +346,15 @@ const TemplatePreview: React.FC<{ template: Template; data: Record<string, strin
                         </div>
                     ))}
                     <div style={{ padding: '16px', borderRadius: '10px', background: 'rgba(255,215,0,0.05)', border: '1px solid rgba(255,215,0,0.15)', fontSize: '0.83rem', opacity: 0.7, fontStyle: 'italic', marginTop: '8px' }}>
-                        ⚠️ This is a draft for reference only. Please consult a qualified notary or lawyer in your jurisdiction before using any legal document.
+                        ⚠️ {t('tmpl_disclaimer') || 'This is a draft for reference only. Please consult a qualified notary or lawyer in your jurisdiction before using any legal document.'}
                     </div>
                 </div>
                 <div style={{ padding: '16px 24px', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
                     <button onClick={() => window.print()} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem' }}>
-                        🖨 Print / Save PDF
+                        🖨 {t('tmpl_print') || 'Print / Save PDF'}
                     </button>
                     <button onClick={onClose} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#000', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>
-                        Done
+                        {t('tmpl_done') || 'Done'}
                     </button>
                 </div>
             </div>
@@ -372,7 +374,7 @@ const Templates: React.FC = () => {
                 <span className="step-tag">{t('tag_templates') || 'Request Templates'}</span>
                 <h2>{t('title_templates') || 'Document Templates'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
-                    Fill in templates step-by-step. Each wizard guides you through the required information to generate a draft document for legal review.
+                    {t('tmpl_desc') || 'Fill in templates step-by-step. Each wizard guides you through the required information to generate a draft document for legal review.'}
                 </p>
             </div>
 
@@ -404,13 +406,13 @@ const Templates: React.FC = () => {
                         </div>
                         <p style={{ fontSize: '0.85rem', opacity: 0.6, flex: 1, marginBottom: '20px', lineHeight: '1.5' }}>{tmpl.desc}</p>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <span style={{ fontSize: '0.72rem', opacity: 0.4 }}>{tmpl.steps.length} steps</span>
+                            <span style={{ fontSize: '0.72rem', opacity: 0.4 }}>{(t('tmpl_steps') || '{count} steps').replace('{count}', String(tmpl.steps.length))}</span>
                             <button
                                 className="btn"
                                 onClick={() => setActiveWizard(tmpl)}
                                 style={{ fontSize: '0.75rem', padding: '8px 18px', borderRadius: '8px' }}
                             >
-                                Start Wizard →
+                                {t('tmpl_start') || 'Start Wizard →'}
                             </button>
                         </div>
                     </div>
