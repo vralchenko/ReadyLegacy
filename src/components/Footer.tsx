@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
                     <Link to="/impressum" style={{ color: 'var(--text-muted)', textDecoration: 'none', opacity: 0.6, fontSize: '0.85rem', marginLeft: '8px' }}>{t('footer_impressum') || 'Impressum'}</Link>
                     <Link to="/privacy" style={{ color: 'var(--text-muted)', textDecoration: 'none', opacity: 0.6, fontSize: '0.85rem' }}>{t('footer_privacy') || 'Privacy Policy'}</Link>
                 </div>
-                <p>&copy; 2026 Ready Legacy Ecosystem. <span style={{ opacity: 0.5 }}>Be Ready. Leave Behind. Be Honored.</span></p>
+                <p>&copy; 2026 Ready Legacy Ecosystem. Be Ready. Leave Behind. Be Honored.</p>
             </div>
         </footer>
     );
