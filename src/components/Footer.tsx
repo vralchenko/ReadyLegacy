@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
                     <span className="badge">🔒 {t('footer_compliance_gdpr') || 'GDPR'}</span>
                     <span className="badge">🛡️ {t('footer_compliance_ndsg') || 'nDSG'}</span>
                 </div>
-                <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '8px', fontSize: '0.85rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '8px', fontSize: '0.85rem' }}>
                     <Link to="/impressum" style={{ color: 'var(--text-muted)', textDecoration: 'none', opacity: 0.6 }}>{t('footer_impressum') || 'Impressum'}</Link>
                     <Link to="/privacy" style={{ color: 'var(--text-muted)', textDecoration: 'none', opacity: 0.6 }}>{t('footer_privacy') || 'Privacy Policy'}</Link>
                 </div>

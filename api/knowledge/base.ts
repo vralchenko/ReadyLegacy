@@ -23,10 +23,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['що таке continuum', 'платформа', 'про нас']
     },
     content: {
-      en: '**Ready Legacy** is a digital platform for estate planning, legacy creation, and bereavement support. It helps you organize legal documents, create personal messages for loved ones, and guides families through the process after loss. Available in English, German, Russian, and Ukrainian.',
-      de: '**Ready Legacy** ist eine digitale Plattform für Nachlassplanung, Vermächtnisgestaltung und Trauerbegleitung. Sie hilft Ihnen, rechtliche Dokumente zu organisieren, persönliche Nachrichten für Ihre Lieben zu erstellen, und begleitet Familien durch den Prozess nach einem Verlust. Verfügbar auf Englisch, Deutsch, Russisch und Ukrainisch.',
-      ru: '**Ready Legacy** — цифровая платформа для планирования наследства, создания наследия и поддержки в период утраты. Помогает организовать юридические документы, создать личные послания для близких и сопровождает семьи через процесс после потери. Доступна на английском, немецком, русском и украинском языках.',
-      ua: '**Ready Legacy** — цифрова платформа для планування спадщини, створення спадку та підтримки у період втрати. Допомагає організувати юридичні документи, створити особисті послання для близьких та супроводжує сім\'ї через процес після втрати. Доступна англійською, німецькою, російською та українською мовами.'
+      en: '**Ready Legacy** is a Swiss digital platform for estate planning, legacy creation, and bereavement support. It helps you organize legal documents, create personal messages for loved ones, and guides families through the process after loss. Available in English and German. GDPR and nDSG compliant.',
+      de: '**Ready Legacy** ist eine Schweizer digitale Plattform für Nachlassplanung, Vermächtnisgestaltung und Trauerbegleitung. Sie hilft Ihnen, rechtliche Dokumente zu organisieren, persönliche Nachrichten für Ihre Lieben zu erstellen, und begleitet Familien durch den Prozess nach einem Verlust. Verfügbar auf Englisch und Deutsch. DSGVO- und nDSG-konform.',
+      ru: '**Ready Legacy** — швейцарская цифровая платформа для планирования наследства, создания наследия и поддержки в период утраты. Помогает организовать юридические документы, создать личные послания для близких и сопровождает семьи через процесс после потери. Доступна на английском и немецком языках.',
+      ua: '**Ready Legacy** — швейцарська цифрова платформа для планування спадщини, створення спадку та підтримки у період втрати. Допомагає організувати юридичні документи, створити особисті послання для близьких та супроводжує сім\'ї через процес після втрати. Доступна англійською та німецькою мовами.'
     },
     route: '/',
     priority: 10
@@ -61,8 +61,8 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['три стовпи', 'екосистема', 'етапи', 'будьте готові', 'залиште', 'будьте спокійні']
     },
     content: {
-      en: 'Ready Legacy is built on **3 pillars**: 1) **Be Ready** — organize your legal documents, assets, and final wishes. 2) **Leave Behind** — create personal messages, videos, and memories for your loved ones. 3) **Be Honored** — support for those left behind with emotional resources, checklists, and your prepared messages.',
-      de: 'Ready Legacy basiert auf **3 Säulen**: 1) **Bereit sein** — organisieren Sie Ihre rechtlichen Dokumente, Vermögenswerte und letzten Wünsche. 2) **Hinterlassen** — erstellen Sie persönliche Nachrichten, Videos und Erinnerungen. 3) **Be Honored** — Unterstützung mit emotionalen Ressourcen, Checklisten und Ihren vorbereiteten Botschaften.',
+      en: 'Ready Legacy is built on **3 pillars**: 1) **Be Ready** — organize your legal documents, assets, and final wishes. 2) **Leave Behind** — create personal messages, videos, and memories for your loved ones. 3) **Be Honored** — structured grief guidance, support networks, practical checklists for families, and digital remembrance spaces.',
+      de: 'Ready Legacy basiert auf **3 Säulen**: 1) **Bereit sein** — organisieren Sie Ihre rechtlichen Dokumente, Vermögenswerte und letzten Wünsche. 2) **Hinterlassen** — erstellen Sie persönliche Nachrichten, Videos und Erinnerungen. 3) **Gedenken** — strukturierte Trauerbegleitung, Unterstützungsnetzwerke, praktische Checklisten für Familien und digitale Gedenkräume.',
       ru: 'Ready Legacy построен на **3 столпах**: 1) **Будьте готовы** — организуйте юридические документы, активы и последнюю волю. 2) **Оставьте после себя** — создайте личные послания, видео и воспоминания для близких. 3) **Be Honored** — поддержка оставшихся с помощью эмоциональных ресурсов, чек-листов и ваших подготовленных посланий.',
       ua: 'Ready Legacy побудований на **3 стовпах**: 1) **Будьте готові** — організуйте юридичні документи, активи та останню волю. 2) **Залиште після себе** — створіть особисті послання, відео та спогади для близьких. 3) **Be Honored** — підтримка тих, хто залишився, з допомогою емоційних ресурсів, чек-листів та ваших підготовлених послань.'
     },
