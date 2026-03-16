@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 const Footer: React.FC = () => {
@@ -8,10 +9,13 @@ const Footer: React.FC = () => {
         <footer>
             <div className="container footer-compact">
                 <div className="footer-badges">
-                    <span className="badge">🔒 {t('footer_compliance_hipaa') || 'HIPAA'}</span>
-                    <span className="badge">🛡️ {t('footer_compliance_soc') || 'SOC 2'}</span>
-                    <span className="badge">🇪🇺 {t('footer_compliance_gdpr') || 'GDPR'}</span>
-                    <span className="badge">🇨🇭 {t('footer_compliance_ndsg') || 'nDSG'}</span>
+                    <span className="badge">🇨🇭 Swiss Made</span>
+                    <span className="badge">🔒 {t('footer_compliance_gdpr') || 'GDPR'}</span>
+                    <span className="badge">🛡️ {t('footer_compliance_ndsg') || 'nDSG'}</span>
+                </div>
+                <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '8px', fontSize: '0.85rem' }}>
+                    <Link to="/impressum" style={{ color: 'var(--text-muted)', textDecoration: 'none', opacity: 0.6 }}>{t('footer_impressum') || 'Impressum'}</Link>
+                    <Link to="/privacy" style={{ color: 'var(--text-muted)', textDecoration: 'none', opacity: 0.6 }}>{t('footer_privacy') || 'Privacy Policy'}</Link>
                 </div>
                 <p>&copy; 2026 Ready Legacy Ecosystem. <span style={{ opacity: 0.5 }}>Be Ready. Leave Behind. Be Honored.</span></p>
             </div>

@@ -20,15 +20,15 @@ const BereavementSupport: React.FC = () => {
     const toggle = (key: string) => setChecks({ ...checks, [key]: !checks[key] });
 
     const EMOTIONAL_ITEMS = [
-        { key: 'ber_meaningful', label: 'Create meaningful moments together', section: 'Anticipatory Grief' },
-        { key: 'ber_comm', label: 'Open heart communication', section: 'Anticipatory Grief' },
-        { key: 'ber_prep', label: 'Emotional and spiritual preparation', section: 'Anticipatory Grief' },
-        { key: 'ber_space', label: 'Create a dedicated space for grief and reflection', section: 'Emotional First Aid' },
-        { key: 'ber_support', label: 'Reach out to a grief counselor or support group', section: 'Emotional First Aid' },
-        { key: 'ber_selfcare', label: 'Prioritize self-care and basic physical needs', section: 'Emotional First Aid' },
-        { key: 'ber_diary', label: 'Start a grief journal', section: 'Self-Help' },
-        { key: 'ber_breath', label: 'Practice mindful breathing / meditation', section: 'Self-Help' },
-        { key: 'ber_memory', label: 'Create a memory book or photo album', section: 'Self-Help' },
+        { key: 'ber_meaningful', label: t('check_meaningful') || 'Create meaningful moments together', section: t('ber_section_anticipatory') || 'Anticipatory Grief' },
+        { key: 'ber_comm', label: t('check_open_comm') || 'Open heart communication', section: t('ber_section_anticipatory') || 'Anticipatory Grief' },
+        { key: 'ber_prep', label: t('check_emotional_prep') || 'Emotional and spiritual preparation', section: t('ber_section_anticipatory') || 'Anticipatory Grief' },
+        { key: 'ber_space', label: t('check_ber_space') || 'Create a dedicated space for grief and reflection', section: t('ber_section_firstaid') || 'Emotional First Aid' },
+        { key: 'ber_support', label: t('check_ber_support') || 'Reach out to a grief counselor or support group', section: t('ber_section_firstaid') || 'Emotional First Aid' },
+        { key: 'ber_selfcare', label: t('check_ber_selfcare') || 'Prioritize self-care and basic physical needs', section: t('ber_section_firstaid') || 'Emotional First Aid' },
+        { key: 'ber_diary', label: t('check_ber_diary') || 'Start a grief journal', section: t('ber_section_selfhelp') || 'Self-Help' },
+        { key: 'ber_breath', label: t('check_ber_breath') || 'Practice mindful breathing / meditation', section: t('ber_section_selfhelp') || 'Self-Help' },
+        { key: 'ber_memory', label: t('check_ber_memory') || 'Create a memory book or photo album', section: t('ber_section_selfhelp') || 'Self-Help' },
     ];
 
     const grouped = EMOTIONAL_ITEMS.reduce<Record<string, typeof EMOTIONAL_ITEMS>>((acc, item) => {
@@ -105,7 +105,7 @@ const BereavementSupport: React.FC = () => {
             {activeTab === 'groups' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     <p style={{ opacity: 0.6, fontSize: '0.9rem', marginBottom: '8px' }}>
-                        Connecting with others who understand your experience can be profoundly healing. Here are verified support groups:
+                        {t('ber_groups_intro') || 'Connecting with others who understand your experience can be profoundly healing. Here are verified support groups:'}
                     </p>
                     {SUPPORT_GROUPS.map((group, i) => (
                         <div key={i} style={{

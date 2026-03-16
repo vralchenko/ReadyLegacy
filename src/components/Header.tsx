@@ -36,8 +36,6 @@ const Header: React.FC = () => {
                         <div className="lang-switcher">
                             <button className={`lang-btn ${language === 'en' ? 'active' : ''}`} onClick={() => { setLanguage('en'); closeMenu(); }}>EN</button>
                             <button className={`lang-btn ${language === 'de' ? 'active' : ''}`} onClick={() => { setLanguage('de'); closeMenu(); }}>DE</button>
-                            <button className={`lang-btn ${language === 'ru' ? 'active' : ''}`} onClick={() => { setLanguage('ru'); closeMenu(); }}>RU</button>
-                            <button className={`lang-btn ${language === 'ua' ? 'active' : ''}`} onClick={() => { setLanguage('ua'); closeMenu(); }}>UA</button>
                         </div>
 
                         <div className="nav-links">

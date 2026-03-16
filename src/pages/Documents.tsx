@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import usePersistedState from '../hooks/usePersistedState';
 
@@ -60,6 +60,11 @@ const DEMO_DOCS: Document[] = [
 ];
 
 const Documents: React.FC = () => {
+    const isLoggedIn = !!localStorage.getItem('continuum_user');
+    if (!isLoggedIn) {
+        return <Navigate to="/login" replace />;
+    }
+
     const { t } = useLanguage();
     const navigate = useNavigate();
     const [docs] = usePersistedState<Document[]>('saved_documents', DEMO_DOCS);

@@ -14,6 +14,8 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Documents from './pages/Documents';
 import Profile from './pages/Profile';
+import Impressum from './pages/Impressum';
+import Privacy from './pages/Privacy';
 
 const App: React.FC = () => {
     return (
@@ -47,6 +49,8 @@ const Main = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/documents" element={<Documents />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/impressum" element={<Impressum />} />
+                    <Route path="/privacy" element={<Privacy />} />
                 </Routes>
             </main>
             <Footer />

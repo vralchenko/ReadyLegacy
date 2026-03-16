@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Navigate } from 'react-router-dom';
 import Sidebar from '../components/tools/Sidebar';
 import AssetOverview from '../components/tools/AssetOverview';
 import LegalDocs from '../components/tools/LegalDocs';
@@ -13,9 +13,14 @@ import Reminders from '../components/tools/Reminders';
 import AIAvatar from '../components/tools/AIAvatar';
 
 const Tools: React.FC = () => {
+    const isLoggedIn = !!localStorage.getItem('continuum_user');
     const [searchParams, setSearchParams] = useSearchParams();
     const initialTool = searchParams.get('tool') || 'asset-overview';
     const [activeTool, setActiveTool] = useState(initialTool);
+
+    if (!isLoggedIn) {
+        return <Navigate to="/login" replace />;
+    }
 
     useEffect(() => {
         const tool = searchParams.get('tool');

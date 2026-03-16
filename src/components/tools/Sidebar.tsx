@@ -38,13 +38,13 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool }) => {
 
                 {/* Family */}
                 <div className="nav-group">
-                    <div className="group-title">02 Family</div>
+                    <div className="group-title">{t('sidebar_family') || '02 Family'}</div>
                     <NavItem tool="will-builder" label={t('tag_will') || 'Will Structure'} number="02" />
                 </div>
 
                 {/* Legal & After Death */}
                 <div className="nav-group">
-                    <div className="group-title">03 Legal & Formalities</div>
+                    <div className="group-title">{t('sidebar_legal') || '03 Legal & Formalities'}</div>
                     <NavItem tool="legal-docs" label={t('tag_legal') || 'Legal Framework'} number="03" />
                     <NavItem tool="death-checklist" label={t('tag_checklist') || 'After Death Guide'} number="04" />
                     <NavItem tool="executor" label={t('auto_todo_list') || 'ToDo List'} number="05" />
@@ -71,16 +71,16 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool }) => {
 
                 {/* Utilities */}
                 <div className="nav-group">
-                    <div className="group-title">Utilities</div>
+                    <div className="group-title">{t('sidebar_utilities') || 'Utilities'}</div>
                     <NavItem tool="reminders" label={t('auto_email_reminders') || '📧 Email Reminders'} />
                     <Link to="/profile" style={{ display: 'block', padding: '11px 16px', borderRadius: '8px', fontSize: '0.88rem', color: 'var(--text-muted)', transition: 'all 0.2s', marginBottom: '2px' }}
                         onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'rgba(255,215,0,0.05)'; }}
                         onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
-                    >👤 My Profile</Link>
+                    >👤 {t('sidebar_profile') || 'My Profile'}</Link>
                     <Link to="/documents" style={{ display: 'block', padding: '11px 16px', borderRadius: '8px', fontSize: '0.88rem', color: 'var(--text-muted)', transition: 'all 0.2s', marginBottom: '2px' }}
                         onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'rgba(255,215,0,0.05)'; }}
                         onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
-                    >📄 My Documents</Link>
+                    >📄 {t('sidebar_documents') || 'My Documents'}</Link>
                 </div>
             </div>
 

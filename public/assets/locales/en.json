@@ -270,5 +270,14 @@
   "quiz_result_low": "There's room to improve. Ready Legacy can help you get organized step by step.",
   "quiz_result_mid": "Good start! A few more steps and you'll have full peace of mind.",
   "quiz_result_high": "Excellent! You're well prepared. Ready Legacy can help you maintain and share your plan.",
-  "quiz_cta": "Start Your Plan"
+  "quiz_cta": "Start Your Plan",
+
+  "sidebar_family": "02 Family",
+  "sidebar_legal": "03 Legal & Formalities",
+  "sidebar_utilities": "Utilities",
+  "sidebar_profile": "My Profile",
+  "sidebar_documents": "My Documents",
+
+  "footer_impressum": "Impressum",
+  "footer_privacy": "Privacy Policy"
 }
