@@ -43,7 +43,7 @@ body.demo-mode main::-webkit-scrollbar {
 body.demo-mode #root,
 body.demo-mode .App,
 body.demo-mode .flex-col {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
