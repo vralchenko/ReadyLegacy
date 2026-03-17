@@ -49,7 +49,6 @@ body.demo-mode .flex-col {
 }
 
 body.demo-mode .container {
-    zoom: 0.75;
     max-width: 1400px;
 }
 
