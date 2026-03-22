@@ -48,7 +48,7 @@ const Team: React.FC = () => {
                         <p className="founder-bio">{t('bio_olga')}</p>
                     </div>
                     <div className="founder">
-                        <img src={viktorImg} alt="Viktor Ralchenko" className="founder-img" style={{ objectPosition: 'center 26%' }} />
+                        <img src={viktorImg} alt="Viktor Ralchenko" className="founder-img" style={{ objectPosition: 'center 26%', border: 'none', padding: 0, background: 'none' }} />
                         <div className="founder-header">
                             <h3>Viktor Ralchenko</h3>
                             <a href="https://www.linkedin.com/in/victoralchenko/" target="_blank" rel="noopener noreferrer" className="social-link">
