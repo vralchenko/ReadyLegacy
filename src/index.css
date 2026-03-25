@@ -12,8 +12,8 @@
     --nav-bg: rgba(6, 9, 14, 0.98);
     --link-color: #e2e8f0;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Poppins', sans-serif;
     --spacing-container: 24px;
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.1);
@@ -232,7 +232,7 @@ html[data-theme="light"] {
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: transparent;
     color: var(--text-color);
     line-height: 1.6;
@@ -269,7 +269,7 @@ h2,
 h3,
 h4 {
     font-family: var(--font-heading);
-    font-weight: 400;
+    font-weight: 600;
 }
 
 a {
