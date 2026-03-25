@@ -87,7 +87,7 @@ const DOCUMENTS = [
 ];
 
 const STATUS_CONFIG = {
-    not_started: { label: 'Not Started', color: 'rgba(255,255,255,0.2)', bg: 'rgba(255,255,255,0.04)' },
+    not_started: { label: 'Not Started', color: 'var(--glass-border)', bg: 'var(--glass-bg)' },
     in_progress: { label: 'In Progress', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)' },
     completed: { label: 'Completed', color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
     filed: { label: 'Filed & Stored', color: '#6fcf97', bg: 'rgba(111,207,151,0.12)' },
@@ -171,7 +171,7 @@ const LegalDocs: React.FC = () => {
                     <span>Overall completion</span>
                     <span>{completedCount} / {DOCUMENTS.length}</span>
                 </div>
-                <div style={{ height: '6px', borderRadius: '3px', background: 'rgba(255,255,255,0.08)' }}>
+                <div style={{ height: '6px', borderRadius: '3px', background: 'var(--glass-bg)' }}>
                     <div style={{
                         height: '100%', borderRadius: '3px',
                         width: `${(completedCount / DOCUMENTS.length) * 100}%`,
@@ -191,8 +191,8 @@ const LegalDocs: React.FC = () => {
                     return (
                         <div key={doc.key} style={{
                             borderRadius: '14px', overflow: 'hidden',
-                            border: `1px solid ${isExpanded ? 'rgba(255,215,0,0.2)' : 'rgba(255,255,255,0.07)'}`,
-                            background: isExpanded ? 'rgba(255,215,0,0.02)' : 'rgba(255,255,255,0.02)',
+                            border: `1px solid ${isExpanded ? 'rgba(255,215,0,0.2)' : 'var(--glass-border)'}`,
+                            background: isExpanded ? 'rgba(255,215,0,0.02)' : 'var(--glass-bg)',
                             transition: 'all 0.3s ease'
                         }}>
                             {/* Doc header */}
@@ -204,7 +204,7 @@ const LegalDocs: React.FC = () => {
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                                         <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>{doc.title}</span>
-                                        <span style={{ fontSize: '0.72rem', opacity: 0.5 }}>{doc.subtitle}</span>
+                                        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{doc.subtitle}</span>
                                         <span style={{
                                             fontSize: '0.68rem', padding: '2px 8px', borderRadius: '10px',
                                             background: `${IMPORTANCE_COLORS[doc.importance]}15`,
@@ -213,7 +213,7 @@ const LegalDocs: React.FC = () => {
                                         }}>{doc.importance}</span>
                                     </div>
                                     {!isExpanded && (
-                                        <div style={{ fontSize: '0.8rem', opacity: 0.5, marginTop: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             {doc.desc}
                                         </div>
                                     )}
@@ -230,12 +230,12 @@ const LegalDocs: React.FC = () => {
 
                             {/* Expanded content */}
                             {isExpanded && (
-                                <div style={{ padding: '0 20px 20px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                                <div style={{ padding: '0 20px 20px', borderTop: '1px solid var(--glass-border)' }}>
                                     <p style={{ fontSize: '0.87rem', opacity: 0.7, margin: '16px 0' }}>{doc.desc}</p>
 
                                     {/* Tips */}
                                     <div style={{ marginBottom: '18px' }}>
-                                        <div style={{ fontSize: '0.75rem', opacity: 0.5, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>💡 Key Points</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>💡 Key Points</div>
                                         {doc.tips.map((tip, i) => (
                                             <div key={i} style={{ display: 'flex', gap: '8px', fontSize: '0.83rem', opacity: 0.75, marginBottom: '6px' }}>
                                                 <span style={{ color: 'var(--accent-gold)', flexShrink: 0 }}>→</span>
@@ -246,7 +246,7 @@ const LegalDocs: React.FC = () => {
 
                                     {/* Status selector */}
                                     <div style={{ marginBottom: '16px' }}>
-                                        <div style={{ fontSize: '0.75rem', opacity: 0.5, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Status</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Status</div>
                                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                                             {(Object.entries(STATUS_CONFIG) as [DocRecord['status'], typeof STATUS_CONFIG[keyof typeof STATUS_CONFIG]][]).map(([s, cfg]) => (
                                                 <button
@@ -255,7 +255,7 @@ const LegalDocs: React.FC = () => {
                                                     style={{
                                                         padding: '6px 14px', borderRadius: '20px', border: `1px solid ${cfg.color}50`,
                                                         background: record.status === s ? cfg.bg : 'transparent',
-                                                        color: record.status === s ? cfg.color : 'rgba(255,255,255,0.4)',
+                                                        color: record.status === s ? cfg.color : 'var(--text-muted)',
                                                         fontSize: '0.78rem', cursor: 'pointer', transition: 'all 0.2s',
                                                         fontWeight: record.status === s ? 700 : 400
                                                     }}
@@ -266,7 +266,7 @@ const LegalDocs: React.FC = () => {
 
                                     {/* Storage location */}
                                     <div style={{ marginBottom: '16px' }}>
-                                        <div style={{ fontSize: '0.75rem', opacity: 0.5, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>📁 Where is it stored?</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>📁 Where is it stored?</div>
                                         <input
                                             type="text"
                                             value={record.location || ''}
@@ -274,7 +274,7 @@ const LegalDocs: React.FC = () => {
                                             placeholder={t('auto_e_g_home_safe_n') || 'e.g. Home safe, notary office, bank vault...'}
                                             style={{
                                                 width: '100%', padding: '10px 14px', borderRadius: '8px', boxSizing: 'border-box',
-                                                border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)',
+                                                border: '1px solid var(--glass-border)', background: 'var(--glass-bg)',
                                                 color: 'var(--text-color)', fontSize: '0.85rem'
                                             }}
                                         />
@@ -282,7 +282,7 @@ const LegalDocs: React.FC = () => {
 
                                     {/* Notes */}
                                     <div>
-                                        <div style={{ fontSize: '0.75rem', opacity: 0.5, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>📝 Notes</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>📝 Notes</div>
                                         {editingNotes === doc.key ? (
                                             <div>
                                                 <textarea
@@ -291,13 +291,13 @@ const LegalDocs: React.FC = () => {
                                                     rows={3}
                                                     style={{
                                                         width: '100%', padding: '10px 14px', borderRadius: '8px', marginBottom: '8px', boxSizing: 'border-box',
-                                                        border: '1px solid rgba(255,215,0,0.3)', background: 'rgba(255,255,255,0.04)',
+                                                        border: '1px solid rgba(255,215,0,0.3)', background: 'var(--glass-bg)',
                                                         color: 'var(--text-color)', fontSize: '0.85rem', resize: 'vertical'
                                                     }}
                                                 />
                                                 <div style={{ display: 'flex', gap: '8px' }}>
                                                     <button onClick={() => saveNotes(doc.key)} style={{ padding: '6px 16px', borderRadius: '6px', border: 'none', background: 'var(--accent-gold)', color: '#000', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}>Save</button>
-                                                    <button onClick={() => setEditingNotes(null)} style={{ padding: '6px 16px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.8rem' }}>Cancel</button>
+                                                    <button onClick={() => setEditingNotes(null)} style={{ padding: '6px 16px', borderRadius: '6px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.8rem' }}>Cancel</button>
                                                 </div>
                                             </div>
                                         ) : (
@@ -305,7 +305,7 @@ const LegalDocs: React.FC = () => {
                                                 onClick={() => { setEditingNotes(doc.key); setNotesDraft(record.notes); }}
                                                 style={{
                                                     padding: '10px 14px', borderRadius: '8px', cursor: 'text', minHeight: '44px',
-                                                    border: '1px dashed rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.02)',
+                                                    border: '1px dashed var(--glass-border)', background: 'var(--glass-bg)',
                                                     fontSize: '0.85rem', opacity: record.notes ? 0.8 : 0.35,
                                                     fontStyle: record.notes ? 'normal' : 'italic'
                                                 }}
@@ -316,7 +316,7 @@ const LegalDocs: React.FC = () => {
                                     </div>
 
                                     {record.lastUpdated && (
-                                        <div style={{ fontSize: '0.72rem', opacity: 0.35, marginTop: '12px' }}>Last updated: {record.lastUpdated}</div>
+                                        <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '12px' }}>Last updated: {record.lastUpdated}</div>
                                     )}
                                 </div>
                             )}

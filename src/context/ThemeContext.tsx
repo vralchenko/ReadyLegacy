@@ -14,7 +14,7 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [theme, setThemeState] = useState<string>(() => localStorage.getItem('continuum_theme') || 'dark');
+    const [theme, setThemeState] = useState<string>(() => localStorage.getItem('readylegacy_theme') || 'light');
 
     const toggleTheme = () => {
         setThemeState(t => t === 'dark' ? 'light' : 'dark');
@@ -22,7 +22,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('continuum_theme', theme);
+        localStorage.setItem('readylegacy_theme', theme);
     }, [theme]);
 
     return (

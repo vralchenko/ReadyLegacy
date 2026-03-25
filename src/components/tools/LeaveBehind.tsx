@@ -109,14 +109,14 @@ const LeaveBehind: React.FC = () => {
                             key={f.key}
                             onClick={() => setFilter(f.key as any)}
                             style={{
-                                padding: '6px 14px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.12)',
+                                padding: '6px 14px', borderRadius: '20px', border: '1px solid var(--glass-border)',
                                 background: filter === f.key ? 'rgba(255,215,0,0.1)' : 'transparent',
                                 color: filter === f.key ? 'var(--accent-gold)' : 'var(--text-muted)',
                                 fontSize: '0.8rem', cursor: 'pointer', transition: 'all 0.2s',
                                 fontWeight: filter === f.key ? 700 : 400
                             }}
                         >
-                            {getTypeIcon(f.key)} {f.label} {f.count > 0 && <span style={{ opacity: 0.5 }}>({f.count})</span>}
+                            {getTypeIcon(f.key)} {f.label} {f.count > 0 && <span style={{ color: 'var(--text-muted)' }}>({f.count})</span>}
                         </button>
                     ) : null
                 ))}
@@ -135,7 +135,7 @@ const LeaveBehind: React.FC = () => {
 
             {/* Empty state */}
             {filteredItems.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '60px 20px', opacity: 0.4 }}>
+                <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-muted)' }}>
                     <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✦</div>
                     <p style={{ fontStyle: 'italic' }}>
                         {items.length === 0 ? (t('lb_empty') || 'Your vault is empty. Start creating memories for your loved ones.') : (t('lb_no_items') || 'No items in this category.')}
@@ -152,7 +152,7 @@ const LeaveBehind: React.FC = () => {
                             onClick={() => setViewing(item)}
                             style={{
                                 padding: '20px', borderRadius: '14px', cursor: 'pointer',
-                                background: 'rgba(255,255,255,0.03)',
+                                background: 'var(--glass-bg)',
                                 border: `1px solid ${TYPE_COLORS[item.type]}25`,
                                 transition: 'all 0.25s', position: 'relative', overflow: 'hidden'
                             }}
@@ -169,16 +169,16 @@ const LeaveBehind: React.FC = () => {
                                     {TYPE_OPTIONS.find(o => o.key === item.type)?.label}
                                 </span>
                             </div>
-                            <h4 style={{ fontSize: '1rem', marginBottom: '8px', color: '#fff' }}>{item.title}</h4>
-                            <p style={{ fontSize: '0.82rem', opacity: 0.55, marginBottom: '12px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                            <h4 style={{ fontSize: '1rem', marginBottom: '8px', color: 'var(--text-color)' }}>{item.title}</h4>
+                            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '12px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                                 {item.content}
                             </p>
                             {item.recipient && (
-                                <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>
+                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                                     {t('lb_for') || 'For:'} <span style={{ color: 'var(--accent-gold)' }}>{item.recipient}</span>
                                 </div>
                             )}
-                            <div style={{ fontSize: '0.7rem', opacity: 0.3, marginTop: '8px' }}>{item.createdAt}</div>
+                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '8px' }}>{item.createdAt}</div>
                         </div>
                     ))}
                 </div>
@@ -192,17 +192,17 @@ const LeaveBehind: React.FC = () => {
                     backdropFilter: 'blur(6px)'
                 }}>
                     <div style={{
-                        width: '100%', maxWidth: '560px', background: '#0d1117',
-                        borderRadius: '20px', border: '1px solid rgba(255,255,255,0.1)',
+                        width: '100%', maxWidth: '560px', background: 'var(--secondary-bg)',
+                        borderRadius: '20px', border: '1px solid var(--glass-border)',
                         overflow: 'hidden', boxShadow: '0 30px 80px rgba(0,0,0,0.6)'
                     }}>
                         {/* Modal header */}
-                        <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <div>
                                 <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>{t('lb_add_title') || 'Add to Legacy Vault'}</div>
-                                <div style={{ fontSize: '0.8rem', opacity: 0.5, marginTop: '2px' }}>Step {wizardStep + 1} of {WIZARD_STEPS.length}: {WIZARD_STEPS[wizardStep]}</div>
+                                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>Step {wizardStep + 1} of {WIZARD_STEPS.length}: {WIZARD_STEPS[wizardStep]}</div>
                             </div>
-                            <button onClick={resetWizard} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '1.5rem', cursor: 'pointer', lineHeight: 1 }}>×</button>
+                            <button onClick={resetWizard} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer', lineHeight: 1 }}>×</button>
                         </div>
 
                         {/* Step indicator */}
@@ -211,7 +211,7 @@ const LeaveBehind: React.FC = () => {
                                 <div key={s} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
                                     <div style={{
                                         height: '4px', width: '100%', borderRadius: '2px',
-                                        background: i <= wizardStep ? 'var(--accent-gold)' : 'rgba(255,255,255,0.1)',
+                                        background: i <= wizardStep ? 'var(--accent-gold)' : 'var(--glass-border)',
                                         transition: 'background 0.3s'
                                     }} />
                                     <div style={{ fontSize: '0.65rem', opacity: i === wizardStep ? 0.8 : 0.3 }}>{s}</div>
@@ -230,15 +230,15 @@ const LeaveBehind: React.FC = () => {
                                             style={{
                                                 display: 'flex', gap: '14px', alignItems: 'center',
                                                 padding: '14px 16px', borderRadius: '12px', cursor: 'pointer',
-                                                border: `1px solid ${selectedType === opt.key ? 'rgba(255,215,0,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                                                background: selectedType === opt.key ? 'rgba(255,215,0,0.06)' : 'rgba(255,255,255,0.02)',
+                                                border: `1px solid ${selectedType === opt.key ? 'rgba(255,215,0,0.3)' : 'var(--glass-border)'}`,
+                                                background: selectedType === opt.key ? 'rgba(255,215,0,0.06)' : 'var(--glass-bg)',
                                                 transition: 'all 0.2s'
                                             }}
                                         >
                                             <span style={{ fontSize: '1.5rem' }}>{opt.icon}</span>
                                             <div>
                                                 <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{opt.label}</div>
-                                                <div style={{ fontSize: '0.78rem', opacity: 0.5 }}>{opt.desc}</div>
+                                                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{opt.desc}</div>
                                             </div>
                                             {selectedType === opt.key && <span style={{ marginLeft: 'auto', color: 'var(--accent-gold)' }}>✓</span>}
                                         </div>
@@ -257,7 +257,7 @@ const LeaveBehind: React.FC = () => {
                                             onChange={e => setTitle(e.target.value)}
                                             placeholder={t('auto_give_this_memor') || 'Give this memory a name...'}
                                             autoFocus
-                                            style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: '#fff', boxSizing: 'border-box' }}
+                                            style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box' }}
                                         />
                                     </div>
                                     <div>
@@ -277,7 +277,7 @@ const LeaveBehind: React.FC = () => {
                                                             selectedType === 'video' ? (t('lb_ph_video') || 'Describe the video or where to find it...') :
                                                                 (t('lb_ph_audio') || 'Describe the audio recording...')
                                             }
-                                            style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: '#fff', boxSizing: 'border-box', resize: 'vertical' }}
+                                            style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box', resize: 'vertical' }}
                                         />
                                     </div>
                                     <div>
@@ -287,7 +287,7 @@ const LeaveBehind: React.FC = () => {
                                             value={tagsInput}
                                             onChange={e => setTagsInput(e.target.value)}
                                             placeholder={t('auto_e_g_family_chil') || 'e.g. family, childhood, love...'}
-                                            style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: '#fff', boxSizing: 'border-box' }}
+                                            style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box' }}
                                         />
                                     </div>
                                 </div>
@@ -303,22 +303,22 @@ const LeaveBehind: React.FC = () => {
                                         onChange={e => setRecipient(e.target.value)}
                                         placeholder={t('auto_e_g_my_daughter') || 'e.g. My daughter Sofia, or \'Everyone\'...'}
                                         autoFocus
-                                        style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: '#fff', boxSizing: 'border-box' }}
+                                        style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box' }}
                                     />
                                 </div>
                             )}
 
                             {/* Step 3: Review */}
                             {wizardStep === 3 && (
-                                <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '12px', padding: '20px', border: '1px solid rgba(255,255,255,0.07)' }}>
+                                <div style={{ background: 'var(--glass-bg)', borderRadius: '12px', padding: '20px', border: '1px solid var(--glass-border)' }}>
                                     <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
                                         <span style={{ fontSize: '2rem' }}>{getTypeIcon(selectedType)}</span>
                                         <div>
                                             <div style={{ fontWeight: 700 }}>{title}</div>
-                                            <div style={{ fontSize: '0.8rem', opacity: 0.5 }}>{TYPE_OPTIONS.find(o => o.key === selectedType)?.label}</div>
+                                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{TYPE_OPTIONS.find(o => o.key === selectedType)?.label}</div>
                                         </div>
                                     </div>
-                                    <p style={{ fontSize: '0.88rem', opacity: 0.7, marginBottom: '12px', borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '12px' }}>{content}</p>
+                                    <p style={{ fontSize: '0.88rem', opacity: 0.7, marginBottom: '12px', borderTop: '1px solid var(--glass-border)', paddingTop: '12px' }}>{content}</p>
                                     {recipient && <div style={{ fontSize: '0.82rem', opacity: 0.6 }}>{t('lb_for') || 'For:'} <strong>{recipient}</strong></div>}
                                     {tagsInput && (
                                         <div style={{ marginTop: '10px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -334,7 +334,7 @@ const LeaveBehind: React.FC = () => {
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px' }}>
                                 <button
                                     onClick={() => wizardStep === 0 ? resetWizard() : setWizardStep(s => s - 1)}
-                                    style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem' }}
+                                    style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}
                                 >
                                     {wizardStep === 0 ? (t('profile_cancel') || 'Cancel') : (t('lb_back') || '← Back')}
                                 </button>
@@ -343,8 +343,8 @@ const LeaveBehind: React.FC = () => {
                                     disabled={!canProceed()}
                                     style={{
                                         padding: '10px 24px', borderRadius: '8px', border: 'none',
-                                        background: canProceed() ? 'var(--accent-gold)' : 'rgba(255,255,255,0.1)',
-                                        color: canProceed() ? '#000' : 'rgba(255,255,255,0.3)',
+                                        background: canProceed() ? 'var(--accent-gold)' : 'var(--glass-border)',
+                                        color: canProceed() ? '#000' : 'var(--text-muted)',
                                         cursor: canProceed() ? 'pointer' : 'not-allowed',
                                         fontSize: '0.85rem', fontWeight: 700, transition: 'all 0.2s'
                                     }}
@@ -367,8 +367,8 @@ const LeaveBehind: React.FC = () => {
                     <div
                         onClick={e => e.stopPropagation()}
                         style={{
-                            width: '100%', maxWidth: '560px', background: '#0d1117',
-                            borderRadius: '20px', border: '1px solid rgba(255,255,255,0.1)',
+                            width: '100%', maxWidth: '560px', background: 'var(--secondary-bg)',
+                            borderRadius: '20px', border: '1px solid var(--glass-border)',
                             overflow: 'hidden', boxShadow: '0 30px 80px rgba(0,0,0,0.6)'
                         }}
                     >
@@ -379,12 +379,12 @@ const LeaveBehind: React.FC = () => {
                                     <span style={{ fontSize: '1.8rem' }}>{getTypeIcon(viewing.type)}</span>
                                     <div>
                                         <h3 style={{ margin: 0 }}>{viewing.title}</h3>
-                                        <div style={{ fontSize: '0.78rem', opacity: 0.4, marginTop: '2px' }}>{viewing.createdAt}</div>
+                                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>{viewing.createdAt}</div>
                                     </div>
                                 </div>
                                 <button
                                     onClick={() => setViewing(null)}
-                                    style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '1.5rem', cursor: 'pointer' }}
+                                    style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}
                                 >×</button>
                             </div>
                             <div style={{ fontSize: '0.95rem', lineHeight: '1.7', opacity: 0.85, marginBottom: '16px', whiteSpace: 'pre-wrap' }}>

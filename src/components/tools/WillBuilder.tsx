@@ -67,7 +67,7 @@ const WillBuilder: React.FC = () => {
                         </div>
                         <div className="form-group">
                             <label>{t('label_other_heirs') || 'Other Heirs / Institutions'}</label>
-                            <textarea value={willOthers} onChange={(e) => setWillOthers(e.target.value)} placeholder="..." style={{ width: '100%', minHeight: '80px', padding: '12px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)' }} />
+                            <textarea value={willOthers} onChange={(e) => setWillOthers(e.target.value)} placeholder="..." style={{ width: '100%', minHeight: '80px', padding: '12px', borderRadius: '8px', background: 'var(--glass-bg)', color: 'white', border: '1px solid var(--glass-border)' }} />
                         </div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -84,7 +84,7 @@ const WillBuilder: React.FC = () => {
                         <h3>{t('subtitle_legacies') || '5.3 Specific Legacies'}</h3>
                         <div className="form-group">
                             <label>{t('label_legacy_desc') || 'Specific items or amounts to be left to individuals'}</label>
-                            <textarea value={willLegacies} onChange={(e) => setWillLegacies(e.target.value)} placeholder={t('auto_e_g_my_watch_to') || 'e.g. My watch to my nephew Alex...'} style={{ width: '100%', minHeight: '120px', padding: '12px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)' }} />
+                            <textarea value={willLegacies} onChange={(e) => setWillLegacies(e.target.value)} placeholder={t('auto_e_g_my_watch_to') || 'e.g. My watch to my nephew Alex...'} style={{ width: '100%', minHeight: '120px', padding: '12px', borderRadius: '8px', background: 'var(--glass-bg)', color: 'white', border: '1px solid var(--glass-border)' }} />
                         </div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>

@@ -79,7 +79,7 @@ const AIAvatar: React.FC = () => {
                     {/* Visual Preview */}
                     <div style={{
                         height: '340px', background: 'rgba(0,0,0,0.3)', borderRadius: '20px',
-                        border: '1px solid rgba(255,255,255,0.08)', position: 'relative',
+                        border: '1px solid var(--glass-border)', position: 'relative',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         overflow: 'hidden', backdropFilter: 'blur(5px)'
                     }}>
@@ -87,7 +87,7 @@ const AIAvatar: React.FC = () => {
                             <div style={{ textAlign: 'center', padding: '40px' }}>
                                 <div style={{ fontSize: '4rem', marginBottom: '20px', opacity: 0.2 }}>👤</div>
                                 <h3 style={{ marginBottom: '10px' }}>No Avatar Generated</h3>
-                                <p style={{ opacity: 0.5, fontSize: '0.9rem', marginBottom: '24px' }}>Provide your data in the Legacy sections to start training your digital twin.</p>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '24px' }}>Provide your data in the Legacy sections to start training your digital twin.</p>
                                 <button className="btn" onClick={startSimulation} style={{ background: 'var(--accent-gold)', color: '#000', fontWeight: 700 }}>
                                     Begin Training (Beta)
                                 </button>
@@ -109,7 +109,7 @@ const AIAvatar: React.FC = () => {
                                 </div>
                                 <h3 style={{ marginBottom: '8px' }}>Training Artificial Consciousness...</h3>
                                 <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--accent-gold)', marginBottom: '16px' }}>{avatar.progress}%</div>
-                                <div style={{ height: '4px', width: '200px', background: 'rgba(255,255,255,0.05)', margin: '0 auto', borderRadius: '2px', overflow: 'hidden' }}>
+                                <div style={{ height: '4px', width: '200px', background: 'var(--glass-bg)', margin: '0 auto', borderRadius: '2px', overflow: 'hidden' }}>
                                     <div style={{ height: '100%', width: `${avatar.progress}%`, background: 'var(--accent-gold)', transition: 'width 0.3s ease' }} />
                                 </div>
                             </div>
@@ -131,8 +131,8 @@ const AIAvatar: React.FC = () => {
                                     }} />
                                 </div>
                                 <h3 style={{ color: 'var(--accent-gold)' }}>Your Digital Twin is Reactive</h3>
-                                <p style={{ opacity: 0.5, fontSize: '0.85rem' }}>Synchronized: {avatar.lastUpdated}</p>
-                                <button className="btn" style={{ marginTop: '20px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent' }}>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Synchronized: {avatar.lastUpdated}</p>
+                                <button className="btn" style={{ marginTop: '20px', border: '1px solid var(--glass-border)', background: 'transparent' }}>
                                     💬 Talk to My Avatar
                                 </button>
                             </div>
@@ -147,10 +147,10 @@ const AIAvatar: React.FC = () => {
                     {isSimulating && (
                         <div style={{
                             padding: '16px', background: 'rgba(0,0,0,0.4)', borderRadius: '12px',
-                            border: '1px solid rgba(255,255,255,0.05)', fontFamily: 'monospace', fontSize: '0.8rem'
+                            border: '1px solid var(--glass-bg)', fontFamily: 'monospace', fontSize: '0.8rem'
                         }}>
                             {simulationLog.map((log, i) => (
-                                <div key={i} style={{ color: i === 0 ? 'var(--accent-gold)' : 'rgba(255,255,255,0.4)', lineHeight: '1.8' }}>
+                                <div key={i} style={{ color: i === 0 ? 'var(--accent-gold)' : 'var(--text-muted)', lineHeight: '1.8' }}>
                                     {i === 0 ? '►' : '  '} {log}
                                 </div>
                             ))}
@@ -181,28 +181,28 @@ const AIAvatar: React.FC = () => {
 
                 {/* Sidebar Info */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div style={{ padding: '24px', background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)' }}>
                         <h4 style={{ marginBottom: '16px', fontSize: '1rem' }}>How it works</h4>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                             <div style={{ display: 'flex', gap: '12px' }}>
                                 <span style={{ fontSize: '1.2rem' }}>📝</span>
                                 <div>
                                     <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>Data Source</div>
-                                    <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>Uses your "Digital Legacy" texts and "Personal Notes".</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Uses your "Digital Legacy" texts and "Personal Notes".</div>
                                 </div>
                             </div>
                             <div style={{ display: 'flex', gap: '12px' }}>
                                 <span style={{ fontSize: '1.2rem' }}>🎙️</span>
                                 <div>
                                     <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>Voice Print</div>
-                                    <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>Simulated from uploaded audio memories.</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Simulated from uploaded audio memories.</div>
                                 </div>
                             </div>
                             <div style={{ display: 'flex', gap: '12px' }}>
                                 <span style={{ fontSize: '1.2rem' }}>🧠</span>
                                 <div>
                                     <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>Knowledge Base</div>
-                                    <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>Your answers in "Asset Overview" and "Will Structure".</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Your answers in "Asset Overview" and "Will Structure".</div>
                                 </div>
                             </div>
                         </div>

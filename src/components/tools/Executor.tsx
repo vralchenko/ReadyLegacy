@@ -73,7 +73,7 @@ const Executor: React.FC = () => {
                         <span>{(t('exec_completed') || '{done} of {total} completed').replace('{done}', String(doneCount)).replace('{total}', String(tasks.length))}</span>
                         <span>{progress}%</span>
                     </div>
-                    <div style={{ height: '6px', borderRadius: '3px', background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
+                    <div style={{ height: '6px', borderRadius: '3px', background: 'var(--glass-bg)', overflow: 'hidden' }}>
                         <div style={{
                             height: '100%',
                             width: `${progress}%`,
@@ -94,12 +94,12 @@ const Executor: React.FC = () => {
                         onChange={e => setNewText(e.target.value)}
                         onKeyDown={e => e.key === 'Enter' && addTask()}
                         placeholder={t('auto_add_a_new_task') || 'Add a new task...'}
-                        style={{ flex: '2', minWidth: '200px', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'var(--text-color)', fontSize: '0.95rem' }}
+                        style={{ flex: '2', minWidth: '200px', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.95rem' }}
                     />
                     <select
                         value={newCategory}
                         onChange={e => setNewCategory(e.target.value)}
-                        style={{ flex: '1', minWidth: '120px', padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'var(--text-color)' }}
+                        style={{ flex: '1', minWidth: '120px', padding: '10px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)' }}
                     >
                         {CATEGORIES.map(c => <option key={c} value={c}>{t(CATEGORY_KEYS[c]) || c}</option>)}
                     </select>
@@ -122,7 +122,7 @@ const Executor: React.FC = () => {
                         style={{
                             padding: '6px 18px',
                             borderRadius: '20px',
-                            border: '1px solid rgba(255,255,255,0.15)',
+                            border: '1px solid var(--glass-border)',
                             background: filter === f ? 'var(--accent-gold)' : 'transparent',
                             color: filter === f ? 'var(--bg-color)' : 'var(--text-color)',
                             fontSize: '0.8rem',
@@ -139,7 +139,7 @@ const Executor: React.FC = () => {
             {/* Task list */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {filtered.length === 0 && (
-                    <div style={{ textAlign: 'center', padding: '40px', opacity: 0.4, fontStyle: 'italic' }}>
+                    <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
                         {tasks.length === 0 ? (t('exec_empty') || 'No tasks yet. Add your first task above.') : (t('exec_no_filter') || 'No tasks in this filter.')}
                     </div>
                 )}
@@ -151,9 +151,9 @@ const Executor: React.FC = () => {
                             alignItems: 'center',
                             gap: '14px',
                             padding: '14px 18px',
-                            background: task.done ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.05)',
+                            background: task.done ? 'var(--glass-bg)' : 'var(--glass-bg)',
                             borderRadius: '10px',
-                            border: '1px solid rgba(255,255,255,0.08)',
+                            border: '1px solid var(--glass-border)',
                             transition: 'all 0.2s',
                             cursor: 'pointer',
                         }}
@@ -161,7 +161,7 @@ const Executor: React.FC = () => {
                     >
                         <div style={{
                             width: '22px', height: '22px', borderRadius: '50%', flexShrink: 0,
-                            border: task.done ? '2px solid var(--accent-gold)' : '2px solid rgba(255,255,255,0.3)',
+                            border: task.done ? '2px solid var(--accent-gold)' : '2px solid var(--text-muted)',
                             background: task.done ? 'var(--accent-gold)' : 'transparent',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             transition: 'all 0.2s'
@@ -188,7 +188,7 @@ const Executor: React.FC = () => {
                         }}>
                             {t(CATEGORY_KEYS[task.category]) || task.category}
                         </span>
-                        <span style={{ fontSize: '0.75rem', opacity: 0.4, flexShrink: 0 }}>{task.createdAt}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', flexShrink: 0 }}>{task.createdAt}</span>
                         <button
                             onClick={e => { e.stopPropagation(); deleteTask(task.id); }}
                             style={{ background: 'none', border: 'none', color: 'rgba(255,100,100,0.6)', fontSize: '1.1rem', cursor: 'pointer', padding: '0 4px', flexShrink: 0, transition: 'color 0.2s' }}

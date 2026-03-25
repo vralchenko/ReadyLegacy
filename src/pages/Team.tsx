@@ -2,7 +2,7 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import innaImg from '../assets/images/inna.png';
 import olgaImg from '../assets/images/olga.png';
-import viktorImg from '../assets/images/me_blue_bg.jpg';
+import viktorImg from '../assets/images/me_blue_bg_cropped.jpg';
 import innaQr from '../assets/images/qrcodes/inna_qr.png';
 import olgaQr from '../assets/images/qrcodes/olga_qr.png';
 import viktorQr from '../assets/images/qrcodes/viktor_qr.png';
@@ -48,7 +48,7 @@ const Team: React.FC = () => {
                         <p className="founder-bio">{t('bio_olga')}</p>
                     </div>
                     <div className="founder">
-                        <img src={viktorImg} alt="Viktor Ralchenko" className="founder-img" style={{ objectPosition: 'center 26%' }} />
+                        <img src={viktorImg} alt="Viktor Ralchenko" className="founder-img" style={{ objectPosition: '38% 25%' }} />
                         <div className="founder-header">
                             <h3>Viktor Ralchenko</h3>
                             <a href="https://www.linkedin.com/in/victoralchenko/" target="_blank" rel="noopener noreferrer" className="social-link">

@@ -45,12 +45,11 @@ const Mission: React.FC = () => {
                     </span>
                     <h1 style={{
                         fontSize: '3rem', marginTop: '16px', marginBottom: '24px',
-                        background: 'linear-gradient(to right, #fff, var(--accent-gold))',
-                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'
+                        color: 'var(--text-color)'
                     }}>
                         {t('why_title') || 'Why Now?'}
                     </h1>
-                    <p style={{ fontSize: '1.3rem', opacity: 0.75, lineHeight: 1.7, maxWidth: '650px', margin: '0 auto' }}>
+                    <p style={{ fontSize: '1.3rem', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '650px', margin: '0 auto' }}>
                         {t('why_p')}
                     </p>
                 </div>
@@ -63,12 +62,12 @@ const Mission: React.FC = () => {
                         {STATS.map((stat, i) => (
                             <div key={i} style={{
                                 padding: '32px 20px', borderRadius: '16px',
-                                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)'
+                                background: 'var(--glass-bg)', border: '1px solid var(--glass-border)'
                             }}>
                                 <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--accent-gold)', marginBottom: '8px' }}>
                                     {stat.num}
                                 </div>
-                                <p style={{ fontSize: '0.95rem', opacity: 0.6 }}>{stat.text}</p>
+                                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>{stat.text}</p>
                             </div>
                         ))}
                     </div>
@@ -85,15 +84,15 @@ const Mission: React.FC = () => {
                         {PILLARS.map(p => (
                             <div key={p.num} style={{
                                 padding: '32px 24px', borderRadius: '16px',
-                                background: 'rgba(255,255,255,0.03)',
+                                background: 'var(--glass-bg)',
                                 border: `1px solid ${p.color}20`,
                                 position: 'relative', overflow: 'hidden'
                             }}>
                                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: p.color }} />
                                 <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>{p.icon}</div>
-                                <div style={{ fontSize: '0.75rem', opacity: 0.4, marginBottom: '4px' }}>{p.num}</div>
+                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>{p.num}</div>
                                 <h3 style={{ fontSize: '1.3rem', marginBottom: '12px', color: p.color }}>{p.title}</h3>
-                                <p style={{ fontSize: '0.95rem', opacity: 0.65, lineHeight: 1.6 }}>{p.desc}</p>
+                                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>{p.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -107,7 +106,7 @@ const Mission: React.FC = () => {
                     <h2 style={{ fontSize: '1.8rem', marginBottom: '16px' }}>
                         {t('mission_swiss_title') || 'Built in Switzerland'}
                     </h2>
-                    <p style={{ fontSize: '1.1rem', opacity: 0.7, lineHeight: 1.7, marginBottom: '32px' }}>
+                    <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: '32px' }}>
                         {t('mission_swiss_desc') || 'ReadyLegacy is designed with Swiss privacy standards at its core. Your data stays secure, compliant with nDSG and GDPR, and hosted on European infrastructure.'}
                     </p>
                     <Link to="/tools" className="btn" style={{ fontSize: '1rem', padding: '14px 32px' }}>

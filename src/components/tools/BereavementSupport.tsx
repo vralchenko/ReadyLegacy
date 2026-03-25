@@ -56,8 +56,8 @@ const BereavementSupport: React.FC = () => {
                 ].map((card, i) => (
                     <div key={i} style={{
                         padding: '20px', borderRadius: '14px',
-                        background: 'rgba(255,255,255,0.03)',
-                        border: '1px solid rgba(255,255,255,0.08)',
+                        background: 'var(--glass-bg)',
+                        border: '1px solid var(--glass-border)',
                         textAlign: 'center'
                     }}>
                         <div style={{ fontSize: '2rem', marginBottom: '12px' }}>{card.icon}</div>
@@ -68,7 +68,7 @@ const BereavementSupport: React.FC = () => {
             </div>
 
             {/* Tabs */}
-            <div style={{ display: 'flex', gap: '4px', marginBottom: '28px', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', padding: '4px' }}>
+            <div style={{ display: 'flex', gap: '4px', marginBottom: '28px', background: 'var(--glass-bg)', borderRadius: '12px', padding: '4px' }}>
                 {[
                     { key: 'emotional', label: '💛 Emotional Support' },
                     { key: 'groups', label: '🤝 Support Groups' }
@@ -105,7 +105,7 @@ const BereavementSupport: React.FC = () => {
                                 >
                                     <div style={{
                                         width: '20px', height: '20px', borderRadius: '50%', flexShrink: 0,
-                                        border: checks[item.key] ? '2px solid var(--accent-gold)' : '2px solid rgba(255,255,255,0.25)',
+                                        border: checks[item.key] ? '2px solid var(--accent-gold)' : '2px solid var(--text-muted)',
                                         background: checks[item.key] ? 'var(--accent-gold)' : 'transparent',
                                         display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s'
                                     }}>
@@ -130,7 +130,7 @@ const BereavementSupport: React.FC = () => {
                     {SUPPORT_GROUPS.map((group, i) => (
                         <div key={i} style={{
                             padding: '18px 20px', borderRadius: '12px',
-                            background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+                            background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
                             transition: 'border-color 0.2s'
                         }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
@@ -147,7 +147,7 @@ const BereavementSupport: React.FC = () => {
                             </div>
                             <p style={{ fontSize: '0.85rem', opacity: 0.65, margin: '0 0 10px' }}>{group.desc}</p>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <span style={{ fontSize: '0.78rem', opacity: 0.45 }}>📍 {group.region}</span>
+                                <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>📍 {group.region}</span>
                                 <a href={group.url} className="btn" style={{ fontSize: '0.75rem', padding: '6px 16px', borderRadius: '8px' }}>
                                     Learn More
                                 </a>

@@ -50,7 +50,7 @@ const PHASES: { title: string; subtitle: string; color: string; items: CheckItem
     {
         title: 'Phase 4: Ongoing',
         subtitle: 'Long-term closure and memorialization',
-        color: 'rgba(255,255,255,0.5)',
+        color: 'var(--text-muted)',
         items: [
             { key: 'p4_estate', label: 'Complete estate settlement', deadline: 'Within 6-12 months' },
             { key: 'p4_gravestone', label: 'Arrange gravestone or memorial', deadline: 'Within a few months' },
@@ -84,12 +84,12 @@ const DeathChecklist: React.FC = () => {
             </div>
 
             {/* Overall progress */}
-            <div style={{ marginBottom: '32px', padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ marginBottom: '32px', padding: '20px', background: 'var(--glass-bg)', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                     <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Overall Progress</span>
                     <span style={{ fontSize: '0.9rem', color: 'var(--accent-gold)', fontWeight: 700 }}>{doneCount}/{allItems.length} — {progress}%</span>
                 </div>
-                <div style={{ height: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
+                <div style={{ height: '8px', borderRadius: '4px', background: 'var(--glass-bg)', overflow: 'hidden' }}>
                     <div style={{
                         height: '100%', width: `${progress}%`,
                         background: 'linear-gradient(90deg, var(--accent-gold), #f0c040)',
@@ -106,9 +106,9 @@ const DeathChecklist: React.FC = () => {
                     return (
                         <div key={phaseIdx} style={{
                             borderRadius: '12px',
-                            border: '1px solid rgba(255,255,255,0.08)',
+                            border: '1px solid var(--glass-border)',
                             overflow: 'hidden',
-                            background: 'rgba(255,255,255,0.02)'
+                            background: 'var(--glass-bg)'
                         }}>
                             {/* Phase header */}
                             <div
@@ -127,9 +127,9 @@ const DeathChecklist: React.FC = () => {
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
                                     <span style={{
                                         fontSize: '0.8rem', padding: '4px 12px', borderRadius: '12px',
-                                        background: phaseDone === phase.items.length ? 'rgba(100,200,100,0.15)' : 'rgba(255,255,255,0.05)',
+                                        background: phaseDone === phase.items.length ? 'rgba(100,200,100,0.15)' : 'var(--glass-bg)',
                                         color: phaseDone === phase.items.length ? '#6fcf97' : 'var(--text-muted)',
-                                        border: `1px solid ${phaseDone === phase.items.length ? 'rgba(100,200,100,0.3)' : 'rgba(255,255,255,0.1)'}`
+                                        border: `1px solid ${phaseDone === phase.items.length ? 'rgba(100,200,100,0.3)' : 'var(--glass-border)'}`
                                     }}>
                                         {phaseDone}/{phase.items.length}
                                     </span>
@@ -154,7 +154,7 @@ const DeathChecklist: React.FC = () => {
                                             <div style={{
                                                 width: '20px', height: '20px', borderRadius: '50%', flexShrink: 0,
                                                 marginTop: '1px',
-                                                border: checks[item.key] ? '2px solid #6fcf97' : '2px solid rgba(255,255,255,0.25)',
+                                                border: checks[item.key] ? '2px solid #6fcf97' : '2px solid var(--text-muted)',
                                                 background: checks[item.key] ? '#6fcf97' : 'transparent',
                                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                 transition: 'all 0.2s'
@@ -169,7 +169,7 @@ const DeathChecklist: React.FC = () => {
                                                 }}>
                                                     {item.label}
                                                 </div>
-                                                {item.note && <div style={{ fontSize: '0.78rem', opacity: 0.5, fontStyle: 'italic' }}>{item.note}</div>}
+                                                {item.note && <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>{item.note}</div>}
                                             </div>
                                             {item.deadline && (
                                                 <span style={{

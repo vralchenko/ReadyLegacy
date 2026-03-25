@@ -27,7 +27,7 @@ const COMPLETION_SECTIONS = [
 ];
 
 const PLAN_STYLES = {
-    free: { label: 'Free Plan', color: 'rgba(255,255,255,0.5)', bg: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.1)' },
+    free: { label: 'Free Plan', color: 'var(--text-muted)', bg: 'var(--glass-bg)', border: 'var(--glass-border)' },
     premium: { label: 'Premium', color: '#fbbf24', bg: 'rgba(251,191,36,0.1)', border: 'rgba(251,191,36,0.3)' },
     family: { label: 'Family Plan', color: '#a78bfa', bg: 'rgba(167,139,250,0.1)', border: 'rgba(167,139,250,0.3)' },
 };
@@ -38,7 +38,7 @@ const Profile: React.FC = () => {
 
     // Prepare initial profile data from mock login if available
     const getInitialProfile = (): ProfileData => {
-        const mockUser = localStorage.getItem('continuum_user');
+        const mockUser = localStorage.getItem('readylegacy_user');
         const defaultData: ProfileData = {
             name: '', email: '', phone: '', dob: '', nationality: '', city: '', bio: '', plan: 'free'
         };
@@ -68,19 +68,19 @@ const Profile: React.FC = () => {
     }, [location.hash]);
 
     // Compute overall completion score
-    const legacyItems = JSON.parse(localStorage.getItem('continuum_legacy_vault_v2') || '[]');
-    const todoTasks = JSON.parse(localStorage.getItem('continuum_todo_tasks') || '[]');
-    const legalDocs = JSON.parse(localStorage.getItem('continuum_legal_docs_v2') || '{}');
+    const legacyItems = JSON.parse(localStorage.getItem('readylegacy_legacy_vault_v2') || '[]');
+    const todoTasks = JSON.parse(localStorage.getItem('readylegacy_todo_tasks') || '[]');
+    const legalDocs = JSON.parse(localStorage.getItem('readylegacy_legal_docs_v2') || '{}');
     const completedLegal = Object.values(legalDocs).filter((d: any) => d.status === 'completed' || d.status === 'filed').length;
 
     const scoreItems = [
         { label: t('score_profile') || 'Profile filled', done: !!(profile.name && profile.email) },
-        { label: t('score_assets') || 'Assets documented', done: !!(localStorage.getItem('continuum_list_bank') || localStorage.getItem('continuum_asset_brought')) },
+        { label: t('score_assets') || 'Assets documented', done: !!(localStorage.getItem('readylegacy_list_bank') || localStorage.getItem('readylegacy_asset_brought')) },
         { label: t('score_legal') || 'Legal docs tracked', done: completedLegal > 0 },
         { label: t('score_legacy') || 'Digital legacy started', done: legacyItems.length > 0 },
         { label: t('score_todo') || 'ToDo tasks added', done: todoTasks.length > 0 },
-        { label: t('score_crypto') || 'Crypto wallets documented', done: !!(localStorage.getItem('continuum_list_crypto_wallets')) },
-        { label: t('score_funeral') || 'Funeral wishes recorded', done: !!(localStorage.getItem('continuum_funeral_type')) },
+        { label: t('score_crypto') || 'Crypto wallets documented', done: !!(localStorage.getItem('readylegacy_list_crypto_wallets')) },
+        { label: t('score_funeral') || 'Funeral wishes recorded', done: !!(localStorage.getItem('readylegacy_funeral_type')) },
     ];
     const score = Math.round((scoreItems.filter(s => s.done).length / scoreItems.length) * 100);
 
@@ -97,7 +97,7 @@ const Profile: React.FC = () => {
 
     const planStyle = PLAN_STYLES[profile.plan];
 
-    if (!localStorage.getItem('continuum_user')) {
+    if (!localStorage.getItem('readylegacy_user')) {
         return <Navigate to="/login" replace />;
     }
 
@@ -106,11 +106,11 @@ const Profile: React.FC = () => {
             <div className="container" style={{ display: 'flex', flexDirection: 'column' }}>
                 {/* Header bar */}
                 <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap' }}>
-                    <Link to="/" style={{ fontSize: '1.1rem', color: 'var(--accent-gold)', opacity: 0.7, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Link to="/" style={{ fontSize: '1.1rem', color: 'var(--accent-gold)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                         ← {t('back_home') || 'Home'}
                     </Link>
-                    <span style={{ opacity: 0.2 }}>/</span>
-                    <span style={{ fontSize: '1.1rem', opacity: 0.4 }}>{t('profile_title') || 'Your Profile'}</span>
+                    <span style={{ color: 'var(--text-muted)' }}>/</span>
+                    <span style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{t('profile_title') || 'Your Profile'}</span>
                     {saved && (
                         <span style={{ marginLeft: 'auto', color: '#10b981', fontSize: '0.82rem', animation: 'fadeIn 0.3s ease' }}>
                             ✓ {t('profile_saved') || 'Saved successfully'}
@@ -126,19 +126,19 @@ const Profile: React.FC = () => {
                         {/* Avatar card */}
                         <div style={{
                             padding: '20px', borderRadius: '20px', textAlign: 'center',
-                            background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)'
+                            background: 'var(--glass-bg)', border: '1px solid var(--glass-border)'
                         }}>
                             <div style={{
                                 width: '80px', height: '80px', borderRadius: '50%', margin: '0 auto 16px',
-                                background: 'linear-gradient(135deg, var(--accent-gold), #c8941a)',
+                                background: 'var(--accent-gold)',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                 fontSize: '1.8rem', fontFamily: 'var(--font-heading)', fontWeight: 700,
-                                color: '#000', boxShadow: '0 8px 24px rgba(255,215,0,0.2)'
+                                color: '#fff', boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
                             }}>
                                 {initials}
                             </div>
                             <h2 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{profile.name || (t('auto_your_name') || 'Your Name')}</h2>
-                            <p style={{ fontSize: '1.1rem', opacity: 0.45, marginBottom: '18px' }}>{profile.email || (t('auto_your_email_com') || 'your@email.com')}</p>
+                            <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', marginBottom: '18px' }}>{profile.email || (t('auto_your_email_com') || 'your@email.com')}</p>
                             <span style={{
                                 display: 'inline-block', fontSize: '0.9rem', padding: '6px 14px', borderRadius: '12px',
                                 background: planStyle.bg, color: planStyle.color, border: `1px solid ${planStyle.border}`
@@ -150,16 +150,16 @@ const Profile: React.FC = () => {
                         {/* Readiness score */}
                         <div style={{
                             padding: '22px', borderRadius: '20px',
-                            background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)'
+                            background: 'var(--glass-bg)', border: '1px solid var(--glass-border)'
                         }}>
-                            <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '12px' }}>{t('profile_readiness') || 'Legacy Readiness'}</div>
+                            <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', marginBottom: '12px' }}>{t('profile_readiness') || 'Legacy Readiness'}</div>
                             <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '18px' }}>
                                 <span style={{ fontSize: '3rem', fontWeight: 700, color: score >= 70 ? '#10b981' : score >= 40 ? 'var(--accent-gold)' : '#ef4444' }}>
                                     {score}%
                                 </span>
-                                <span style={{ fontSize: '1.2rem', opacity: 0.5 }}>{t('profile_complete') || 'complete'}</span>
+                                <span style={{ fontSize: '1.2rem', color: 'var(--text-muted)' }}>{t('profile_complete') || 'complete'}</span>
                             </div>
-                            <div style={{ height: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.08)', marginBottom: '20px' }}>
+                            <div style={{ height: '8px', borderRadius: '4px', background: 'var(--glass-bg)', marginBottom: '20px' }}>
                                 <div style={{
                                     height: '100%', borderRadius: '4px', transition: 'width 0.5s ease',
                                     width: `${score}%`,
@@ -170,15 +170,15 @@ const Profile: React.FC = () => {
                             </div>
                             {scoreItems.map((item, i) => (
                                 <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '10px', fontSize: '1rem' }}>
-                                    <span style={{ color: item.done ? '#10b981' : 'rgba(255,255,255,0.2)', flexShrink: 0 }}>{item.done ? '✓' : '○'}</span>
-                                    <span style={{ opacity: item.done ? 0.8 : 0.4, textDecoration: item.done ? 'none' : 'none' }}>{item.label}</span>
+                                    <span style={{ color: item.done ? '#10b981' : 'var(--text-muted)', flexShrink: 0 }}>{item.done ? '✓' : '○'}</span>
+                                    <span style={{ color: item.done ? 'var(--text-color)' : 'var(--text-muted)' }}>{item.label}</span>
                                 </div>
                             ))}
                         </div>
 
                         {/* Quick nav */}
-                        <div style={{ padding: '20px', borderRadius: '20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                            <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '16px' }}>{t('profile_quicklinks') || 'Quick Links'}</div>
+                        <div style={{ padding: '20px', borderRadius: '20px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}>
+                            <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', marginBottom: '16px' }}>{t('profile_quicklinks') || 'Quick Links'}</div>
                             {[
                                 { to: '/tools', label: '🛠 Tools Dashboard' },
                                 { to: '/documents', label: '📄 My Documents' },
@@ -187,11 +187,11 @@ const Profile: React.FC = () => {
                             ].map(link => (
                                 <Link key={link.to} to={link.to} style={{
                                     display: 'block', padding: '10px 12px', borderRadius: '8px', marginBottom: '8px',
-                                    fontSize: '1.1rem', opacity: 0.65, transition: 'all 0.2s',
-                                    color: 'var(--text-color)'
+                                    fontSize: '1.1rem', transition: 'all 0.2s',
+                                    color: 'var(--text-muted)'
                                 }}
-                                    onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
-                                    onMouseLeave={e => { e.currentTarget.style.opacity = '0.65'; e.currentTarget.style.background = 'transparent'; }}
+                                    onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'var(--secondary-bg)'; }}
+                                    onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
                                 >
                                     {link.label}
                                 </Link>
@@ -202,7 +202,7 @@ const Profile: React.FC = () => {
                     {/* ─── RIGHT COLUMN ─────────────────────────────────── */}
                     <div>
                         {/* Tabs */}
-                        <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', background: 'rgba(255,255,255,0.04)', borderRadius: '14px', padding: '4px' }}>
+                        <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', background: 'var(--glass-bg)', borderRadius: '14px', padding: '4px' }}>
                             {[
                                 { key: 'overview', label: `👤 ${t('profile_tab_info') || 'Personal Info'}` },
                                 { key: 'settings', label: `⚙️ ${t('profile_tab_settings') || 'Settings'}` },
@@ -213,7 +213,7 @@ const Profile: React.FC = () => {
                                     onClick={() => setActiveTab(tab.key as any)}
                                     style={{
                                         flex: 1, padding: '14px', borderRadius: '10px', border: 'none', cursor: 'pointer',
-                                        background: activeTab === tab.key ? 'rgba(255,215,0,0.12)' : 'transparent',
+                                        background: activeTab === tab.key ? 'var(--secondary-bg)' : 'transparent',
                                         color: activeTab === tab.key ? 'var(--accent-gold)' : 'var(--text-muted)',
                                         fontWeight: activeTab === tab.key ? 700 : 400, fontSize: '1.2rem', transition: 'all 0.2s'
                                     }}
@@ -223,17 +223,17 @@ const Profile: React.FC = () => {
 
                         {/* ─── PERSONAL INFO TAB ─── */}
                         {activeTab === 'overview' && (
-                            <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '28px' }}>
+                            <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '28px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                                     <h3 style={{ fontSize: '1.6rem', margin: 0 }}>{t('profile_personal_info') || 'Personal Information'}</h3>
                                     {!editing ? (
-                                        <button onClick={() => { setDraft(profile); setEditing(true); }} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '1.1rem' }}>
+                                        <button onClick={() => { setDraft(profile); setEditing(true); }} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '1.1rem' }}>
                                             ✏️ {t('profile_edit') || 'Edit'}
                                         </button>
                                     ) : (
                                         <div style={{ display: 'flex', gap: '8px' }}>
-                                            <button onClick={() => setEditing(false)} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: '1.1rem' }}>{t('profile_cancel') || 'Cancel'}</button>
-                                            <button onClick={saveProfile} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#000', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 700 }}>{t('profile_save') || 'Save Changes'}</button>
+                                            <button onClick={() => setEditing(false)} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1.1rem' }}>{t('profile_cancel') || 'Cancel'}</button>
+                                            <button onClick={saveProfile} style={{ padding: '10px 20px', borderRadius: '24px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 700 }}>{t('profile_save') || 'Save Changes'}</button>
                                         </div>
                                     )}
                                 </div>
@@ -248,17 +248,17 @@ const Profile: React.FC = () => {
                                         { key: 'city', label: 'City / Country', placeholder: 'Vienna, Austria', type: 'text' },
                                     ].map(field => (
                                         <div key={field.key}>
-                                            <label style={{ fontSize: '1rem', opacity: 0.5, display: 'block', marginBottom: '8px' }}>{field.label}</label>
+                                            <label style={{ fontSize: '1rem', color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>{field.label}</label>
                                             {editing ? (
                                                 <input
                                                     type={field.type}
                                                     value={(draft as any)[field.key]}
                                                     onChange={e => setDraft({ ...draft, [field.key]: e.target.value })}
                                                     placeholder={field.placeholder}
-                                                    style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid rgba(255,215,0,0.2)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box', fontSize: '1.2rem' }}
+                                                    style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--accent-gold)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box', fontSize: '1.2rem' }}
                                                 />
                                             ) : (
-                                                <div style={{ padding: '12px 0', fontSize: '1.2rem', opacity: (profile as any)[field.key] ? 0.85 : 0.3, fontStyle: (profile as any)[field.key] ? 'normal' : 'italic' }}>
+                                                <div style={{ padding: '12px 0', fontSize: '1.2rem', color: (profile as any)[field.key] ? 'var(--text-color)' : 'var(--text-muted)', fontStyle: (profile as any)[field.key] ? 'normal' : 'italic' }}>
                                                     {(profile as any)[field.key] || 'Not set'}
                                                 </div>
                                             )}
@@ -268,17 +268,17 @@ const Profile: React.FC = () => {
 
                                 {/* Bio */}
                                 <div style={{ marginTop: '24px' }}>
-                                    <label style={{ fontSize: '1rem', opacity: 0.5, display: 'block', marginBottom: '8px' }}>Personal Note / Bio</label>
+                                    <label style={{ fontSize: '1rem', color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>Personal Note / Bio</label>
                                     {editing ? (
                                         <textarea
                                             value={draft.bio}
                                             onChange={e => setDraft({ ...draft, bio: e.target.value })}
                                             rows={3}
                                             placeholder={t('auto_a_short_persona') || 'A short personal note or message to your heirs...'}
-                                            style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid rgba(255,215,0,0.2)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box', resize: 'vertical', fontSize: '1.2rem' }}
+                                            style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--accent-gold)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box', resize: 'vertical', fontSize: '1.2rem' }}
                                         />
                                     ) : (
-                                        <div style={{ padding: '12px 0', fontSize: '1.2rem', opacity: profile.bio ? 0.85 : 0.3, fontStyle: profile.bio ? 'normal' : 'italic' }}>
+                                        <div style={{ padding: '12px 0', fontSize: '1.2rem', color: profile.bio ? 'var(--text-color)' : 'var(--text-muted)', fontStyle: profile.bio ? 'normal' : 'italic' }}>
                                             {profile.bio || 'Not set'}
                                         </div>
                                     )}
@@ -290,7 +290,7 @@ const Profile: React.FC = () => {
                         {activeTab === 'settings' && (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                 {/* Language */}
-                                <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '24px' }}>
+                                <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '24px' }}>
                                     <h4 style={{ marginBottom: '16px', fontSize: '1rem' }}>{t('profile_language') || 'Language'}</h4>
                                     <div style={{ display: 'flex', gap: '8px' }}>
                                         {(['en', 'de'] as const).map(lang => (
@@ -298,8 +298,8 @@ const Profile: React.FC = () => {
                                                 key={lang}
                                                 onClick={() => setLanguage(lang)}
                                                 style={{
-                                                    padding: '10px 20px', borderRadius: '10px', border: `1px solid ${language === lang ? 'var(--accent-gold)' : 'rgba(255,255,255,0.12)'}`,
-                                                    background: language === lang ? 'rgba(255,215,0,0.1)' : 'transparent',
+                                                    padding: '10px 20px', borderRadius: '10px', border: `1px solid ${language === lang ? 'var(--accent-gold)' : 'var(--glass-border)'}`,
+                                                    background: language === lang ? 'var(--secondary-bg)' : 'transparent',
                                                     color: language === lang ? 'var(--accent-gold)' : 'var(--text-muted)',
                                                     cursor: 'pointer', fontWeight: language === lang ? 700 : 400, fontSize: '0.9rem', transition: 'all 0.2s',
                                                     textTransform: 'uppercase'
@@ -310,7 +310,7 @@ const Profile: React.FC = () => {
                                 </div>
 
                                 {/* Theme */}
-                                <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '24px' }}>
+                                <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '24px' }}>
                                     <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>{t('profile_theme') || 'Theme'}</h4>
                                     <div style={{ display: 'flex', gap: '12px' }}>
                                         {[{ key: 'dark', label: '🌙 Dark Mode' }, { key: 'light', label: '☀️ Light Mode' }].map(t => (
@@ -319,8 +319,8 @@ const Profile: React.FC = () => {
                                                 onClick={() => { if ((t.key === 'light') !== (theme === 'light')) toggleTheme(); }}
                                                 style={{
                                                     flex: 1, padding: '14px', borderRadius: '12px',
-                                                    border: `1px solid ${theme === t.key ? 'rgba(255,215,0,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                                                    background: theme === t.key ? 'rgba(255,215,0,0.06)' : 'transparent',
+                                                    border: `1px solid ${theme === t.key ? 'var(--accent-gold)' : 'var(--glass-border)'}`,
+                                                    background: theme === t.key ? 'var(--secondary-bg)' : 'transparent',
                                                     color: theme === t.key ? 'var(--accent-gold)' : 'var(--text-muted)',
                                                     cursor: 'pointer', fontSize: '1.1rem', fontWeight: theme === t.key ? 700 : 400, transition: 'all 0.2s'
                                                 }}
@@ -330,9 +330,9 @@ const Profile: React.FC = () => {
                                 </div>
 
                                 {/* Notifications */}
-                                <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '24px' }}>
+                                <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '24px' }}>
                                     <h4 style={{ marginBottom: '12px', fontSize: '1.4rem' }}>{t('auto_email_reminders') || 'Email Reminders'}</h4>
-                                    <p style={{ opacity: 0.5, fontSize: '1.1rem', marginBottom: '16px' }}>Get reminded to keep your estate documents up to date.</p>
+                                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '16px' }}>Get reminded to keep your estate documents up to date.</p>
                                     <Link to="/tools?tool=reminders" style={{
                                         display: 'inline-block', padding: '12px 24px', borderRadius: '10px',
                                         border: '1px solid var(--accent-gold)', color: 'var(--accent-gold)',
@@ -343,7 +343,7 @@ const Profile: React.FC = () => {
                                 </div>
 
                                 {/* Security */}
-                                <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '28px' }}>
+                                <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '28px' }}>
                                     <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>{t('profile_security') || 'Security'}</h4>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         {[
@@ -353,12 +353,12 @@ const Profile: React.FC = () => {
                                         ].map(item => (
                                             <button key={item.label} style={{
                                                 display: 'flex', alignItems: 'center', gap: '10px', padding: '16px 20px',
-                                                borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)',
-                                                background: 'transparent', color: 'rgba(255,255,255,0.65)', cursor: 'pointer',
+                                                borderRadius: '10px', border: '1px solid var(--glass-border)',
+                                                background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer',
                                                 textAlign: 'left', fontSize: '1.1rem', transition: 'all 0.2s'
                                             }}
-                                                onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(255,215,0,0.2)'}
-                                                onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'}
+                                                onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent-gold)'}
+                                                onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--glass-border)'}
                                             >
                                                 <span>{item.icon}</span> {item.label}
                                                 <span style={{ marginLeft: 'auto', opacity: 0.3 }}>→</span>
@@ -372,7 +372,7 @@ const Profile: React.FC = () => {
                         {/* ─── PLAN TAB ─── */}
                         {activeTab === 'plan' && (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)', padding: '28px' }}>
+                                <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '28px' }}>
                                     <h3 style={{ marginBottom: '12px', fontSize: '1.6rem' }}>{t('profile_current_plan') || 'Current Plan'}</h3>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
                                         <span style={{
@@ -381,7 +381,7 @@ const Profile: React.FC = () => {
                                         }}>
                                             {planStyle.label}
                                         </span>
-                                        {profile.plan === 'free' && <span style={{ fontSize: '1.1rem', opacity: 0.5 }}>Upgrade to unlock all features</span>}
+                                        {profile.plan === 'free' && <span style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>Upgrade to unlock all features</span>}
                                     </div>
 
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
@@ -394,14 +394,14 @@ const Profile: React.FC = () => {
                                             return (
                                                 <div key={tier.plan} style={{
                                                     padding: '24px', borderRadius: '14px',
-                                                    border: `1px solid ${profile.plan === tier.plan ? ts.border : 'rgba(255,255,255,0.08)'}`,
-                                                    background: profile.plan === tier.plan ? ts.bg : 'rgba(255,255,255,0.02)',
+                                                    border: `1px solid ${profile.plan === tier.plan ? ts.border : 'var(--glass-border)'}`,
+                                                    background: profile.plan === tier.plan ? ts.bg : 'var(--glass-bg)',
                                                     display: 'flex', flexDirection: 'column'
                                                 }}>
                                                     <div style={{ fontWeight: 700, marginBottom: '6px', fontSize: '1.2rem', color: ts.color }}>{tier.label}</div>
                                                     <div style={{ fontSize: '1.8rem', fontWeight: 700, marginBottom: '18px' }}>{tier.price}</div>
                                                     {tier.features.map(f => (
-                                                        <div key={f} style={{ fontSize: '1rem', opacity: 0.65, marginBottom: '8px', display: 'flex', gap: '8px', alignItems: 'start' }}>
+                                                        <div key={f} style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '8px', display: 'flex', gap: '8px', alignItems: 'start' }}>
                                                             <span style={{ color: ts.color, flexShrink: 0 }}>✓</span> <span>{f}</span>
                                                         </div>
                                                     ))}

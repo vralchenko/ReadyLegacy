@@ -8,7 +8,7 @@ const Login: React.FC = () => {
     const [mode, setMode] = useState<'login' | 'signup'>('login');
 
     useEffect(() => {
-        if (localStorage.getItem('continuum_user')) {
+        if (localStorage.getItem('readylegacy_user')) {
             navigate('/profile');
         }
     }, [navigate]);
@@ -23,7 +23,7 @@ const Login: React.FC = () => {
         setError('');
         setTimeout(() => {
             setLoading(null);
-            localStorage.setItem('continuum_user', JSON.stringify({
+            localStorage.setItem('readylegacy_user', JSON.stringify({
                 name: provider === 'apple' ? 'Apple User' : 'Google User',
                 email: `demo_${provider}@example.com`,
                 provider
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
         setError('');
         setTimeout(() => {
             setLoading(null);
-            localStorage.setItem('continuum_user', JSON.stringify({
+            localStorage.setItem('readylegacy_user', JSON.stringify({
                 name: name || 'User',
                 email: email,
                 provider: 'email'
@@ -51,7 +51,7 @@ const Login: React.FC = () => {
     const OAUTH_PROVIDERS = [
         { id: 'google', name: 'Google', icon: '🔵', color: '#4285f4', bg: 'rgba(66,133,244,0.08)', border: 'rgba(66,133,244,0.2)' },
         { id: 'facebook', name: 'Facebook', icon: '🔷', color: '#1877f2', bg: 'rgba(24,119,242,0.08)', border: 'rgba(24,119,242,0.2)' },
-        { id: 'apple', name: 'Apple', icon: '⬛', color: '#ffffff', bg: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.15)' },
+        { id: 'apple', name: 'Apple', icon: '⬛', color: 'var(--text-color)', bg: 'var(--glass-bg)', border: 'var(--glass-border)' },
     ];
 
     return (
@@ -65,11 +65,11 @@ const Login: React.FC = () => {
                 </div>
 
                 <div style={{
-                    background: 'rgba(255,255,255,0.03)', borderRadius: '20px',
-                    border: '1px solid rgba(255,255,255,0.08)', padding: '16px 20px',
+                    background: 'var(--glass-bg)', borderRadius: '20px',
+                    border: '1px solid var(--glass-border)', padding: '16px 20px',
                     backdropFilter: 'blur(20px)'
                 }}>
-                    <div style={{ display: 'flex', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', padding: '4px', marginBottom: '16px' }}>
+                    <div style={{ display: 'flex', background: 'var(--glass-bg)', borderRadius: '12px', padding: '4px', marginBottom: '16px' }}>
                         {(['login', 'signup'] as const).map(m => (
                             <button
                                 key={m}
@@ -114,9 +114,9 @@ const Login: React.FC = () => {
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                        <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
-                        <span style={{ fontSize: '0.75rem', opacity: 0.4 }}>{t('login_or_email') || 'or with email'}</span>
-                        <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+                        <div style={{ flex: 1, height: '1px', background: 'var(--glass-border)' }} />
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{t('login_or_email') || 'or with email'}</span>
+                        <div style={{ flex: 1, height: '1px', background: 'var(--glass-border)' }} />
                     </div>
 
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -128,7 +128,7 @@ const Login: React.FC = () => {
                                     value={name}
                                     onChange={e => setName(e.target.value)}
                                     placeholder={t('auto_your_name') || 'Your name'}
-                                    style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box', fontSize: '0.85rem' }}
+                                    style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box', fontSize: '0.85rem' }}
                                 />
                             </div>
                         )}
@@ -139,7 +139,7 @@ const Login: React.FC = () => {
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 placeholder={t('auto_your_email_com') || 'your@email.com'}
-                                style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box', fontSize: '0.85rem' }}
+                                style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box', fontSize: '0.85rem' }}
                             />
                         </div>
                         <div>
@@ -149,7 +149,7 @@ const Login: React.FC = () => {
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box', fontSize: '0.85rem' }}
+                                style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box', fontSize: '0.85rem' }}
                             />
                         </div>
 

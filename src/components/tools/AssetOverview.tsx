@@ -3,11 +3,11 @@ import { useLanguage } from '../../context/LanguageContext';
 
 // ─── Persistent input hook ────────────────────────────────────────────────────
 const useInput = (key: string) => {
-    const [value, setValue] = useState(() => localStorage.getItem(`continuum_${key}`) || '');
+    const [value, setValue] = useState(() => localStorage.getItem(`readylegacy_${key}`) || '');
     const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const newValue = e.target.value;
         setValue(newValue);
-        localStorage.setItem(`continuum_${key}`, newValue);
+        localStorage.setItem(`readylegacy_${key}`, newValue);
     };
     return { value, onChange };
 };
@@ -16,7 +16,7 @@ const useInput = (key: string) => {
 const useAssetList = (key: string) => {
     const [items, setItems] = useState<any[]>(() => {
         try {
-            const stored = localStorage.getItem(`continuum_list_${key}`);
+            const stored = localStorage.getItem(`readylegacy_list_${key}`);
             return stored ? JSON.parse(stored) : [];
         } catch (e) {
             return [];
@@ -26,13 +26,13 @@ const useAssetList = (key: string) => {
     const addItem = (item: any) => {
         const newItems = [...items, { ...item, id: Date.now().toString() }];
         setItems(newItems);
-        localStorage.setItem(`continuum_list_${key}`, JSON.stringify(newItems));
+        localStorage.setItem(`readylegacy_list_${key}`, JSON.stringify(newItems));
     };
 
     const removeItem = (id: string) => {
         const newItems = items.filter(i => i.id !== id);
         setItems(newItems);
-        localStorage.setItem(`continuum_list_${key}`, JSON.stringify(newItems));
+        localStorage.setItem(`readylegacy_list_${key}`, JSON.stringify(newItems));
     };
 
     return { items, addItem, removeItem };
@@ -77,7 +77,7 @@ const DynamicAssetList = ({ title, itemKey, fields }: {
     };
 
     return (
-        <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <div style={{ padding: '20px', background: 'var(--glass-bg)', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                 <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: 'var(--accent-gold)', opacity: 0.9 }}>{title}</h4>
                 <button
@@ -95,17 +95,17 @@ const DynamicAssetList = ({ title, itemKey, fields }: {
                         key={item.id}
                         onClick={() => setViewingItem(item)}
                         style={{
-                            padding: '14px', background: 'rgba(255,255,255,0.04)', borderRadius: '10px',
-                            border: '1px solid rgba(255,255,255,0.06)', cursor: 'pointer', transition: 'all 0.2s',
+                            padding: '14px', background: 'var(--glass-bg)', borderRadius: '10px',
+                            border: '1px solid var(--glass-border)', cursor: 'pointer', transition: 'all 0.2s',
                             position: 'relative', overflow: 'hidden'
                         }}
-                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(251,191,36,0.3)'; e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(251,191,36,0.3)'; e.currentTarget.style.background = 'var(--glass-border)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--glass-border)'; e.currentTarget.style.background = 'var(--glass-bg)'; }}
                     >
                         <div style={{ fontWeight: 600, fontSize: '0.9rem', marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             {item[defaultFields[0].key] || 'Untitiled'}
                         </div>
-                        <div style={{ fontSize: '0.75rem', opacity: 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             {defaultFields[1] && item[defaultFields[1].key] ? item[defaultFields[1].key] : 'Click for details'}
                         </div>
                         <button
@@ -129,39 +129,39 @@ const DynamicAssetList = ({ title, itemKey, fields }: {
                                     value={formData[f.key] || ''}
                                     onChange={e => updateField(f.key, e.target.value)}
                                     placeholder={f.placeholder}
-                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.02)', color: '#fff', boxSizing: 'border-box', fontSize: '0.85rem' }}
+                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box', fontSize: '0.85rem' }}
                                 />
                             </div>
                         ))}
                     </div>
-                    <button className="btn" style={{ background: 'var(--accent-gold)', color: '#000', padding: '8px 20px', border: 'none', borderRadius: '6px', fontWeight: 700, cursor: 'pointer' }} onClick={handleAdd}>Save Item</button>
+                    <button className="btn" style={{ background: 'var(--accent-gold)', color: '#fff', padding: '8px 20px', border: 'none', borderRadius: '6px', fontWeight: 700, cursor: 'pointer' }} onClick={handleAdd}>Save Item</button>
                 </div>
             )}
 
             {/* Drill-down Modal */}
             {viewingItem && (
                 <div style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }} onClick={() => setViewingItem(null)}>
-                    <div style={{ width: '100%', maxWidth: '500px', background: '#0d1117', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '28px' }} onClick={e => e.stopPropagation()}>
+                    <div style={{ width: '100%', maxWidth: '500px', background: 'var(--secondary-bg)', borderRadius: '16px', border: '1px solid var(--glass-border)', padding: '28px' }} onClick={e => e.stopPropagation()}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                             <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--accent-gold)' }}>Item Details</h3>
-                            <button onClick={() => setViewingItem(null)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '1.8rem', cursor: 'pointer' }}>×</button>
+                            <button onClick={() => setViewingItem(null)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.8rem', cursor: 'pointer' }}>×</button>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
                             {defaultFields.map(f => (
                                 <div key={f.key}>
-                                    <label style={{ fontSize: '0.8rem', opacity: 0.5, display: 'block', marginBottom: '6px' }}>{f.label}</label>
+                                    <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>{f.label}</label>
                                     <input
                                         type="text"
                                         value={viewingItem[f.key] || ''}
                                         onChange={e => updateViewingField(f.key, e.target.value)}
-                                        style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff', boxSizing: 'border-box', fontSize: '0.9rem' }}
+                                        style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box', fontSize: '0.9rem' }}
                                     />
                                 </div>
                             ))}
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-                            <button onClick={() => setViewingItem(null)} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.6)', cursor: 'pointer' }}>Close</button>
-                            <button onClick={handleUpdate} style={{ padding: '10px 24px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#000', fontWeight: 700, cursor: 'pointer' }}>Save Changes</button>
+                            <button onClick={() => setViewingItem(null)} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer' }}>Close</button>
+                            <button onClick={handleUpdate} style={{ padding: '10px 24px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#fff', fontWeight: 700, cursor: 'pointer' }}>Save Changes</button>
                         </div>
                     </div>
                 </div>
@@ -360,7 +360,7 @@ const AssetOverview: React.FC = () => {
                         </p>
                         <div className="form-group">
                             <label>Type of Funeral</label>
-                            <select {...funeralType} style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text-color)', borderRadius: '8px' }}>
+                            <select {...funeralType} style={{ width: '100%', padding: '12px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', color: 'var(--text-color)', borderRadius: '8px' }}>
                                 <option value="">— Select preference —</option>
                                 <option value="burial">Traditional Burial</option>
                                 <option value="cremation">Cremation</option>
@@ -405,7 +405,7 @@ const AssetOverview: React.FC = () => {
                                 placeholder={t('auto_any_other_perso') || 'Any other personal wishes for your funeral, tribute, or memorial...'}
                                 value={funeralNotes.value}
                                 onChange={funeralNotes.onChange as any}
-                                style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text-color)', borderRadius: '8px', resize: 'vertical', boxSizing: 'border-box' }}
+                                style={{ width: '100%', padding: '12px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', color: 'var(--text-color)', borderRadius: '8px', resize: 'vertical', boxSizing: 'border-box' }}
                             />
                         </div>
                     </div>
@@ -450,7 +450,7 @@ const AssetOverview: React.FC = () => {
                                 placeholder={t('auto_any_other_thoug') || 'Any other thoughts, wishes, or notes you\'d like to document...'}
                                 value={othersNotes.value}
                                 onChange={othersNotes.onChange as any}
-                                style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text-color)', borderRadius: '8px', resize: 'vertical', boxSizing: 'border-box' }}
+                                style={{ width: '100%', padding: '12px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', color: 'var(--text-color)', borderRadius: '8px', resize: 'vertical', boxSizing: 'border-box' }}
                             />
                         </div>
                     </div>

@@ -39,7 +39,7 @@ const Reminders: React.FC = () => {
     const [form, setForm] = useState({
         title: '',
         type: 'annual_review' as Reminder['type'],
-        email: localStorage.getItem('continuum_user_profile') ? JSON.parse(localStorage.getItem('continuum_user_profile') || '{}').email || '' : '',
+        email: localStorage.getItem('readylegacy_user_profile') ? JSON.parse(localStorage.getItem('readylegacy_user_profile') || '{}').email || '' : '',
         date: '',
         frequency: 'yearly' as Reminder['frequency'],
         section: SECTIONS[0],
@@ -114,7 +114,7 @@ const Reminders: React.FC = () => {
             {/* Suggestions strip */}
             {reminders.length === 0 && (
                 <div style={{ marginBottom: '28px' }}>
-                    <div style={{ fontSize: '0.78rem', opacity: 0.5, marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>💡 Recommended Reminders</div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>💡 Recommended Reminders</div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '10px' }}>
                         {BUILT_IN_SUGGESTIONS.map((s, i) => (
                             <div
@@ -122,15 +122,15 @@ const Reminders: React.FC = () => {
                                 onClick={() => addSuggestion(s)}
                                 style={{
                                     padding: '14px 16px', borderRadius: '12px', cursor: 'pointer',
-                                    border: '1px dashed rgba(255,255,255,0.12)',
-                                    background: 'rgba(255,255,255,0.02)', transition: 'all 0.2s'
+                                    border: '1px dashed var(--glass-border)',
+                                    background: 'var(--glass-bg)', transition: 'all 0.2s'
                                 }}
                                 onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,215,0,0.3)'; e.currentTarget.style.background = 'rgba(255,215,0,0.04)'; }}
-                                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
+                                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--glass-border)'; e.currentTarget.style.background = 'var(--glass-bg)'; }}
                             >
                                 <div style={{ fontSize: '1.3rem', marginBottom: '6px' }}>{s.icon}</div>
                                 <div style={{ fontWeight: 600, fontSize: '0.88rem', marginBottom: '4px' }}>{s.title}</div>
-                                <div style={{ fontSize: '0.76rem', opacity: 0.5 }}>{s.desc}</div>
+                                <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>{s.desc}</div>
                                 <div style={{ marginTop: '8px', fontSize: '0.72rem', color: 'var(--accent-gold)', opacity: 0.7 }}>+ Add this reminder</div>
                             </div>
                         ))}
@@ -140,7 +140,7 @@ const Reminders: React.FC = () => {
 
             {/* Add reminder button */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <div style={{ fontSize: '0.85rem', opacity: 0.5 }}>{reminders.length} reminder{reminders.length !== 1 ? 's' : ''} configured</div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{reminders.length} reminder{reminders.length !== 1 ? 's' : ''} configured</div>
                 <button
                     onClick={() => setShowForm(!showForm)}
                     style={{
@@ -159,31 +159,31 @@ const Reminders: React.FC = () => {
                     <h4 style={{ marginBottom: '20px', color: 'var(--accent-gold)', fontSize: '0.95rem' }}>New Reminder</h4>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                         <div style={{ gridColumn: '1 / -1' }}>
-                            <label style={{ fontSize: '0.78rem', opacity: 0.55, display: 'block', marginBottom: '6px' }}>Title *</label>
+                            <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Title *</label>
                             <input
                                 type="text"
                                 value={form.title}
                                 onChange={e => setForm({ ...form, title: e.target.value })}
                                 placeholder="e.g. Annual estate review"
-                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box' }}
+                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box' }}
                             />
                         </div>
                         <div>
-                            <label style={{ fontSize: '0.78rem', opacity: 0.55, display: 'block', marginBottom: '6px' }}>Reminder Type</label>
+                            <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Reminder Type</label>
                             <select
                                 value={form.type}
                                 onChange={e => setForm({ ...form, type: e.target.value as any })}
-                                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.12)', background: '#0d1117', color: '#fff' }}
+                                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--secondary-bg)', color: 'var(--text-color)' }}
                             >
                                 {REMINDER_TYPES.map(t => <option key={t.key} value={t.key}>{t.label}</option>)}
                             </select>
                         </div>
                         <div>
-                            <label style={{ fontSize: '0.78rem', opacity: 0.55, display: 'block', marginBottom: '6px' }}>Frequency</label>
+                            <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Frequency</label>
                             <select
                                 value={form.frequency}
                                 onChange={e => setForm({ ...form, frequency: e.target.value as any })}
-                                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.12)', background: '#0d1117', color: '#fff' }}
+                                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--secondary-bg)', color: 'var(--text-color)' }}
                             >
                                 <option value="once">Once</option>
                                 <option value="monthly">Monthly</option>
@@ -191,33 +191,33 @@ const Reminders: React.FC = () => {
                             </select>
                         </div>
                         <div style={{ gridColumn: '1 / -1' }}>
-                            <label style={{ fontSize: '0.78rem', opacity: 0.55, display: 'block', marginBottom: '6px' }}>Email Address *</label>
+                            <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Email Address *</label>
                             <input
                                 type="email"
                                 value={form.email}
                                 onChange={e => setForm({ ...form, email: e.target.value })}
                                 placeholder="your@email.com"
-                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box' }}
+                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box' }}
                             />
                         </div>
                         {(form.type === 'custom_date' || form.type === 'birthday') && (
                             <div style={{ gridColumn: '1 / -1' }}>
-                                <label style={{ fontSize: '0.78rem', opacity: 0.55, display: 'block', marginBottom: '6px' }}>Date</label>
+                                <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Date</label>
                                 <input
                                     type="date"
                                     value={form.date}
                                     onChange={e => setForm({ ...form, date: e.target.value })}
-                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box' }}
+                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box' }}
                                 />
                             </div>
                         )}
                         {form.type === 'section_incomplete' && (
                             <div style={{ gridColumn: '1 / -1' }}>
-                                <label style={{ fontSize: '0.78rem', opacity: 0.55, display: 'block', marginBottom: '6px' }}>Section</label>
+                                <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Section</label>
                                 <select
                                     value={form.section}
                                     onChange={e => setForm({ ...form, section: e.target.value })}
-                                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.12)', background: '#0d1117', color: '#fff' }}
+                                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--secondary-bg)', color: 'var(--text-color)' }}
                                 >
                                     {SECTIONS.map(s => <option key={s} value={s}>{s}</option>)}
                                 </select>
@@ -225,11 +225,11 @@ const Reminders: React.FC = () => {
                         )}
                     </div>
                     <div style={{ marginTop: '18px', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-                        <button onClick={() => setShowForm(false)} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: '0.82rem' }}>Cancel</button>
+                        <button onClick={() => setShowForm(false)} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.82rem' }}>Cancel</button>
                         <button
                             onClick={addReminder}
                             disabled={!form.email || !form.title}
-                            style={{ padding: '8px 20px', borderRadius: '8px', border: 'none', background: form.email && form.title ? 'var(--accent-gold)' : 'rgba(255,255,255,0.1)', color: form.email && form.title ? '#000' : 'rgba(255,255,255,0.3)', cursor: form.email && form.title ? 'pointer' : 'not-allowed', fontSize: '0.82rem', fontWeight: 700 }}
+                            style={{ padding: '8px 20px', borderRadius: '8px', border: 'none', background: form.email && form.title ? 'var(--accent-gold)' : 'var(--glass-border)', color: form.email && form.title ? '#fff' : 'var(--text-muted)', cursor: form.email && form.title ? 'pointer' : 'not-allowed', fontSize: '0.82rem', fontWeight: 700 }}
                         >
                             Save Reminder
                         </button>
@@ -240,7 +240,7 @@ const Reminders: React.FC = () => {
             {/* Reminders list */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {reminders.length === 0 && !showForm && (
-                    <div style={{ textAlign: 'center', padding: '40px', opacity: 0.35, fontStyle: 'italic' }}>
+                    <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
                         No reminders yet. Add one above or choose from the suggestions.
                     </div>
                 )}
@@ -251,8 +251,8 @@ const Reminders: React.FC = () => {
                         <div key={r.id} style={{
                             display: 'flex', gap: '14px', alignItems: 'center',
                             padding: '16px 18px', borderRadius: '12px',
-                            background: r.enabled ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.01)',
-                            border: `1px solid ${r.enabled ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.04)'}`,
+                            background: r.enabled ? 'var(--glass-bg)' : 'var(--glass-bg)',
+                            border: `1px solid ${r.enabled ? 'var(--glass-border)' : 'var(--glass-bg)'}`,
                             opacity: r.enabled ? 1 : 0.4, transition: 'all 0.2s'
                         }}>
                             <span style={{ fontSize: '1.3rem', flexShrink: 0 }}>{typeInfo?.icon}</span>
@@ -260,9 +260,9 @@ const Reminders: React.FC = () => {
                                 <div style={{ fontWeight: 600, fontSize: '0.9rem', marginBottom: '3px' }}>{r.title}</div>
                                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                                     <span style={{ fontSize: '0.72rem', padding: '2px 8px', borderRadius: '10px', background: cfg.bg, color: cfg.color }}>{typeInfo?.label}</span>
-                                    <span style={{ fontSize: '0.72rem', opacity: 0.45 }}>📧 {r.email}</span>
-                                    {r.frequency && <span style={{ fontSize: '0.72rem', opacity: 0.45 }}>🔄 {r.frequency}</span>}
-                                    {r.date && <span style={{ fontSize: '0.72rem', opacity: 0.45 }}>📅 {r.date}</span>}
+                                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>📧 {r.email}</span>
+                                    {r.frequency && <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>🔄 {r.frequency}</span>}
+                                    {r.date && <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>📅 {r.date}</span>}
                                 </div>
                             </div>
                             {/* Toggle */}
@@ -270,7 +270,7 @@ const Reminders: React.FC = () => {
                                 onClick={() => toggleReminder(r.id)}
                                 style={{
                                     width: '42px', height: '24px', borderRadius: '12px', cursor: 'pointer',
-                                    background: r.enabled ? 'var(--accent-gold)' : 'rgba(255,255,255,0.1)',
+                                    background: r.enabled ? 'var(--accent-gold)' : 'var(--glass-border)',
                                     position: 'relative', flexShrink: 0, transition: 'background 0.3s'
                                 }}
                             >

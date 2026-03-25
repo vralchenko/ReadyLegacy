@@ -50,7 +50,7 @@ const SECTION_LABELS: Record<string, string> = {
 };
 
 const Tools: React.FC = () => {
-    const isLoggedIn = !!localStorage.getItem('continuum_user');
+    const isLoggedIn = !!localStorage.getItem('readylegacy_user');
     const { t } = useLanguage();
     const [searchParams, setSearchParams] = useSearchParams();
     const initialTool = searchParams.get('tool') || '';
@@ -95,16 +95,16 @@ const Tools: React.FC = () => {
                 <Sidebar activeTool={activeTool} onSelectTool={handleSelectTool} />
                 <div className="tools-content">
                     <div style={{ padding: '8px 0' }}>
-                        <h2 style={{ fontSize: '2rem', marginBottom: '8px', background: 'linear-gradient(to right, #fff, var(--accent-gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                        <h2 style={{ fontSize: '2rem', marginBottom: '8px', color: 'var(--text-color)' }}>
                             {t('tools_dashboard_title') || 'Your Tools'}
                         </h2>
-                        <p style={{ opacity: 0.6, marginBottom: '32px', fontSize: '1.05rem' }}>
+                        <p style={{ color: 'var(--text-muted)', marginBottom: '32px', fontSize: '1.05rem' }}>
                             {t('tools_dashboard_desc') || 'Everything you need to organize your legacy — choose a tool to get started.'}
                         </p>
 
                         {TOOL_CARDS.map(section => (
                             <div key={section.section} style={{ marginBottom: '32px' }}>
-                                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '2px', opacity: 0.5, marginBottom: '14px', paddingLeft: '4px' }}>
+                                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--text-muted)', marginBottom: '14px', paddingLeft: '4px' }}>
                                     {t(SECTION_LABELS[section.section]) || section.section}
                                 </div>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '14px' }}>
@@ -116,7 +116,7 @@ const Tools: React.FC = () => {
                                                 onClick={() => handleSelectTool(tool.key)}
                                                 style={{
                                                     padding: '20px', borderRadius: '14px', cursor: 'pointer',
-                                                    background: 'rgba(255,255,255,0.03)',
+                                                    background: 'var(--glass-bg)',
                                                     border: `1px solid ${tool.color}20`,
                                                     transition: 'all 0.25s', position: 'relative', overflow: 'hidden'
                                                 }}
@@ -125,10 +125,10 @@ const Tools: React.FC = () => {
                                             >
                                                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: tool.color }} />
                                                 <div style={{ fontSize: '2rem', marginBottom: '12px' }}>{tool.icon}</div>
-                                                <h4 style={{ fontSize: '0.95rem', marginBottom: '6px', color: '#fff' }}>
+                                                <h4 style={{ fontSize: '0.95rem', marginBottom: '6px', color: 'var(--text-color)' }}>
                                                     {t(labels.nameKey) || tool.key}
                                                 </h4>
-                                                <p style={{ fontSize: '0.8rem', opacity: 0.5, lineHeight: 1.4 }}>
+                                                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
                                                     {t(labels.descKey) || ''}
                                                 </p>
                                             </div>

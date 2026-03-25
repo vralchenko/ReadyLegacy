@@ -213,22 +213,22 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
             backdropFilter: 'blur(8px)'
         }}>
             <div style={{
-                width: '100%', maxWidth: '600px', background: '#0d1117',
-                borderRadius: '20px', border: '1px solid rgba(255,255,255,0.1)',
+                width: '100%', maxWidth: '600px', background: 'var(--secondary-bg)',
+                borderRadius: '20px', border: '1px solid var(--glass-border)',
                 overflow: 'hidden', maxHeight: '90vh', display: 'flex', flexDirection: 'column'
             }}>
                 {/* Header */}
-                <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.07)', flexShrink: 0 }}>
+                <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--glass-border)', flexShrink: 0 }}>
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
                         <span style={{ fontSize: '1.5rem' }}>{template.icon}</span>
                         <div style={{ flex: 1 }}>
                             <div style={{ fontWeight: 700 }}>{template.title}</div>
-                            <div style={{ fontSize: '0.78rem', opacity: 0.5 }}>{currentStep.title} — Step {step + 1} of {template.steps.length}</div>
+                            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{currentStep.title} — Step {step + 1} of {template.steps.length}</div>
                         </div>
-                        <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                        <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                     </div>
                     {/* Progress */}
-                    <div style={{ height: '4px', borderRadius: '2px', background: 'rgba(255,255,255,0.08)' }}>
+                    <div style={{ height: '4px', borderRadius: '2px', background: 'var(--glass-border)' }}>
                         <div style={{ height: '100%', borderRadius: '2px', width: `${progress}%`, background: 'var(--accent-gold)', transition: 'width 0.3s ease' }} />
                     </div>
                     {/* Step indicators */}
@@ -236,7 +236,7 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
                         {template.steps.map((s, i) => (
                             <div key={i} style={{
                                 flex: 1, fontSize: '0.7rem', textAlign: 'center',
-                                color: i === step ? 'var(--accent-gold)' : i < step ? 'rgba(255,215,0,0.4)' : 'rgba(255,255,255,0.25)',
+                                color: i === step ? 'var(--accent-gold)' : i < step ? 'rgba(255,215,0,0.4)' : 'var(--text-muted)',
                                 opacity: i === step ? 1 : 0.7
                             }}>
                                 {i < step ? '✓' : i + 1}. {s.title}
@@ -259,13 +259,13 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
                                         onChange={e => updateField(field.key, e.target.value)}
                                         placeholder={field.placeholder}
                                         rows={3}
-                                        style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: `1px solid ${formData[field.key] ? 'rgba(255,215,0,0.2)' : 'rgba(255,255,255,0.12)'}`, background: 'rgba(255,255,255,0.04)', color: '#fff', resize: 'vertical', boxSizing: 'border-box' }}
+                                        style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: `1px solid ${formData[field.key] ? 'rgba(255,215,0,0.2)' : 'var(--glass-border)'}`, background: 'var(--glass-bg)', color: 'var(--text-color)', resize: 'vertical', boxSizing: 'border-box' }}
                                     />
                                 ) : field.type === 'select' ? (
                                     <select
                                         value={formData[field.key] || ''}
                                         onChange={e => updateField(field.key, e.target.value)}
-                                        style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: `1px solid ${formData[field.key] ? 'rgba(255,215,0,0.2)' : 'rgba(255,255,255,0.12)'}`, background: '#0d1117', color: '#fff', boxSizing: 'border-box' }}
+                                        style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: `1px solid ${formData[field.key] ? 'rgba(255,215,0,0.2)' : 'var(--glass-border)'}`, background: 'var(--secondary-bg)', color: 'var(--text-color)', boxSizing: 'border-box' }}
                                     >
                                         <option value="">{t('tmpl_select') || '— Select —'}</option>
                                         {field.options?.map(opt => <option key={opt} value={opt}>{opt}</option>)}
@@ -276,7 +276,7 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
                                         value={formData[field.key] || ''}
                                         onChange={e => updateField(field.key, e.target.value)}
                                         placeholder={field.placeholder}
-                                        style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: `1px solid ${formData[field.key] ? 'rgba(255,215,0,0.2)' : 'rgba(255,255,255,0.12)'}`, background: 'rgba(255,255,255,0.04)', color: '#fff', boxSizing: 'border-box' }}
+                                        style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: `1px solid ${formData[field.key] ? 'rgba(255,215,0,0.2)' : 'var(--glass-border)'}`, background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box' }}
                                     />
                                 )}
                             </div>
@@ -285,10 +285,10 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
                 </div>
 
                 {/* Footer */}
-                <div style={{ padding: '16px 24px', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between', flexShrink: 0 }}>
+                <div style={{ padding: '16px 24px', borderTop: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', flexShrink: 0 }}>
                     <button
                         onClick={() => step === 0 ? onClose() : setStep(s => s - 1)}
-                        style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem' }}
+                        style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}
                     >
                         {step === 0 ? (t('profile_cancel') || 'Cancel') : (t('lb_back') || '← Back')}
                     </button>
@@ -297,8 +297,8 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
                         disabled={!canProceed()}
                         style={{
                             padding: '10px 24px', borderRadius: '8px', border: 'none',
-                            background: canProceed() ? 'var(--accent-gold)' : 'rgba(255,255,255,0.08)',
-                            color: canProceed() ? '#000' : 'rgba(255,255,255,0.3)',
+                            background: canProceed() ? 'var(--accent-gold)' : 'var(--glass-border)',
+                            color: canProceed() ? '#000' : 'var(--text-muted)',
                             cursor: canProceed() ? 'pointer' : 'not-allowed',
                             fontSize: '0.85rem', fontWeight: 700, transition: 'all 0.2s'
                         }}
@@ -321,17 +321,17 @@ const TemplatePreview: React.FC<{ template: Template; data: Record<string, strin
             backdropFilter: 'blur(8px)'
         }}>
             <div style={{
-                width: '100%', maxWidth: '600px', background: '#0d1117',
+                width: '100%', maxWidth: '600px', background: 'var(--secondary-bg)',
                 borderRadius: '20px', border: '1px solid rgba(255,215,0,0.2)',
                 overflow: 'hidden', maxHeight: '90vh', display: 'flex', flexDirection: 'column'
             }}>
-                <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--glass-border)', display: 'flex', gap: '12px', alignItems: 'center' }}>
                     <span style={{ fontSize: '1.5rem' }}>{template.icon}</span>
                     <div style={{ flex: 1 }}>
                         <div style={{ fontWeight: 700 }}>{template.title} — {t('tmpl_preview') || 'Preview'}</div>
                         <div style={{ fontSize: '0.78rem', color: '#10b981' }}>{t('tmpl_completed') || '✓ Template completed'}</div>
                     </div>
-                    <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                    <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
                 <div style={{ padding: '24px', overflowY: 'auto', flex: 1 }}>
                     {template.steps.map((step, i) => (
@@ -339,7 +339,7 @@ const TemplatePreview: React.FC<{ template: Template; data: Record<string, strin
                             <h4 style={{ color: 'var(--accent-gold)', marginBottom: '12px', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{step.title}</h4>
                             {step.fields.map(field => data[field.key] && (
                                 <div key={field.key} style={{ display: 'flex', gap: '12px', marginBottom: '8px', fontSize: '0.88rem' }}>
-                                    <span style={{ opacity: 0.5, minWidth: '160px', flexShrink: 0 }}>{field.label}:</span>
+                                    <span style={{ color: 'var(--text-muted)', minWidth: '160px', flexShrink: 0 }}>{field.label}:</span>
                                     <span>{data[field.key]}</span>
                                 </div>
                             ))}
@@ -349,11 +349,11 @@ const TemplatePreview: React.FC<{ template: Template; data: Record<string, strin
                         ⚠️ {t('tmpl_disclaimer') || 'This is a draft for reference only. Please consult a qualified notary or lawyer in your jurisdiction before using any legal document.'}
                     </div>
                 </div>
-                <div style={{ padding: '16px 24px', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
-                    <button onClick={() => window.print()} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: '0.85rem' }}>
+                <div style={{ padding: '16px 24px', borderTop: '1px solid var(--glass-border)', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                    <button onClick={() => window.print()} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}>
                         🖨 {t('tmpl_print') || 'Print / Save PDF'}
                     </button>
-                    <button onClick={onClose} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#000', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>
+                    <button onClick={onClose} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>
                         {t('tmpl_done') || 'Done'}
                     </button>
                 </div>
@@ -384,8 +384,8 @@ const Templates: React.FC = () => {
                         key={tmpl.id}
                         style={{
                             padding: '24px', borderRadius: '16px',
-                            background: 'rgba(255,255,255,0.03)',
-                            border: '1px solid rgba(255,255,255,0.08)',
+                            background: 'var(--glass-bg)',
+                            border: '1px solid var(--glass-border)',
                             transition: 'all 0.25s', display: 'flex', flexDirection: 'column'
                         }}
                         onMouseEnter={e => {
@@ -393,20 +393,20 @@ const Templates: React.FC = () => {
                             e.currentTarget.style.transform = 'translateY(-4px)';
                         }}
                         onMouseLeave={e => {
-                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                            e.currentTarget.style.borderColor = 'var(--glass-border)';
                             e.currentTarget.style.transform = 'translateY(0)';
                         }}
                     >
                         <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', marginBottom: '12px' }}>
                             <span style={{ fontSize: '1.8rem' }}>{tmpl.icon}</span>
                             <div>
-                                <h3 style={{ fontSize: '1.05rem', margin: 0, color: '#fff' }}>{tmpl.title}</h3>
-                                <div style={{ fontSize: '0.75rem', opacity: 0.45, marginTop: '2px' }}>{tmpl.subtitle}</div>
+                                <h3 style={{ fontSize: '1.05rem', margin: 0, color: 'var(--text-color)' }}>{tmpl.title}</h3>
+                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>{tmpl.subtitle}</div>
                             </div>
                         </div>
-                        <p style={{ fontSize: '0.85rem', opacity: 0.6, flex: 1, marginBottom: '20px', lineHeight: '1.5' }}>{tmpl.desc}</p>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', flex: 1, marginBottom: '20px', lineHeight: '1.5' }}>{tmpl.desc}</p>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <span style={{ fontSize: '0.72rem', opacity: 0.4 }}>{(t('tmpl_steps') || '{count} steps').replace('{count}', String(tmpl.steps.length))}</span>
+                            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{(t('tmpl_steps') || '{count} steps').replace('{count}', String(tmpl.steps.length))}</span>
                             <button
                                 className="btn"
                                 onClick={() => setActiveWizard(tmpl)}
