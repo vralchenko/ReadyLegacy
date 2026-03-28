@@ -12,9 +12,10 @@ const Login: React.FC = () => {
 
     // Handle OAuth callback (token in URL from google-callback redirect)
     useEffect(() => {
-        const token = searchParams.get('token');
-        const userJson = searchParams.get('user');
-        const oauthError = searchParams.get('error');
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        const userJson = params.get('user');
+        const oauthError = params.get('error');
 
         if (oauthError) {
             setError(`Login failed: ${oauthError.replace(/_/g, ' ')}`);
@@ -27,13 +28,15 @@ const Login: React.FC = () => {
                 const userData = JSON.parse(userJson);
                 localStorage.setItem('readylegacy_token', token);
                 localStorage.setItem('readylegacy_user', JSON.stringify(userData));
+                window.history.replaceState({}, '', '/login');
                 window.location.href = '/profile';
-            } catch {
+            } catch (e) {
+                console.error('OAuth parse error:', e);
                 setError('Failed to process login');
             }
             return;
         }
-    }, [searchParams]);
+    }, []);
 
     useEffect(() => {
         if (user) navigate('/profile');
