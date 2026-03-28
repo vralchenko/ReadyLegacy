@@ -26,9 +26,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         const clientId = process.env.GOOGLE_CLIENT_ID!;
         const clientSecret = process.env.GOOGLE_CLIENT_SECRET!;
-        const redirectUri = `${process.env.VERCEL_PROJECT_PRODUCTION_URL
-            ? 'https://' + process.env.VERCEL_PROJECT_PRODUCTION_URL
-            : process.env.NEXT_PUBLIC_URL || 'https://readylegacy.ch'}/api/auth/google-callback`;
+        const host = req.headers.host || 'readylegacy.ch';
+        const protocol = host.includes('localhost') ? 'http' : 'https';
+        const redirectUri = `${protocol}://${host}/api/auth/google-callback`;
 
         // Exchange code for tokens
         const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -61,7 +61,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const googleUser: GoogleUserInfo = await userInfoRes.json();
-
         if (!googleUser.email) {
             return res.redirect(302, '/login?error=no_email');
         }
@@ -73,10 +72,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             .limit(1);
 
         if (!user) {
-            // Create new user (no password needed for OAuth)
             [user] = await db.insert(schema.users).values({
                 email: googleUser.email.toLowerCase(),
-                passwordHash: '', // OAuth users have no password
+                passwordHash: '',
                 name: googleUser.name || googleUser.email.split('@')[0],
                 provider: 'google',
                 plan: 'free',
@@ -86,14 +84,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Issue JWT
         const token = await signToken({ userId: user.id, email: user.email });
 
-        // Redirect to frontend with token
-        res.redirect(302, `/login?token=${token}&user=${encodeURIComponent(JSON.stringify({
+        const userData = JSON.stringify({
             id: user.id,
             email: user.email,
             name: user.name,
             plan: user.plan,
             provider: user.provider,
-        }))}`);
+        });
+
+        // Redirect with inline script that stores token and redirects
+        res.setHeader('Content-Type', 'text/html');
+        res.status(200).send(`<!DOCTYPE html>
+<html><head><title>Logging in...</title></head>
+<body>
+<p>Logging in...</p>
+<script>
+localStorage.setItem('readylegacy_token', ${JSON.stringify(token)});
+localStorage.setItem('readylegacy_user', ${JSON.stringify(userData)});
+window.location.href = '/profile';
+</script>
+</body></html>`);
     } catch (err: any) {
         console.error('Google OAuth error:', err);
         res.redirect(302, '/login?error=server_error');
