@@ -1527,30 +1527,26 @@ footer {
         background: #fff !important;
         overflow: visible !important;
         height: auto !important;
+        width: auto !important;
     }
 
-    body * {
-        visibility: hidden;
+    body.demo-mode {
+        height: auto !important;
+        overflow: visible !important;
     }
 
-    #document-print-overlay,
-    #document-print-overlay * {
-        visibility: visible !important;
+    body.demo-mode main {
+        overflow: visible !important;
+        padding-top: 0 !important;
+    }
+
+    header, footer, .no-print {
+        display: none !important;
     }
 
     #document-print-overlay {
-        position: absolute !important;
-        inset: 0 !important;
-        z-index: 99999 !important;
-    }
-
-    .no-print {
-        display: none !important;
-    }
-
-    header, footer, .tools-sidebar, .tools-layout,
-    main > *:not(#document-print-overlay) {
-        display: none !important;
+        position: static !important;
+        overflow: visible !important;
     }
 }
 
