@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import useSyncedState from '../hooks/useSyncedState';
+import { apiFetch } from '../lib/api';
 
 interface Document {
     id: string;
@@ -19,52 +19,63 @@ const STATUS_STYLES = {
     filed: { label: 'Filed', color: '#6fcf97', bg: 'rgba(111,207,151,0.12)' },
 };
 
-// Built-in demo documents
-const DEMO_DOCS: Document[] = [
-    {
-        id: 'demo1',
-        title: 'Living Will Template',
-        type: 'Living Will',
-        icon: '🏥',
-        createdAt: '21.02.2026',
-        status: 'ready',
-        data: { note: 'Sample document — fill in the Legal Framework section to personalize.' }
-    },
-    {
-        id: 'demo2',
-        title: 'Power of Attorney',
-        type: 'Power of Attorney',
-        icon: '⚖️',
-        createdAt: '21.02.2026',
-        status: 'draft',
-        data: { note: 'Use the Request Templates wizard (section 06) to fill this in step-by-step.' }
-    },
-    {
-        id: 'demo3',
-        title: 'Asset Overview',
-        type: 'Financial Summary',
-        icon: '📊',
-        createdAt: '08.03.2026',
-        status: 'ready',
-        data: { note: 'Complete overview of assets, liabilities, and estate value.' }
-    },
-    {
-        id: 'demo4',
-        title: 'Funeral Directive',
-        type: 'End-of-Life',
-        icon: '🕊️',
-        createdAt: '12.03.2026',
-        status: 'draft',
-        data: { note: 'Personal wishes for funeral arrangements and memorial.' }
-    },
-];
+function formatDate(dateStr: string): string {
+    try {
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return dateStr;
+        return d.toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    } catch {
+        return dateStr;
+    }
+}
 
 const Documents: React.FC = () => {
     const { t } = useLanguage();
     const navigate = useNavigate();
-    const [docs] = useSyncedState<Document[]>('saved_documents', DEMO_DOCS);
+    const [docs, setDocs] = useState<Document[]>([]);
+    const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<'all' | Document['status']>('all');
     const [viewing, setViewing] = useState<Document | null>(null);
+
+    const fetchDocs = useCallback(async () => {
+        try {
+            const rows = await apiFetch<any[]>('/documents');
+            setDocs(rows.map(r => ({
+                id: r.id,
+                title: r.title,
+                type: r.type || '',
+                icon: r.icon || '📄',
+                createdAt: formatDate(r.createdAt || r.created_at),
+                status: (r.status || 'draft') as Document['status'],
+                data: r.data || {},
+            })));
+        } catch {
+            setDocs([]);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => { fetchDocs(); }, [fetchDocs]);
+
+    const handleDelete = async (id: string) => {
+        try {
+            await apiFetch(`/documents/${id}`, { method: 'DELETE' });
+            setDocs(prev => prev.filter(d => d.id !== id));
+            setViewing(null);
+        } catch {}
+    };
+
+    const handleStatusChange = async (id: string, status: Document['status']) => {
+        try {
+            await apiFetch(`/documents/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify({ status }),
+            });
+            setDocs(prev => prev.map(d => d.id === id ? { ...d, status } : d));
+            setViewing(v => v && v.id === id ? { ...v, status } : v);
+        } catch {}
+    };
 
     const filtered = filter === 'all' ? docs : docs.filter(d => d.status === filter);
 
@@ -118,7 +129,9 @@ const Documents: React.FC = () => {
                 </div>
 
                 {/* Documents grid */}
-                {filtered.length === 0 ? (
+                {loading ? (
+                    <div style={{ textAlign: 'center', padding: '80px 20px', color: 'var(--text-muted)' }}>Loading...</div>
+                ) : filtered.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '80px 20px', color: 'var(--text-muted)' }}>
                         <div style={{ fontSize: '3rem', marginBottom: '16px' }}>📄</div>
                         <p style={{ fontStyle: 'italic' }}>{t('docs_empty_state') || 'No documents yet. Use the Templates wizard to create your first document.'}</p>
@@ -213,11 +226,35 @@ const Documents: React.FC = () => {
                         </div>
                         <div style={{ padding: '24px' }}>
                             <div style={{ opacity: 0.65, fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '20px' }}>
-                                {viewing.data.note || 'This document has been saved to your archive.'}
+                                {viewing.data?.note || 'This document has been saved to your archive.'}
                             </div>
+
+                            {/* Status change */}
+                            <div style={{ display: 'flex', gap: '6px', marginBottom: '16px' }}>
+                                {(['draft', 'ready', 'filed'] as const).map(s => {
+                                    const ss = STATUS_STYLES[s];
+                                    return (
+                                        <button
+                                            key={s}
+                                            onClick={() => handleStatusChange(viewing.id, s)}
+                                            style={{
+                                                padding: '6px 14px', borderRadius: '8px', fontSize: '0.78rem', cursor: 'pointer',
+                                                border: `1px solid ${viewing.status === s ? ss.color : 'var(--glass-border)'}`,
+                                                background: viewing.status === s ? ss.bg : 'transparent',
+                                                color: viewing.status === s ? ss.color : 'var(--text-muted)',
+                                                fontWeight: viewing.status === s ? 700 : 400,
+                                            }}
+                                        >
+                                            {ss.label}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
                             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                                 <button onClick={() => window.print()} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}>🖨 {t('docs_btn_print') || 'Print'}</button>
                                 <button onClick={() => { navigate('/tools?tool=templates'); setViewing(null); }} style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>Edit in Wizard</button>
+                                <button onClick={() => handleDelete(viewing.id)} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.05)', color: '#ef4444', cursor: 'pointer', fontSize: '0.85rem', marginLeft: 'auto' }}>Delete</button>
                             </div>
                         </div>
                     </div>
