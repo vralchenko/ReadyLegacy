@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { apiFetch } from '../lib/api';
+import DocumentPrint from '../components/DocumentPrint';
 
 interface Document {
     id: string;
@@ -37,6 +38,7 @@ const Documents: React.FC = () => {
     const [filter, setFilter] = useState<'all' | Document['status']>('all');
     const [viewing, setViewing] = useState<Document | null>(null);
     const [confirmDelete, setConfirmDelete] = useState(false);
+    const [printing, setPrinting] = useState<Document | null>(null);
 
     const fetchDocs = useCallback(async () => {
         try {
@@ -183,7 +185,7 @@ const Documents: React.FC = () => {
                                         <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>{doc.createdAt}</span>
                                         <div style={{ display: 'flex', gap: '8px' }}>
                                             <button
-                                                onClick={e => { e.stopPropagation(); window.print(); }}
+                                                onClick={e => { e.stopPropagation(); setPrinting(doc); }}
                                                 style={{ padding: '8px 16px', borderRadius: '6px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-muted)', fontSize: '1rem', cursor: 'pointer' }}
                                             >
                                                 🖨 {t('docs_btn_print') || 'Print'}
@@ -263,7 +265,7 @@ const Documents: React.FC = () => {
                                 </div>
                             ) : (
                                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                                    <button onClick={() => window.print()} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}>🖨 {t('docs_btn_print') || 'Print'}</button>
+                                    <button onClick={() => setPrinting(viewing)} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}>🖨 {t('docs_btn_print') || 'Print'}</button>
                                     <button onClick={() => { navigate('/tools?tool=templates'); setViewing(null); }} style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>Edit in Wizard</button>
                                     <button onClick={() => setConfirmDelete(true)} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.05)', color: '#ef4444', cursor: 'pointer', fontSize: '0.85rem', marginLeft: 'auto' }}>Delete</button>
                                 </div>
@@ -271,6 +273,18 @@ const Documents: React.FC = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {printing && (
+                <DocumentPrint
+                    title={printing.title}
+                    type={printing.type}
+                    icon={printing.icon}
+                    date={printing.createdAt}
+                    status={printing.status}
+                    data={printing.data}
+                    onClose={() => setPrinting(null)}
+                />
             )}
         </div>
     );

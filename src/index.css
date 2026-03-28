@@ -1521,6 +1521,39 @@ footer {
     color: rgba(255, 255, 255, 0.6);
 }
 
+/* Print styles */
+@media print {
+    body, html {
+        background: #fff !important;
+        overflow: visible !important;
+        height: auto !important;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    #document-print-overlay,
+    #document-print-overlay * {
+        visibility: visible !important;
+    }
+
+    #document-print-overlay {
+        position: absolute !important;
+        inset: 0 !important;
+        z-index: 99999 !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    header, footer, .tools-sidebar, .tools-layout,
+    main > *:not(#document-print-overlay) {
+        display: none !important;
+    }
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {
