@@ -376,6 +376,75 @@ const Templates: React.FC = () => {
     const [activeWizard, setActiveWizard] = useState<Template | null>(null);
     const [previewData, setPreviewData] = useState<{ template: Template; data: Record<string, string> } | null>(null);
     const [docSaved, setDocSaved] = useState(false);
+    const [demoLoading, setDemoLoading] = useState(false);
+    const [demoDone, setDemoDone] = useState(false);
+
+    const DEMO_DATA: Record<string, Record<string, string>> = {
+        poa: {
+            grantor_name: 'Viktor Ralchenko', grantor_dob: '1978-10-21',
+            grantor_address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
+            attorney_name: 'Olga Sushchinskaya', attorney_relation: 'Spouse / Partner',
+            attorney_address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
+            scope: 'General (all matters)', scope_details: 'Full authority over all financial and legal matters in case of incapacity.',
+            valid_from: '2026-04-01',
+        },
+        funeral: {
+            name: 'Viktor Ralchenko', dob: '1978-10-21',
+            burial_type: 'Cremation', ceremony: 'Civil / Secular ceremony',
+            location: 'Friedental Cemetery, Luzern',
+            music: 'Johann Sebastian Bach — Air on the G String, Ludovico Einaudi — Nuvole Bianche',
+            readings: 'Do not stand at my grave and weep — Mary Elizabeth Frye',
+            other_wishes: 'Small gathering, close family and friends only. Donations to Swiss Red Cross instead of flowers.',
+        },
+        waiver: {
+            name: 'Anna Ralchenko', dob: '2005-03-15',
+            address: 'Zürichstrasse 10, 6004 Luzern, Switzerland',
+            deceased_name: 'Grandmother Maria Ralchenko', relationship: 'Other relative',
+            reason: 'Voluntarily waiving inheritance in favor of remaining family members.',
+            declaration_date: '2026-03-28',
+        },
+        gift: {
+            donor_name: 'Viktor Ralchenko',
+            donor_address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
+            recipient_name: 'Anna Ralchenko', relationship: 'Child',
+            gift_description: 'Savings account at UBS — CHF 50,000 for university education',
+            gift_value: 'CHF 50,000',
+            conditions: 'To be used exclusively for higher education expenses.',
+            gift_date: '2026-06-01',
+        },
+        advance: {
+            name: 'Viktor Ralchenko', dob: '1978-10-21',
+            address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
+            agent_name: 'Dr. Inna Praxmarer', agent_relation: 'Close Friend',
+            agent_contact: '+41 79 123 45 67 / inna@readylegacy.ch',
+            personal_care: 'Full authority', financial: 'Day-to-day finances only',
+            special_wishes: 'No life-prolonging measures if prognosis is terminal. Prefer palliative care at home.',
+        },
+    };
+
+    const fillDemoDocuments = async () => {
+        setDemoLoading(true);
+        try {
+            for (const tmpl of TEMPLATES) {
+                const data = DEMO_DATA[tmpl.id];
+                if (!data) continue;
+                await apiFetch('/documents', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        title: tmpl.title,
+                        type: tmpl.subtitle || tmpl.title,
+                        icon: tmpl.icon,
+                        data,
+                    }),
+                });
+            }
+            setDemoDone(true);
+        } catch (e) {
+            console.error('Demo fill failed:', e);
+        } finally {
+            setDemoLoading(false);
+        }
+    };
 
     const saveDocument = async () => {
         if (!previewData) return;
@@ -398,11 +467,27 @@ const Templates: React.FC = () => {
     return (
         <div id="templates" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '16px' }}>
-                <span className="step-tag">{t('tag_templates') || 'Request Templates'}</span>
-                <h2 style={{ fontSize: '1.6rem', marginBottom: '4px' }}>{t('title_templates') || 'Document Templates'}</h2>
-                <p style={{ opacity: 0.7, fontSize: '0.9rem', marginTop: '0' }}>
-                    {t('tmpl_desc') || 'Fill in templates step-by-step. Each wizard guides you through the required information to generate a draft document for legal review.'}
-                </p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', flexWrap: 'wrap' }}>
+                    <div>
+                        <span className="step-tag">{t('tag_templates') || 'Request Templates'}</span>
+                        <h2 style={{ fontSize: '1.6rem', marginBottom: '4px' }}>{t('title_templates') || 'Document Templates'}</h2>
+                        <p style={{ opacity: 0.7, fontSize: '0.9rem', marginTop: '0' }}>
+                            {t('tmpl_desc') || 'Fill in templates step-by-step. Each wizard guides you through the required information to generate a draft document for legal review.'}
+                        </p>
+                    </div>
+                    <button
+                        onClick={fillDemoDocuments}
+                        disabled={demoLoading || demoDone}
+                        style={{
+                            padding: '10px 20px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600,
+                            border: '1px solid rgba(16,185,129,0.3)', cursor: demoLoading || demoDone ? 'default' : 'pointer',
+                            background: demoDone ? 'rgba(16,185,129,0.1)' : 'rgba(16,185,129,0.05)',
+                            color: '#10b981', whiteSpace: 'nowrap', transition: 'all 0.2s',
+                        }}
+                    >
+                        {demoLoading ? 'Creating...' : demoDone ? '✓ 5 documents created' : '⚡ Fill Demo Documents'}
+                    </button>
+                </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '12px' }}>

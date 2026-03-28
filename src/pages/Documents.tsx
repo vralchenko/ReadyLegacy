@@ -60,7 +60,7 @@ const Documents: React.FC = () => {
 
     const handleDelete = async (id: string) => {
         try {
-            await apiFetch(`/documents/${id}`, { method: 'DELETE' });
+            await apiFetch(`/documents?id=${id}`, { method: 'DELETE' });
             setDocs(prev => prev.filter(d => d.id !== id));
             setViewing(null);
         } catch {}
@@ -68,7 +68,7 @@ const Documents: React.FC = () => {
 
     const handleStatusChange = async (id: string, status: Document['status']) => {
         try {
-            await apiFetch(`/documents/${id}`, {
+            await apiFetch(`/documents?id=${id}`, {
                 method: 'PUT',
                 body: JSON.stringify({ status }),
             });
