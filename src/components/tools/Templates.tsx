@@ -299,7 +299,7 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
                         style={{
                             padding: '10px 24px', borderRadius: '8px', border: 'none',
                             background: canProceed() ? 'var(--accent-gold)' : 'var(--glass-border)',
-                            color: canProceed() ? '#000' : 'var(--text-muted)',
+                            color: canProceed() ? '#fff' : 'var(--text-muted)',
                             cursor: canProceed() ? 'pointer' : 'not-allowed',
                             fontSize: '0.85rem', fontWeight: 700, transition: 'all 0.2s'
                         }}
