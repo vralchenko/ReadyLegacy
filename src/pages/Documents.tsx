@@ -40,6 +40,18 @@ const Documents: React.FC = () => {
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [printing, setPrinting] = useState<Document | null>(null);
 
+    useEffect(() => {
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                if (printing) setPrinting(null);
+                else if (confirmDelete) setConfirmDelete(false);
+                else if (viewing) setViewing(null);
+            }
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, [viewing, confirmDelete, printing]);
+
     const fetchDocs = useCallback(async () => {
         try {
             const rows = await apiFetch<any[]>('/documents');
