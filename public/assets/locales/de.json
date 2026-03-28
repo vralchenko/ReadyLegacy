@@ -457,5 +457,49 @@
   "privacy_contact_title": "Kontakt",
   "privacy_contact_text": "Für datenschutzbezogene Anfragen:",
   "privacy_jurisdiction_title": "Anwendbares Recht",
-  "privacy_jurisdiction_text": "Diese Datenschutzerklärung unterliegt dem Schweizer Recht. Die zuständige Aufsichtsbehörde ist der Eidgenössische Datenschutz- und Öffentlichkeitsbeauftragte (EDÖB)."
+  "privacy_jurisdiction_text": "Diese Datenschutzerklärung unterliegt dem Schweizer Recht. Die zuständige Aufsichtsbehörde ist der Eidgenössische Datenschutz- und Öffentlichkeitsbeauftragte (EDÖB).",
+
+  "hero_clear": "Digitale Plattform für Nachlassplanung, Vermächtnisgestaltung und Trauerbegleitung.",
+  "cta_get_started": "Kostenlos starten",
+
+  "svc_title": "Was wir anbieten",
+  "svc_ready_title": "Bereit sein",
+  "svc_ready_tag": "Nachlassplanung",
+  "svc_ready_desc": "Übernehmen Sie die Kontrolle über Ihre Zukunft. Organisieren Sie Rechtsdokumente, Vermögenswerte und letzte Wünsche sicher — damit nichts dem Zufall überlassen wird.",
+  "svc_ready_t1": "Vermögensübersicht & Nachlasszusammenfassung",
+  "svc_ready_t2": "Testament-Struktur-Planer",
+  "svc_ready_t3": "Rechtsdokumente & Vorsorgeaufträge",
+  "svc_ready_t4": "Checklisten & Schritt-für-Schritt-Anleitungen",
+  "svc_ready_t5": "Aufgabenverwaltung für Willensvollstrecker",
+  "svc_ready_t6": "Dokumentvorlagen & Assistenten",
+  "svc_ready_btn": "Planung starten",
+
+  "svc_legacy_title": "Hinterlassen",
+  "svc_legacy_tag": "Digitales Erbe",
+  "svc_legacy_desc": "Schaffen Sie bleibende Erinnerungen für Ihre Liebsten — Nachrichten, Fotos, Videos und eine digitale Präsenz, die Sie überdauert.",
+  "svc_legacy_t1": "Persönliche Nachrichten & Briefe",
+  "svc_legacy_t2": "Medien-Tresor (Fotos, Videos, Audio)",
+  "svc_legacy_t3": "KI-Avatar (Beta)",
+  "svc_legacy_btn": "Vermächtnis erstellen",
+
+  "svc_honored_title": "Gedenken",
+  "svc_honored_tag": "Trauerbegleitung",
+  "svc_honored_desc": "Unterstützung für Hinterbliebene — emotionale Begleitung, Unterstützungsnetzwerke und praktische Checklisten für die schwersten Momente.",
+  "svc_honored_t1": "Trauerressourcen & geführte Heilung",
+  "svc_honored_t2": "Selbsthilfegruppen & Berater",
+  "svc_honored_t3": "Praktische Checklisten nach Verlust",
+  "svc_honored_btn": "Unterstützung erhalten",
+
+  "pricing_family_name": "Familie",
+  "pricing_family_period": "/Monat",
+  "pricing_family_f1": "Alles aus Premium",
+  "pricing_family_f2": "Bis zu 5 Familienmitglieder",
+  "pricing_family_f3": "Geteilter Vermächtnis-Tresor",
+  "pricing_family_f4": "Prioritäts-Support",
+  "pricing_family_f5": "KI-Avatar (Beta)",
+  "pricing_family_btn": "Familientarif starten",
+
+  "cta_final_title": "Erstellen Sie Ihr kostenloses Konto",
+  "cta_final_desc": "Organisieren Sie Ihren Nachlass, bewahren Sie Ihr Vermächtnis und schützen Sie Ihre Liebsten — alles an einem Ort.",
+  "cta_final_btn": "Kostenloses Konto erstellen"
 }

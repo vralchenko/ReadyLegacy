@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
-import usePersistedState from '../hooks/usePersistedState';
+import { useAuth } from '../context/AuthContext';
+import useSyncedState from '../hooks/useSyncedState';
 
 interface ProfileData {
     name: string;
@@ -35,25 +36,19 @@ const PLAN_STYLES = {
 const Profile: React.FC = () => {
     const { language, setLanguage, t } = useLanguage();
     const { theme, toggleTheme } = useTheme();
+    const { user } = useAuth();
 
-    // Prepare initial profile data from mock login if available
     const getInitialProfile = (): ProfileData => {
-        const mockUser = localStorage.getItem('readylegacy_user');
         const defaultData: ProfileData = {
             name: '', email: '', phone: '', dob: '', nationality: '', city: '', bio: '', plan: 'free'
         };
-        if (mockUser) {
-            try {
-                const parsed = JSON.parse(mockUser);
-                return { ...defaultData, name: parsed.name, email: parsed.email };
-            } catch (e) {
-                return defaultData;
-            }
+        if (user) {
+            return { ...defaultData, name: user.name, email: user.email, plan: (user.plan as ProfileData['plan']) || 'free' };
         }
         return defaultData;
     };
 
-    const [profile, setProfile] = usePersistedState<ProfileData>('user_profile', getInitialProfile());
+    const [profile, setProfile] = useSyncedState<ProfileData>('user_profile', getInitialProfile());
 
     const [editing, setEditing] = useState(false);
     const [draft, setDraft] = useState<ProfileData>(profile);
@@ -96,10 +91,6 @@ const Profile: React.FC = () => {
         : '?';
 
     const planStyle = PLAN_STYLES[profile.plan];
-
-    if (!localStorage.getItem('readylegacy_user')) {
-        return <Navigate to="/login" replace />;
-    }
 
     return (
         <div style={{ minHeight: '100vh', padding: '20px 0 60px', marginTop: '-60px' }}>

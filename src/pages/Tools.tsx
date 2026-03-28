@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, Navigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import Sidebar from '../components/tools/Sidebar';
 import AssetOverview from '../components/tools/AssetOverview';
@@ -50,15 +50,10 @@ const SECTION_LABELS: Record<string, string> = {
 };
 
 const Tools: React.FC = () => {
-    const isLoggedIn = !!localStorage.getItem('readylegacy_user');
     const { t } = useLanguage();
     const [searchParams, setSearchParams] = useSearchParams();
     const initialTool = searchParams.get('tool') || '';
     const [activeTool, setActiveTool] = useState(initialTool);
-
-    if (!isLoggedIn) {
-        return <Navigate to="/login" replace />;
-    }
 
     useEffect(() => {
         const tool = searchParams.get('tool');

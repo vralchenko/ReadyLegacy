@@ -457,5 +457,49 @@
   "privacy_contact_title": "Contact",
   "privacy_contact_text": "For privacy-related inquiries:",
   "privacy_jurisdiction_title": "Applicable Law",
-  "privacy_jurisdiction_text": "This privacy policy is governed by Swiss law. The competent supervisory authority is the Federal Data Protection and Information Commissioner (FDPIC)."
+  "privacy_jurisdiction_text": "This privacy policy is governed by Swiss law. The competent supervisory authority is the Federal Data Protection and Information Commissioner (FDPIC).",
+
+  "hero_clear": "Digital platform for estate planning, legacy management, and bereavement support.",
+  "cta_get_started": "Get Started Free",
+
+  "svc_title": "What we offer",
+  "svc_ready_title": "Be Ready",
+  "svc_ready_tag": "Estate Planning",
+  "svc_ready_desc": "Take control of your future. Securely organize legal documents, assets, and final wishes — so nothing is left to chance.",
+  "svc_ready_t1": "Asset overview & estate summary",
+  "svc_ready_t2": "Will structure builder",
+  "svc_ready_t3": "Legal documents & advance directives",
+  "svc_ready_t4": "Checklists & step-by-step guides",
+  "svc_ready_t5": "Executor task management",
+  "svc_ready_t6": "Document templates & wizards",
+  "svc_ready_btn": "Start Planning",
+
+  "svc_legacy_title": "Leave Behind",
+  "svc_legacy_tag": "Digital Legacy",
+  "svc_legacy_desc": "Create lasting memories for your loved ones — messages, photos, videos, and a digital presence that outlives you.",
+  "svc_legacy_t1": "Personal messages & letters",
+  "svc_legacy_t2": "Media vault (photos, videos, audio)",
+  "svc_legacy_t3": "AI Avatar (beta)",
+  "svc_legacy_btn": "Create Legacy",
+
+  "svc_honored_title": "Be Honored",
+  "svc_honored_tag": "Bereavement Support",
+  "svc_honored_desc": "Support for those left behind — emotional guidance, support networks, and practical checklists for the hardest moments.",
+  "svc_honored_t1": "Grief resources & guided healing",
+  "svc_honored_t2": "Support groups & counselors",
+  "svc_honored_t3": "Practical after-loss checklists",
+  "svc_honored_btn": "Get Support",
+
+  "pricing_family_name": "Family",
+  "pricing_family_period": "/month",
+  "pricing_family_f1": "Everything in Premium",
+  "pricing_family_f2": "Up to 5 family members",
+  "pricing_family_f3": "Shared Legacy Vault",
+  "pricing_family_f4": "Priority support",
+  "pricing_family_f5": "AI Avatar (beta)",
+  "pricing_family_btn": "Start Family Plan",
+
+  "cta_final_title": "Start your free account",
+  "cta_final_desc": "Organize your estate, preserve your legacy, and protect your loved ones — all in one place.",
+  "cta_final_btn": "Create Free Account"
 }

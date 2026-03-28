@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import usePersistedState from '../../hooks/usePersistedState';
+import usePersistedState from '../../hooks/useSyncedState';
 
 interface DocRecord {
     id: string;

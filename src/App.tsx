@@ -1,10 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { LanguageProvider, useLanguage } from './context/LanguageContext';
-import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { AuthProvider } from './context/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget/ChatWidget';
+import ProtectedRoute from './components/ProtectedRoute';
 
 import Home from './pages/Home';
 import Mission from './pages/Mission';
@@ -22,14 +24,15 @@ const App: React.FC = () => {
         <Router>
             <LanguageProvider>
                 <ThemeProvider>
-                    <Main />
+                    <AuthProvider>
+                        <Main />
+                    </AuthProvider>
                 </ThemeProvider>
             </LanguageProvider>
         </Router>
     );
 };
 
-// Separate component to use hooks
 const Main = () => {
     React.useEffect(() => {
         document.body.classList.add('demo-mode');
@@ -43,12 +46,12 @@ const Main = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/mission" element={<Mission />} />
-                    <Route path="/tools" element={<Tools />} />
+                    <Route path="/tools" element={<ProtectedRoute><Tools /></ProtectedRoute>} />
                     <Route path="/team" element={<Team />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/documents" element={<Documents />} />
-                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/documents" element={<ProtectedRoute><Documents /></ProtectedRoute>} />
+                    <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                     <Route path="/impressum" element={<Impressum />} />
                     <Route path="/privacy" element={<Privacy />} />
                 </Routes>

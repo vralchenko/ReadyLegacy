@@ -15,12 +15,12 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
   {
     id: 'platform_about',
     category: 'platform',
-    tags: ['continuum', 'platform', 'about', 'legacy'],
+    tags: ['ready legacy', 'platform', 'about', 'legacy'],
     keywords: {
-      en: ['what is continuum', 'about', 'platform'],
-      de: ['was ist continuum', 'plattform', 'über'],
-      ru: ['что такое continuum', 'платформа', 'о нас'],
-      ua: ['що таке continuum', 'платформа', 'про нас']
+      en: ['what is ready legacy', 'about', 'platform'],
+      de: ['was ist ready legacy', 'plattform', 'über'],
+      ru: ['что такое ready legacy', 'платформа', 'о нас'],
+      ua: ['що таке ready legacy', 'платформа', 'про нас']
     },
     content: {
       en: '**Ready Legacy** is a Swiss digital platform for estate planning, legacy creation, and bereavement support. It helps you organize legal documents, create personal messages for loved ones, and guides families through the process after loss. Available in English and German. GDPR and nDSG compliant.',
@@ -99,10 +99,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['дані', 'зберігання', 'конфіденційність', 'де зберігаються', 'безпечно']
     },
     content: {
-      en: 'Currently, all your data is **saved locally** in your browser\'s storage. Nothing is sent to external servers. In the future, Ready Legacy will offer encrypted cloud storage for premium users, ensuring your documents and messages are accessible from any device while remaining fully secure.',
-      de: 'Aktuell werden alle Ihre Daten **lokal** in Ihrem Browser gespeichert. Nichts wird an externe Server gesendet. In Zukunft wird Ready Legacy verschlüsselten Cloud-Speicher für Premium-Nutzer anbieten, damit Ihre Dokumente und Nachrichten von jedem Gerät sicher zugänglich sind.',
-      ru: 'В настоящее время все ваши данные **сохраняются локально** в хранилище вашего браузера. Ничего не отправляется на внешние серверы. В будущем Ready Legacy предложит зашифрованное облачное хранилище для премиум-пользователей, обеспечивая доступ к документам и сообщениям с любого устройства при полной безопасности.',
-      ua: 'Наразі всі ваші дані **зберігаються локально** у сховищі вашого браузера. Нічого не надсилається на зовнішні сервери. У майбутньому Ready Legacy запропонує зашифроване хмарне сховище для преміум-користувачів, забезпечуючи доступ до документів та повідомлень з будь-якого пристрою при повній безпеці.'
+      en: 'Your data is stored in a **secure PostgreSQL database** (Neon) hosted in Europe. When you create an account, your tools data, documents, and settings are synced to the server automatically. Data also stays in your browser for instant loading. Your account is protected with encrypted passwords and JWT authentication.',
+      de: 'Ihre Daten werden in einer **sicheren PostgreSQL-Datenbank** (Neon) in Europa gespeichert. Wenn Sie ein Konto erstellen, werden Ihre Tool-Daten, Dokumente und Einstellungen automatisch mit dem Server synchronisiert. Die Daten bleiben auch in Ihrem Browser für sofortiges Laden. Ihr Konto ist mit verschlüsselten Passwörtern und JWT-Authentifizierung geschützt.',
+      ru: 'Ваши данные хранятся в **защищённой базе данных PostgreSQL** (Neon) в Европе. При создании аккаунта данные инструментов, документы и настройки автоматически синхронизируются с сервером. Данные также остаются в браузере для мгновенной загрузки. Ваш аккаунт защищён зашифрованными паролями и JWT-аутентификацией.',
+      ua: 'Ваші дані зберігаються в **захищеній базі даних PostgreSQL** (Neon) у Європі. При створенні акаунту дані інструментів, документи та налаштування автоматично синхронізуються з сервером. Дані також залишаються у браузері для миттєвого завантаження. Ваш акаунт захищений зашифрованими паролями та JWT-автентифікацією.'
     },
     route: '/profile',
     priority: 8
@@ -636,10 +636,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['безкоштовний', 'план', 'ціна', 'вартість', 'базовий']
     },
     content: {
-      en: 'The **Free Plan** includes: Asset Overview Wizard, basic legal document info, After Death Checklist, Executor Tasks overview, and this chat assistant. All data is stored locally in your browser. Perfect for getting started with estate planning.',
-      de: 'Der **Kostenlose Plan** umfasst: Vermögens-Checkliste, grundlegende Rechtsinformationen, Todesfall-Checkliste, Willensvollstrecker-Übersicht, und diesen Chat-Assistenten. Alle Daten werden lokal gespeichert. Perfekt für den Einstieg.',
-      ru: '**Бесплатный план** включает: Помощник по имуществу, базовую информацию о юридических документах, чек-лист после смерти, обзор задач исполнителя, и этот чат-ассистент. Все данные хранятся локально. Идеально для начала планирования.',
-      ua: '**Безкоштовний план** включає: Майстер майна, базову інформацію про юридичні документи, чек-лист після смерті, огляд завдань виконавця, і цей чат-асистент. Всі дані зберігаються локально. Ідеально для початку планування.'
+      en: 'The **Free Plan** (CHF 0/forever) includes: basic document vault (5 files), readiness score, checklists & guides, 1 trusted contact, and this AI chat assistant. Your data is synced to a secure server. Perfect for getting started with estate planning.',
+      de: 'Der **Kostenlose Plan** (CHF 0/für immer) umfasst: Basis-Dokumententresor (5 Dateien), Bereitschafts-Score, Checklisten & Anleitungen, 1 Vertrauensperson und diesen KI-Chat-Assistenten. Ihre Daten werden mit einem sicheren Server synchronisiert. Perfekt für den Einstieg.',
+      ru: '**Бесплатный план** (CHF 0/навсегда) включает: базовое хранилище (5 файлов), оценку готовности, чек-листы и руководства, 1 доверенный контакт и этот ИИ-ассистент. Данные синхронизируются с сервером. Идеально для начала планирования.',
+      ua: '**Безкоштовний план** (CHF 0/назавжди) включає: базове сховище (5 файлів), оцінку готовності, чек-листи та посібники, 1 довірений контакт і цей ШІ-асистент. Дані синхронізуються з сервером. Ідеально для початку планування.'
     },
     route: '/profile',
     priority: 7
@@ -655,10 +655,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['преміум', 'план', 'платний', 'оновити', 'розширений']
     },
     content: {
-      en: 'The **Premium Plan** adds: Will Builder wizard, Document Templates library, AI Avatar creation, Email Reminders, encrypted cloud storage, and Leave Behind digital legacy vault. Ideal for comprehensive estate planning with all tools unlocked.',
-      de: 'Der **Premium-Plan** bietet zusätzlich: Testament-Planer, Vorlagen-Bibliothek, KI-Avatar, E-Mail-Erinnerungen, verschlüsselten Cloud-Speicher und digitales Vermächtnis-Tresor. Ideal für umfassende Nachlassplanung.',
-      ru: '**Премиум-план** добавляет: Конструктор завещания, библиотеку шаблонов, создание ИИ-аватара, напоминания по email, зашифрованное облачное хранилище и цифровое хранилище наследия. Идеально для всестороннего планирования наследства.',
-      ua: '**Преміум-план** додає: Конструктор заповіту, бібліотеку шаблонів, створення ШІ-аватара, нагадування по email, зашифроване хмарне сховище та цифрове сховище спадщини. Ідеально для всебічного планування спадщини.'
+      en: 'The **Premium Plan** (CHF 15/month) includes: unlimited document storage, AI assistant & smart suggestions, video & audio messages, unlimited trusted contacts, PDF export & print, and priority support. All tools unlocked with full server sync.',
+      de: 'Der **Premium-Plan** (CHF 15/Monat) umfasst: unbegrenzten Dokumentenspeicher, KI-Assistent & Vorschläge, Video- & Audionachrichten, unbegrenzte Vertrauenspersonen, PDF-Export & Druck und Prioritäts-Support. Alle Tools freigeschaltet mit vollständiger Server-Synchronisation.',
+      ru: '**Премиум-план** (CHF 15/мес.) включает: безлимитное хранилище документов, ИИ-ассистент и рекомендации, видео- и аудиосообщения, неограниченное число доверенных контактов, PDF-экспорт и приоритетную поддержку.',
+      ua: '**Преміум-план** (CHF 15/міс.) включає: безлімітне сховище документів, ШІ-асистент та рекомендації, відео- та аудіоповідомлення, необмежену кількість довірених контактів, PDF-експорт та пріоритетну підтримку.'
     },
     route: '/profile',
     priority: 7
@@ -674,10 +674,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['сімейний', 'план', 'спільний', 'група', 'учасники']
     },
     content: {
-      en: 'The **Family Plan** includes everything in Premium plus: shared family vault, multi-member access (up to 5 family members), collaborative estate planning, family emergency contacts, and priority support. Best for families planning together.',
-      de: 'Der **Familien-Plan** enthält alles aus Premium plus: gemeinsamer Familien-Tresor, Zugang für bis zu 5 Familienmitglieder, gemeinsame Nachlassplanung, Familien-Notfallkontakte und Prioritäts-Support.',
-      ru: '**Семейный план** включает всё из Премиум плюс: общее семейное хранилище, доступ для 5 членов семьи, совместное планирование наследства, семейные экстренные контакты и приоритетную поддержку.',
-      ua: '**Сімейний план** включає все з Преміум плюс: спільне сімейне сховище, доступ для 5 членів сім\'ї, спільне планування спадщини, сімейні екстрені контакти та пріоритетну підтримку.'
+      en: 'The **Family Plan** (CHF 25/month) includes everything in Premium plus: up to 5 family members, shared Legacy Vault, AI Avatar (beta), and priority support. Best value for families planning together.',
+      de: 'Der **Familien-Plan** (CHF 25/Monat) enthält alles aus Premium plus: bis zu 5 Familienmitglieder, gemeinsamer Vermächtnis-Tresor, KI-Avatar (Beta) und Prioritäts-Support. Bestes Preis-Leistungs-Verhältnis für Familien.',
+      ru: '**Семейный план** (CHF 25/мес.) включает всё из Премиум плюс: до 5 членов семьи, общее хранилище наследия, ИИ-аватар (бета) и приоритетную поддержку. Лучшая цена для семей.',
+      ua: '**Сімейний план** (CHF 25/міс.) включає все з Преміум плюс: до 5 членів сім\'ї, спільне сховище спадщини, ШІ-аватар (бета) та пріоритетну підтримку. Найкраща ціна для сімей.'
     },
     route: '/profile',
     priority: 6
@@ -697,10 +697,10 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
       ua: ['реєстрація', 'зареєструватися', 'створити акаунт', 'увійти']
     },
     content: {
-      en: 'To get started, click **Sign In** in the top navigation bar. You can create a new account or log in if you already have one. Registration is free and gives you immediate access to basic estate planning tools.',
-      de: 'Um zu beginnen, klicken Sie auf **Anmelden** in der oberen Navigation. Sie können ein neues Konto erstellen oder sich anmelden. Die Registrierung ist kostenlos und gibt Ihnen sofortigen Zugang zu grundlegenden Planungstools.',
-      ru: 'Чтобы начать, нажмите **Войти** в верхней навигации. Вы можете создать новый аккаунт или войти в существующий. Регистрация бесплатна и даёт немедленный доступ к базовым инструментам планирования.',
-      ua: 'Щоб почати, натисніть **Увійти** у верхній навігації. Ви можете створити новий акаунт або увійти в існуючий. Реєстрація безкоштовна і надає негайний доступ до базових інструментів планування.'
+      en: 'To get started, click **Sign In** in the top navigation bar. Create an account with your email and password — registration is free and gives you immediate access to all basic estate planning tools. Your data is automatically synced to our secure server, so you can log in from any device. Three plans available: **Free** (CHF 0), **Premium** (CHF 15/mo), and **Family** (CHF 25/mo).',
+      de: 'Um zu beginnen, klicken Sie auf **Anmelden** in der oberen Navigation. Erstellen Sie ein Konto mit E-Mail und Passwort — die Registrierung ist kostenlos und gibt Ihnen sofortigen Zugang zu allen grundlegenden Planungstools. Ihre Daten werden automatisch mit unserem sicheren Server synchronisiert, sodass Sie sich von jedem Gerät anmelden können. Drei Tarife verfügbar: **Kostenlos** (CHF 0), **Premium** (CHF 15/Mt.), **Familie** (CHF 25/Mt.).',
+      ru: 'Чтобы начать, нажмите **Войти** в верхней навигации. Создайте аккаунт с email и паролем — регистрация бесплатна и даёт немедленный доступ ко всем базовым инструментам. Данные автоматически синхронизируются с сервером, так что вы можете войти с любого устройства. Три тарифа: **Бесплатный** (CHF 0), **Премиум** (CHF 15/мес.), **Семейный** (CHF 25/мес.).',
+      ua: 'Щоб почати, натисніть **Увійти** у верхній навігації. Створіть акаунт з email та паролем — реєстрація безкоштовна і надає негайний доступ до всіх базових інструментів. Дані автоматично синхронізуються з сервером, тож ви можете увійти з будь-якого пристрою. Три тарифи: **Безкоштовний** (CHF 0), **Преміум** (CHF 15/міс.), **Сімейний** (CHF 25/міс.).'
     },
     route: '/login',
     priority: 7

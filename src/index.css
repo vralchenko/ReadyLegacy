@@ -1167,6 +1167,11 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
     margin: 0 auto;
 }
 
+.pricing-grid--three {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 960px;
+}
+
 .pricing-card {
     padding: 36px 28px;
     border-radius: 20px;
@@ -1416,6 +1421,32 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+/* Services Section */
+.services-section {
+    text-align: center;
+}
+
+.services-title {
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+    color: var(--text-color);
+    margin-bottom: 32px;
+}
+
+[data-theme="light"] .services-section {
+    background: var(--secondary-bg);
+    padding: 60px 0;
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 60px 0;
+}
+
+[data-theme="light"] .cta-section {
+    background: var(--secondary-bg);
+}
+
 /* Section CTA */
 .section-cta {
     text-align: center;
@@ -1624,7 +1655,8 @@ footer {
         font-size: 1.8rem;
     }
 
-    .pricing-grid {
+    .pricing-grid,
+    .pricing-grid--three {
         grid-template-columns: 1fr;
         max-width: 400px;
     }

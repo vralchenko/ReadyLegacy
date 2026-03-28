@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import usePersistedState from '../../hooks/usePersistedState';
+import usePersistedState from '../../hooks/useSyncedState';
 
 interface AvatarState {
     status: 'none' | 'processing' | 'ready';

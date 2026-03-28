@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import usePersistedState from '../hooks/usePersistedState';
+import useSyncedState from '../hooks/useSyncedState';
 
 interface Document {
     id: string;
@@ -60,14 +60,9 @@ const DEMO_DOCS: Document[] = [
 ];
 
 const Documents: React.FC = () => {
-    const isLoggedIn = !!localStorage.getItem('readylegacy_user');
-    if (!isLoggedIn) {
-        return <Navigate to="/login" replace />;
-    }
-
     const { t } = useLanguage();
     const navigate = useNavigate();
-    const [docs] = usePersistedState<Document[]>('saved_documents', DEMO_DOCS);
+    const [docs] = useSyncedState<Document[]>('saved_documents', DEMO_DOCS);
     const [filter, setFilter] = useState<'all' | Document['status']>('all');
     const [viewing, setViewing] = useState<Document | null>(null);
 

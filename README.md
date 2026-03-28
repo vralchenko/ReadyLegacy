@@ -1,57 +1,62 @@
 # Ready Legacy
 
-**The Future of Legacy** — a Swiss-made digital platform that helps you organize your life, preserve memories, and support your loved ones.
+Digital platform for estate planning, legacy management, and bereavement support.
 
-🌐 [readylegacy.ch](https://readylegacy.ch)
+[readylegacy.ch](https://readylegacy.ch)
 
-## Vision
+## Services
 
-Innovation is not just about growth — it's about life. Ready Legacy reduces the emotional and organizational burden of legacy planning through clean design, secure data handling, and AI-powered personalization.
+1. **Be Ready** — Estate planning: asset overview, will builder, legal documents, checklists, executor tasks, document templates
+2. **Leave Behind** — Digital legacy: personal messages, media vault, AI Avatar (beta)
+3. **Be Honored** — Bereavement support: grief resources, support groups, guided healing
 
-### Three Pillars
+## Pricing
 
-1. **Be Ready** — Organize your documents, assets, and wishes with digital vault, will builder, and legal framework tools
-2. **Leave Behind** — Create lasting memories: messages, photos, videos, and voice recordings for your loved ones
-3. **Be Honored** — Support for families during bereavement: grief guidance, executor dashboards, and memorial services
+| Plan | Price | Highlights |
+|------|-------|-----------|
+| Free | CHF 0/forever | Basic vault (5 docs), readiness score, checklists, 1 trusted contact |
+| Premium | CHF 15/mo | Unlimited storage, AI assistant, video/audio messages, PDF export |
+| Family | CHF 25/mo | Everything in Premium + 5 family members, shared vault, AI Avatar |
 
-## Technology Stack
+## Tech Stack
 
-- **Framework**: React 19 + TypeScript
-- **Build Tool**: Vite 7
-- **Routing**: React Router DOM 7
-- **Styling**: Custom CSS with light/dark theme system (CSS custom properties)
-- **Hosting**: Vercel
+- **Frontend**: React 19 + TypeScript, Vite 7, React Router 7
+- **Backend**: Vercel serverless functions, Neon PostgreSQL, Drizzle ORM
+- **Auth**: JWT (jose) + bcrypt — real accounts with persistent data
 - **AI**: Claude-powered chat assistant & AI Avatar (beta)
-- **Persistence**: Local storage with auto-save
-
-## Features
-
-- **Estate Planning Tools**: Asset overview, will builder, legal framework tracking, death checklist, executor task management
-- **Digital Legacy Vault**: Store text messages, photos, videos, audio recordings for loved ones
-- **Document Templates**: Power of Attorney, Living Will, Funeral Directive, Gift Declaration, and more — guided wizards with PDF export
-- **AI Chat Assistant**: Context-aware assistant for navigating the platform
-- **Email Reminders**: Configurable reminders to keep estate documents up to date
-- **Bereavement Support**: Emotional and practical support resources for those left behind
-- **Multi-language**: English & German (EN/DE)
-- **Light & Dark Theme**: Clean light theme (default) inspired by modern fintech design, with dark mode option
-- **GDPR & nDSG Compliant**: Swiss privacy standards at its core
+- **Data**: Server-synced with localStorage fallback (useSyncedState)
+- **i18n**: English & German (EN/DE)
+- **Themes**: Light (default) & Dark
 
 ## Project Structure
 
-```text
+```
 src/
-├── assets/          # Static assets (images, fonts)
-├── components/      # Reusable UI components (Header, Footer, ChatWidget, Tools)
-├── context/         # React Context (Language, Theme)
-├── hooks/           # Custom hooks (usePersistedState)
-├── pages/           # Page components (Home, Mission, Tools, Team, etc.)
-├── main.tsx         # Application entry point
-└── App.tsx          # Root component & routing
-public/
-└── assets/locales/  # Translation JSON files (en, de)
+├── components/      # UI components (Header, Footer, ChatWidget, Tools)
+├── context/         # React Context (Language, Theme, Auth)
+├── hooks/           # usePersistedState, useSyncedState
+├── lib/             # API client (fetch wrapper with JWT)
+├── pages/           # Home, Login, Tools, Documents, Profile, etc.
+└── App.tsx          # Root component, routing, providers
+
 api/
-├── chat.ts          # Chat API endpoint
+├── auth/            # register, login, me (JWT auth)
+├── documents/       # CRUD for user documents
+├── user-data/       # Key-value store + bulk sync
+├── db/              # Drizzle schema + Neon connection
+├── lib/             # Auth helpers, middleware
+├── chat.ts          # AI chat endpoint
 └── knowledge/       # Knowledge base for AI assistant
+
+public/assets/locales/  # Translation files (en.json, de.json)
+```
+
+## Database Schema
+
+```
+users           — id, email, password_hash, name, provider, plan
+documents       — id, user_id, title, type, icon, status, data (JSONB)
+user_data       — id, user_id, key, value (JSONB) — mirrors localStorage
 ```
 
 ## Getting Started
@@ -60,9 +65,9 @@ api/
 git clone https://github.com/vralchenko/ReadyLegacy.git
 cd ReadyLegacy
 npm install
-npm run dev       # Development server at http://localhost:3000
-npm run build     # Production build
-npm run preview   # Preview production build
+cp .env.local.example .env.local   # Add DATABASE_URL + JWT_SECRET
+npm run db:push                     # Push schema to Neon
+npm run dev                         # http://localhost:3000
 ```
 
 ## Team
@@ -73,13 +78,10 @@ npm run preview   # Preview production build
 
 ## Compliance
 
-- 🇨🇭 Swiss Made
-- 🔒 GDPR Ready
-- 🛡️ nDSG Compliant
+- Swiss Made
+- GDPR Ready
+- nDSG Compliant
 
 ## License
 
 Ready Legacy Ecosystem. All Rights Reserved. © 2026
-
----
-*Be Ready. Leave Behind. Be Honored.*

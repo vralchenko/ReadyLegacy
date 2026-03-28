@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import usePersistedState from '../../hooks/usePersistedState';
+import usePersistedState from '../../hooks/useSyncedState';
 
 interface Reminder {
     id: string;

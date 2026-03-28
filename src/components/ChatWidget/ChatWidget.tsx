@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import usePersistedState from '../../hooks/usePersistedState';
+import usePersistedState from '../../hooks/useSyncedState';
 import type { ChatMessage, ChatApiResponse, QuickQuestion } from './types';
 import './chatWidget.css';
 
