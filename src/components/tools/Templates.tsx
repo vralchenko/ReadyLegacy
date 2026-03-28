@@ -233,14 +233,21 @@ const TemplateWizard: React.FC<{ template: Template; initialData?: Record<string
                     <div style={{ height: '4px', borderRadius: '2px', background: 'var(--glass-border)' }}>
                         <div style={{ height: '100%', borderRadius: '2px', width: `${progress}%`, background: 'var(--accent-gold)', transition: 'width 0.3s ease' }} />
                     </div>
-                    {/* Step indicators */}
+                    {/* Step indicators — clickable */}
                     <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
                         {template.steps.map((s, i) => (
-                            <div key={i} style={{
-                                flex: 1, fontSize: '0.7rem', textAlign: 'center',
-                                color: i === step ? 'var(--accent-gold)' : i < step ? 'rgba(255,215,0,0.4)' : 'var(--text-muted)',
-                                opacity: i === step ? 1 : 0.7
-                            }}>
+                            <div
+                                key={i}
+                                onClick={() => setStep(i)}
+                                style={{
+                                    flex: 1, fontSize: '0.7rem', textAlign: 'center', cursor: 'pointer',
+                                    color: i === step ? 'var(--accent-gold)' : i < step ? 'rgba(255,215,0,0.4)' : 'var(--text-muted)',
+                                    opacity: i === step ? 1 : 0.7,
+                                    padding: '4px 0', borderRadius: '4px', transition: 'all 0.2s',
+                                }}
+                                onMouseEnter={e => { e.currentTarget.style.opacity = '1'; }}
+                                onMouseLeave={e => { e.currentTarget.style.opacity = i === step ? '1' : '0.7'; }}
+                            >
                                 {i < step ? '✓' : i + 1}. {s.title}
                             </div>
                         ))}
