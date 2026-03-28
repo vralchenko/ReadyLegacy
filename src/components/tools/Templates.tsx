@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { apiFetch } from '../../lib/api';
 
@@ -187,10 +188,10 @@ const TEMPLATES: Template[] = [
 ];
 
 // ─── Wizard Component ─────────────────────────────────────────────────────────
-const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComplete: (data: Record<string, string>) => void }> = ({ template, onClose, onComplete }) => {
+const TemplateWizard: React.FC<{ template: Template; initialData?: Record<string, string>; onClose: () => void; onComplete: (data: Record<string, string>) => void }> = ({ template, initialData, onClose, onComplete }) => {
     const { t } = useLanguage();
     const [step, setStep] = useState(0);
-    const [formData, setFormData] = useState<Record<string, string>>({});
+    const [formData, setFormData] = useState<Record<string, string>>(initialData || {});
 
     const currentStep = template.steps[step];
     const isLastStep = step === template.steps.length - 1;
@@ -373,11 +374,30 @@ const TemplatePreview: React.FC<{ template: Template; data: Record<string, strin
 // ─── Main Templates Component ─────────────────────────────────────────────────
 const Templates: React.FC = () => {
     const { t } = useLanguage();
+    const location = useLocation();
     const [activeWizard, setActiveWizard] = useState<Template | null>(null);
+    const [editInitialData, setEditInitialData] = useState<Record<string, string> | undefined>(undefined);
+    const [editDocId, setEditDocId] = useState<string | null>(null);
     const [previewData, setPreviewData] = useState<{ template: Template; data: Record<string, string> } | null>(null);
     const [docSaved, setDocSaved] = useState(false);
     const [demoLoading, setDemoLoading] = useState(false);
     const [demoDone, setDemoDone] = useState(false);
+
+    // Auto-open wizard when navigated from Documents with editDoc state
+    useEffect(() => {
+        const state = location.state as { editDoc?: { id: string; title: string; type: string; data: Record<string, string> } } | null;
+        if (!state?.editDoc) return;
+        const doc = state.editDoc;
+        // Match template by title
+        const tmpl = TEMPLATES.find(t => t.title === doc.title) || TEMPLATES.find(t => t.subtitle === doc.type);
+        if (tmpl) {
+            setActiveWizard(tmpl);
+            setEditInitialData(doc.data as Record<string, string>);
+            setEditDocId(doc.id);
+        }
+        // Clear state so it doesn't re-trigger
+        window.history.replaceState({}, '');
+    }, [location.state]);
 
     const DEMO_DATA: Record<string, Record<string, string>> = {
         poa: {
@@ -449,16 +469,26 @@ const Templates: React.FC = () => {
     const saveDocument = async () => {
         if (!previewData) return;
         try {
-            await apiFetch('/documents', {
-                method: 'POST',
-                body: JSON.stringify({
-                    title: previewData.template.title,
-                    type: previewData.template.subtitle || previewData.template.title,
-                    icon: previewData.template.icon,
-                    data: previewData.data,
-                }),
-            });
+            if (editDocId) {
+                // Update existing document
+                await apiFetch(`/documents?id=${editDocId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ data: previewData.data }),
+                });
+            } else {
+                // Create new document
+                await apiFetch('/documents', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        title: previewData.template.title,
+                        type: previewData.template.subtitle || previewData.template.title,
+                        icon: previewData.template.icon,
+                        data: previewData.data,
+                    }),
+                });
+            }
             setDocSaved(true);
+            setEditDocId(null);
         } catch (e) {
             console.error('Failed to save document:', e);
         }
@@ -534,10 +564,12 @@ const Templates: React.FC = () => {
             {activeWizard && (
                 <TemplateWizard
                     template={activeWizard}
-                    onClose={() => setActiveWizard(null)}
+                    initialData={editInitialData}
+                    onClose={() => { setActiveWizard(null); setEditInitialData(undefined); setEditDocId(null); }}
                     onComplete={(data) => {
                         setPreviewData({ template: activeWizard, data });
                         setActiveWizard(null);
+                        setEditInitialData(undefined);
                     }}
                 />
             )}
