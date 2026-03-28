@@ -36,6 +36,7 @@ const Documents: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<'all' | Document['status']>('all');
     const [viewing, setViewing] = useState<Document | null>(null);
+    const [confirmDelete, setConfirmDelete] = useState(false);
 
     const fetchDocs = useCallback(async () => {
         try {
@@ -150,7 +151,7 @@ const Documents: React.FC = () => {
                             return (
                                 <div
                                     key={doc.id}
-                                    onClick={() => setViewing(doc)}
+                                    onClick={() => { setViewing(doc); setConfirmDelete(false); }}
                                     style={{
                                         padding: '24px', borderRadius: '16px', cursor: 'pointer',
                                         background: 'var(--glass-bg)',
@@ -251,11 +252,22 @@ const Documents: React.FC = () => {
                                 })}
                             </div>
 
-                            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                                <button onClick={() => window.print()} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}>🖨 {t('docs_btn_print') || 'Print'}</button>
-                                <button onClick={() => { navigate('/tools?tool=templates'); setViewing(null); }} style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>Edit in Wizard</button>
-                                <button onClick={() => handleDelete(viewing.id)} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.05)', color: '#ef4444', cursor: 'pointer', fontSize: '0.85rem', marginLeft: 'auto' }}>Delete</button>
-                            </div>
+                            {confirmDelete ? (
+                                <div style={{ padding: '16px', borderRadius: '12px', background: 'rgba(239,68,68,0.05)', border: '1px solid rgba(239,68,68,0.15)' }}>
+                                    <p style={{ fontSize: '0.9rem', color: '#ef4444', marginBottom: '12px', fontWeight: 600 }}>Delete "{viewing.title}"?</p>
+                                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '16px' }}>This action cannot be undone. The document will be permanently removed.</p>
+                                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                                        <button onClick={() => setConfirmDelete(false)} style={{ padding: '8px 20px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.82rem' }}>Cancel</button>
+                                        <button onClick={() => { handleDelete(viewing.id); setConfirmDelete(false); }} style={{ padding: '8px 20px', borderRadius: '8px', border: 'none', background: '#ef4444', color: '#fff', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 700 }}>Yes, Delete</button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                                    <button onClick={() => window.print()} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}>🖨 {t('docs_btn_print') || 'Print'}</button>
+                                    <button onClick={() => { navigate('/tools?tool=templates'); setViewing(null); }} style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>Edit in Wizard</button>
+                                    <button onClick={() => setConfirmDelete(true)} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.05)', color: '#ef4444', cursor: 'pointer', fontSize: '0.85rem', marginLeft: 'auto' }}>Delete</button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
