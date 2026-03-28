@@ -397,20 +397,20 @@ const Templates: React.FC = () => {
 
     return (
         <div id="templates" className="tool-panel active">
-            <div className="tool-header" style={{ marginBottom: '32px' }}>
+            <div className="tool-header" style={{ marginBottom: '16px' }}>
                 <span className="step-tag">{t('tag_templates') || 'Request Templates'}</span>
-                <h2>{t('title_templates') || 'Document Templates'}</h2>
-                <p style={{ opacity: 0.7, marginTop: '12px' }}>
+                <h2 style={{ fontSize: '1.6rem', marginBottom: '4px' }}>{t('title_templates') || 'Document Templates'}</h2>
+                <p style={{ opacity: 0.7, fontSize: '0.9rem', marginTop: '0' }}>
                     {t('tmpl_desc') || 'Fill in templates step-by-step. Each wizard guides you through the required information to generate a draft document for legal review.'}
                 </p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '12px' }}>
                 {TEMPLATES.map(tmpl => (
                     <div
                         key={tmpl.id}
                         style={{
-                            padding: '24px', borderRadius: '16px',
+                            padding: '16px 20px', borderRadius: '14px',
                             background: 'var(--glass-bg)',
                             border: '1px solid var(--glass-border)',
                             transition: 'all 0.25s', display: 'flex', flexDirection: 'column'
@@ -431,7 +431,7 @@ const Templates: React.FC = () => {
                                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>{tmpl.subtitle}</div>
                             </div>
                         </div>
-                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', flex: 1, marginBottom: '20px', lineHeight: '1.5' }}>{tmpl.desc}</p>
+                        <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', flex: 1, marginBottom: '12px', lineHeight: '1.4' }}>{tmpl.desc}</p>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{(t('tmpl_steps') || '{count} steps').replace('{count}', String(tmpl.steps.length))}</span>
                             <button
