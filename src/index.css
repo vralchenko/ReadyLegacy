@@ -1454,9 +1454,9 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 }
 
 .hero-cta {
-    margin-top: 32px;
-    font-size: 1.1rem;
-    padding: 14px 36px;
+    margin-top: 0;
+    font-size: 0.85rem;
+    padding: 12px 28px;
 }
 
 /* Footer */
@@ -2223,7 +2223,7 @@ footer {
 
 /* ─── Light Theme: Increase section spacing ─── */
 [data-theme="light"] .hero {
-    padding-bottom: 40px;
+    padding-bottom: 20px;
 }
 
 [data-theme="light"] .products {

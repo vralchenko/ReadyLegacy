@@ -55,13 +55,19 @@ const Home: React.FC = () => {
 
     return (
         <div className="home-page">
-            {/* Hero — Short & clear */}
-            <section className="hero hero-redesigned">
+            {/* Hero — Compact */}
+            <section className="hero hero-redesigned" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                 <div className="container">
-                    <div className="hero-content">
-                        <h1>{t('hero_clear') || 'Digital platform for estate planning, legacy management, and bereavement support.'}</h1>
+                    <div className="hero-content" style={{ maxWidth: '700px' }}>
+                        <h1 style={{ fontSize: '2.2rem', lineHeight: 1.3, marginBottom: '12px' }}>
+                            {t('hero_clear') || 'Digital platform for estate planning, legacy management, and bereavement support.'}
+                        </h1>
+                        <p className="hero-desc" style={{ fontSize: '1.05rem', marginBottom: '20px' }}>
+                            {t('hero_sub') || 'Organize documents, preserve memories, and support loved ones — all in one secure place.'}
+                        </p>
                         <div className="hero-actions">
-                            <Link to="/login" className="btn hero-cta">{t('cta_get_started') || 'Get Started Free'}</Link>
+                            <Link to="/login" className="btn hero-cta" style={{ fontSize: '0.85rem', padding: '12px 28px', marginTop: '0' }}>{t('cta_get_started') || 'Get Started Free'}</Link>
+                            <a href="#services" className="btn btn-outline hero-cta" style={{ fontSize: '0.85rem', padding: '12px 28px', marginTop: '0' }}>{t('hero_learn') || 'See Services'}</a>
                         </div>
                     </div>
                 </div>
