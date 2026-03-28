@@ -105,27 +105,27 @@ const Documents: React.FC = () => {
         <div style={{ minHeight: '100vh', padding: '20px 0 60px', marginTop: '-40px' }}>
             <div className="container">
                 {/* Header */}
-                <div style={{ marginBottom: '40px' }}>
-                    <span style={{ fontSize: '1rem', color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '2px', opacity: 0.8 }}>{t('docs_archive') || 'Document Archive'}</span>
-                    <h1 style={{ fontSize: '3rem', marginTop: '8px', marginBottom: '16px', color: 'var(--text-color)' }}>
+                <div style={{ marginBottom: '16px' }}>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '2px', opacity: 0.8 }}>{t('docs_archive') || 'Document Archive'}</span>
+                    <h1 style={{ fontSize: '2rem', marginTop: '4px', marginBottom: '6px', color: 'var(--text-color)' }}>
                         {t('docs_title') || 'Your Documents'}
                     </h1>
-                    <p style={{ opacity: 0.8, maxWidth: '600px', fontSize: '1.4rem', lineHeight: 1.6 }}>
-                        {t('docs_desc') || 'All your completed templates, legal documents, and saved forms in one place. Download, print, or update them at any time.'}
+                    <p style={{ opacity: 0.7, maxWidth: '600px', fontSize: '0.95rem', lineHeight: 1.5 }}>
+                        {t('docs_desc') || 'All your completed templates, legal documents, and saved forms in one place.'}
                     </p>
                 </div>
 
                 {/* Stats + filters */}
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '32px' }}>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
                     {(['all', 'draft', 'ready', 'filed'] as const).map(f => (
                         <button
                             key={f}
                             onClick={() => setFilter(f)}
                             style={{
-                                padding: '10px 22px', borderRadius: '24px', border: '1px solid var(--glass-border)',
+                                padding: '8px 18px', borderRadius: '20px', border: '1px solid var(--glass-border)',
                                 background: filter === f ? 'rgba(255,215,0,0.1)' : 'transparent',
                                 color: filter === f ? 'var(--accent-gold)' : 'var(--text-muted)',
-                                fontSize: '1.05rem', cursor: 'pointer', transition: 'all 0.2s', fontWeight: filter === f ? 700 : 500
+                                fontSize: '0.9rem', cursor: 'pointer', transition: 'all 0.2s', fontWeight: filter === f ? 700 : 500
                             }}
                         >
                             {t(`docs_filter_${f}`) || (f === 'all' ? 'All' : STATUS_STYLES[f]?.label)} ({counts[f]})
@@ -134,9 +134,9 @@ const Documents: React.FC = () => {
                     <button
                         onClick={() => navigate('/tools?tool=templates')}
                         style={{
-                            marginLeft: 'auto', padding: '10px 24px', borderRadius: '24px',
+                            marginLeft: 'auto', padding: '8px 18px', borderRadius: '20px',
                             border: '1px solid var(--accent-gold)', background: 'rgba(255,215,0,0.08)',
-                            color: 'var(--accent-gold)', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 700
+                            color: 'var(--accent-gold)', fontSize: '0.9rem', cursor: 'pointer', fontWeight: 700
                         }}
                     >
                         {t('docs_btn_create') || '+ Create New Document'}
@@ -159,7 +159,7 @@ const Documents: React.FC = () => {
                         </button>
                     </div>
                 ) : (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '14px' }}>
                         {filtered.map(doc => {
                             const statusStyle = STATUS_STYLES[doc.status];
                             return (
@@ -167,7 +167,7 @@ const Documents: React.FC = () => {
                                     key={doc.id}
                                     onClick={() => { setViewing(doc); setConfirmDelete(false); }}
                                     style={{
-                                        padding: '24px', borderRadius: '16px', cursor: 'pointer',
+                                        padding: '16px 20px', borderRadius: '14px', cursor: 'pointer',
                                         background: 'var(--glass-bg)',
                                         border: '1px solid var(--glass-border)',
                                         transition: 'all 0.25s', display: 'flex', flexDirection: 'column'
@@ -181,8 +181,8 @@ const Documents: React.FC = () => {
                                         e.currentTarget.style.borderColor = 'var(--glass-border)';
                                     }}
                                 >
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                                        <span style={{ fontSize: '2rem' }}>{doc.icon}</span>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
+                                        <span style={{ fontSize: '1.6rem' }}>{doc.icon}</span>
                                         <span style={{
                                             fontSize: '0.95rem', padding: '4px 14px', borderRadius: '12px',
                                             background: statusStyle.bg, color: statusStyle.color,
@@ -191,8 +191,8 @@ const Documents: React.FC = () => {
                                             {t(`docs_filter_${doc.status}`) || statusStyle.label}
                                         </span>
                                     </div>
-                                    <h3 style={{ fontSize: '1.6rem', marginBottom: '6px', color: 'var(--text-color)' }}>{doc.title}</h3>
-                                    <p style={{ fontSize: '1.1rem', opacity: 0.6, marginBottom: '24px', flex: 1 }}>{doc.type}</p>
+                                    <h3 style={{ fontSize: '1.1rem', marginBottom: '4px', color: 'var(--text-color)' }}>{doc.title}</h3>
+                                    <p style={{ fontSize: '0.85rem', opacity: 0.6, marginBottom: '14px', flex: 1 }}>{doc.type}</p>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>{doc.createdAt}</span>
                                         <div style={{ display: 'flex', gap: '8px' }}>
