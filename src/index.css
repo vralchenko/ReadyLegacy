@@ -1523,11 +1523,13 @@ footer {
 
 /* Print styles */
 @media print {
-    body, html {
+    html, body {
         background: #fff !important;
         overflow: visible !important;
         height: auto !important;
         width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     body.demo-mode {
@@ -1535,18 +1537,21 @@ footer {
         overflow: visible !important;
     }
 
-    body.demo-mode main {
-        overflow: visible !important;
-        padding-top: 0 !important;
-    }
-
-    header, footer, .no-print {
+    #root {
         display: none !important;
     }
 
-    #document-print-overlay {
+    #document-print-root {
+        display: block !important;
+    }
+
+    #document-print-root > div {
         position: static !important;
         overflow: visible !important;
+    }
+
+    .no-print {
+        display: none !important;
     }
 }
 
