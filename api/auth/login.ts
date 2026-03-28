@@ -20,6 +20,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    if (!user.passwordHash) {
+        return res.status(401).json({ error: 'This account uses Google sign-in. Please use the Google button.' });
+    }
+
     const valid = await verifyPassword(password, user.passwordHash);
     if (!valid) {
         return res.status(401).json({ error: 'Invalid email or password' });
