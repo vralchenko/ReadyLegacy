@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { apiFetch } from '../../lib/api';
 
 // ─── Template definitions ─────────────────────────────────────────────────────
 interface TemplateField {
@@ -312,7 +313,7 @@ const TemplateWizard: React.FC<{ template: Template; onClose: () => void; onComp
 };
 
 // ─── Completed template preview ───────────────────────────────────────────────
-const TemplatePreview: React.FC<{ template: Template; data: Record<string, string>; onClose: () => void }> = ({ template, data, onClose }) => {
+const TemplatePreview: React.FC<{ template: Template; data: Record<string, string>; onClose: () => void; saved: boolean; onSave: () => void }> = ({ template, data, onClose, saved, onSave }) => {
     const { t } = useLanguage();
     return (
         <div style={{
@@ -349,13 +350,20 @@ const TemplatePreview: React.FC<{ template: Template; data: Record<string, strin
                         ⚠️ {t('tmpl_disclaimer') || 'This is a draft for reference only. Please consult a qualified notary or lawyer in your jurisdiction before using any legal document.'}
                     </div>
                 </div>
-                <div style={{ padding: '16px 24px', borderTop: '1px solid var(--glass-border)', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                <div style={{ padding: '16px 24px', borderTop: '1px solid var(--glass-border)', display: 'flex', gap: '10px', justifyContent: 'flex-end', alignItems: 'center' }}>
+                    {saved && <span style={{ color: '#10b981', fontSize: '0.85rem', marginRight: 'auto' }}>✓ Saved to Documents</span>}
                     <button onClick={() => window.print()} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}>
                         🖨 {t('tmpl_print') || 'Print / Save PDF'}
                     </button>
-                    <button onClick={onClose} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>
-                        {t('tmpl_done') || 'Done'}
-                    </button>
+                    {!saved ? (
+                        <button onClick={onSave} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>
+                            Save to Documents
+                        </button>
+                    ) : (
+                        <button onClick={onClose} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>
+                            {t('tmpl_done') || 'Done'}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
@@ -367,6 +375,25 @@ const Templates: React.FC = () => {
     const { t } = useLanguage();
     const [activeWizard, setActiveWizard] = useState<Template | null>(null);
     const [previewData, setPreviewData] = useState<{ template: Template; data: Record<string, string> } | null>(null);
+    const [docSaved, setDocSaved] = useState(false);
+
+    const saveDocument = async () => {
+        if (!previewData) return;
+        try {
+            await apiFetch('/documents', {
+                method: 'POST',
+                body: JSON.stringify({
+                    title: previewData.template.title,
+                    type: previewData.template.subtitle || previewData.template.title,
+                    icon: previewData.template.icon,
+                    data: previewData.data,
+                }),
+            });
+            setDocSaved(true);
+        } catch (e) {
+            console.error('Failed to save document:', e);
+        }
+    };
 
     return (
         <div id="templates" className="tool-panel active">
@@ -434,7 +461,9 @@ const Templates: React.FC = () => {
                 <TemplatePreview
                     template={previewData.template}
                     data={previewData.data}
-                    onClose={() => setPreviewData(null)}
+                    saved={docSaved}
+                    onSave={saveDocument}
+                    onClose={() => { setPreviewData(null); setDocSaved(false); }}
                 />
             )}
         </div>
