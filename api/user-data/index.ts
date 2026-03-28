@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { db, schema } from '../db/index.js';
-import { getUserId } from '../lib/middleware.js';
+import { db, schema } from '../db/index';
+import { getUserId } from '../lib/middleware';
 import { eq, and } from 'drizzle-orm';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

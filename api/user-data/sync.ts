@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { db, schema } from '../db/index.js';
-import { getUserId } from '../lib/middleware.js';
+import { db, schema } from '../db/index';
+import { getUserId } from '../lib/middleware';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });

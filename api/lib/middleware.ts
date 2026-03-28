@@ -1,5 +1,5 @@
 import type { VercelRequest } from '@vercel/node';
-import { verifyToken } from './auth.js';
+import { verifyToken } from './auth';
 
 export async function getUserId(req: VercelRequest): Promise<string | null> {
     const auth = req.headers.authorization;
