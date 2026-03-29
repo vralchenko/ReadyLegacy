@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { saveToDocuments } from '../../lib/saveDocument';
 
 // ─── Persistent input hook ────────────────────────────────────────────────────
 const useInput = (key: string) => {
@@ -186,6 +187,92 @@ const AssetOverview: React.FC = () => {
     const funeralLocation = useInput('funeral_location');
     const funeralNotes = useInput('funeral_notes');
     const othersNotes = useInput('others_notes');
+    const [docSaved, setDocSaved] = useState(false);
+
+    const fillDemoData = () => {
+        // useInput fields
+        localStorage.setItem('readylegacy_asset_brought', 'Apartment in Luzern, inherited from family (est. 450,000 CHF)');
+        localStorage.setItem('readylegacy_asset_mortgages', '180,000 CHF — Raiffeisen Bank, fixed rate until 2029');
+        localStorage.setItem('readylegacy_asset_debts', 'Car lease: 12,000 CHF remaining (BMW Financial Services)');
+        localStorage.setItem('readylegacy_funeral_type', 'cremation');
+        localStorage.setItem('readylegacy_funeral_location', 'Friedental Cemetery, Luzern');
+        localStorage.setItem('readylegacy_funeral_notes', 'Simple ceremony with close family. No flowers — donations to Swiss Red Cross instead.');
+        localStorage.setItem('readylegacy_others_notes', 'All personal journals in the top drawer of the study desk — please give to Sofia.');
+
+        // useAssetList items
+        const ts = () => Date.now().toString() + Math.random().toString(36).slice(2, 6);
+        localStorage.setItem('readylegacy_list_bank', JSON.stringify([
+            { id: ts(), name: 'UBS Savings Account', value: '85,000 CHF' },
+            { id: ts(), name: 'PostFinance Checking', value: '12,400 CHF' },
+        ]));
+        localStorage.setItem('readylegacy_list_securities', JSON.stringify([
+            { id: ts(), name: 'UBS Global Equity Fund', value: '45,000 CHF' },
+            { id: ts(), name: 'Vanguard S&P 500 ETF', value: '32,000 CHF' },
+        ]));
+        localStorage.setItem('readylegacy_list_bvg', JSON.stringify([
+            { id: ts(), name: 'Pensionskasse Stadt Luzern', value: '280,000 CHF (vested)' },
+        ]));
+        localStorage.setItem('readylegacy_list_insurance', JSON.stringify([
+            { id: ts(), name: 'Swiss Life — Term Life', value: '500,000 CHF payout' },
+            { id: ts(), name: 'Helsana — Health Insurance', value: 'Basic + supplementary' },
+        ]));
+        localStorage.setItem('readylegacy_list_real_estate', JSON.stringify([
+            { id: ts(), name: 'Family apartment', value: '450,000 CHF', address: 'Bahnhofstrasse 42, 6003 Luzern' },
+        ]));
+        localStorage.setItem('readylegacy_list_crypto_wallets', JSON.stringify([
+            { id: ts(), name: 'Bitcoin — Ledger Nano X', location: 'Home safe', instructions: 'Seed phrase in bank vault envelope #12' },
+        ]));
+        localStorage.setItem('readylegacy_list_online_accounts', JSON.stringify([
+            { id: ts(), name: 'Gmail', wish: 'Delete after 6 months' },
+            { id: ts(), name: 'Facebook', wish: 'Memorialize' },
+            { id: ts(), name: 'LinkedIn', wish: 'Delete' },
+        ]));
+        localStorage.setItem('readylegacy_list_sentimental_items', JSON.stringify([
+            { id: ts(), name: 'Grandfather\'s pocket watch', recipient: 'Nephew Alexander', note: 'Given to me on my 18th birthday' },
+            { id: ts(), name: 'Wedding photo album', recipient: 'Daughter Sofia', note: 'All the memories from 2005' },
+        ]));
+        localStorage.setItem('readylegacy_list_pets', JSON.stringify([
+            { id: ts(), name: 'Luna (Golden Retriever)', caretaker: 'Sister Maria in Bern' },
+        ]));
+
+        window.location.reload();
+    };
+
+    const getAllAssetListData = () => {
+        const lists: Record<string, unknown[]> = {};
+        const keys = ['bank', 'securities', 'bvg', 'insurance', 'real_estate', 'crypto_wallets', 'crypto_exchanges', 'hardware_wallets', 'online_accounts', 'online_banking', 'funeral_music', 'funeral_people', 'funeral_flowers', 'sentimental_items', 'pets'];
+        for (const k of keys) {
+            try {
+                const stored = localStorage.getItem(`readylegacy_list_${k}`);
+                if (stored) lists[k] = JSON.parse(stored);
+            } catch { /* skip */ }
+        }
+        return lists;
+    };
+
+    const handleSaveToDocuments = async () => {
+        try {
+            const date = new Date().toLocaleDateString();
+            await saveToDocuments(
+                `Asset Overview — ${date}`,
+                'Asset Overview',
+                '\uD83D\uDCB0',
+                {
+                    asset_brought: assetBrought.value,
+                    asset_mortgages: assetMortgages.value,
+                    asset_debts: assetDebts.value,
+                    funeral_type: funeralType.value,
+                    funeral_location: funeralLocation.value,
+                    funeral_notes: funeralNotes.value,
+                    others_notes: othersNotes.value,
+                    ...getAllAssetListData(),
+                }
+            );
+            setDocSaved(true);
+        } catch {
+            alert('Failed to save to Documents');
+        }
+    };
 
     const validateStep = (s: number): boolean => {
         const newErrors: Record<string, string> = {};
@@ -216,6 +303,17 @@ const AssetOverview: React.FC = () => {
                 <span className="step-tag">{t('tag_assets') || 'Asset Overview'}</span>
                 <h2>{t('title_assets') || 'Asset Overview Wizard'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '16px' }}>{t('desc_assets') || 'A comprehensive overview of your personal assets, wishes, and digital legacy.'}</p>
+                <button
+                    onClick={fillDemoData}
+                    style={{
+                        marginTop: '12px', padding: '8px 18px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600,
+                        border: '1px solid rgba(16,185,129,0.3)', cursor: 'pointer',
+                        background: 'rgba(16,185,129,0.05)',
+                        color: '#10b981', whiteSpace: 'nowrap', transition: 'all 0.2s',
+                    }}
+                >
+                    {'\u26A1'} Fill Demo Data
+                </button>
             </div>
 
             {/* Step indicator */}
@@ -456,9 +554,16 @@ const AssetOverview: React.FC = () => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <button className="btn" onClick={() => setStep(5)}>← Back</button>
-                        <button className="btn" style={{ background: 'var(--accent-gold)', color: 'var(--bg-color)', fontWeight: 700 }} onClick={() => alert(t('auto_all_your_data_i') || '✅ All your data is saved automatically to your local storage!')}>
-                            ✓ Complete & Save
-                        </button>
+                        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                            {!docSaved ? (
+                                <button className="btn" style={{ background: 'transparent', border: '1px solid var(--accent-gold)', color: 'var(--accent-gold)' }} onClick={handleSaveToDocuments}>Save to Documents</button>
+                            ) : (
+                                <span style={{ color: '#10b981', fontSize: '0.85rem', fontWeight: 600 }}>{'\u2713'} Saved to Documents</span>
+                            )}
+                            <button className="btn" style={{ background: 'var(--accent-gold)', color: 'var(--bg-color)', fontWeight: 700 }} onClick={() => alert(t('auto_all_your_data_i') || '\u2705 All your data is saved automatically to your local storage!')}>
+                                {'\u2713'} Complete & Save
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

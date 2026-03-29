@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import usePersistedState from '../../hooks/useSyncedState';
+import { saveToDocuments } from '../../lib/saveDocument';
 
 const WillBuilder: React.FC = () => {
     const { t } = useLanguage();
@@ -14,6 +15,34 @@ const WillBuilder: React.FC = () => {
     const [willLegacies, setWillLegacies] = usePersistedState('will_legacies', '');
     const [willHandwritten, setWillHandwritten] = usePersistedState('will_handwritten', false);
     const [willDated, setWillDated] = usePersistedState('will_dated', false);
+    const [docSaved, setDocSaved] = useState(false);
+    const [demoFilled, setDemoFilled] = useState(false);
+
+    const fillDemoData = () => {
+        setWillName('Viktor Ralchenko');
+        setWillOrigin('Luzern, Switzerland');
+        setWillSpouseQ('50');
+        setWillChildrenQ('50');
+        setWillOthers('Swiss Red Cross — 5% of remaining estate');
+        setWillLegacies('Family watch collection to nephew Alexander\nGrandmother\'s ring to daughter Sofia\nLibrary of first editions to the University of Zurich');
+        setWillHandwritten(true);
+        setWillDated(true);
+        setDemoFilled(true);
+    };
+
+    const handleSaveToDocuments = async () => {
+        try {
+            await saveToDocuments(
+                willName ? `Will — ${willName}` : 'Will Outline',
+                'Will',
+                '\uD83D\uDCDC',
+                { will_name: willName, will_origin: willOrigin, will_spouse_q: willSpouseQ, will_children_q: willChildrenQ, will_others: willOthers, will_legacies: willLegacies, will_handwritten: willHandwritten, will_dated: willDated }
+            );
+            setDocSaved(true);
+        } catch {
+            alert('Failed to save to Documents');
+        }
+    };
 
     return (
         <div id="will-builder" className="tool-panel active">
@@ -21,6 +50,18 @@ const WillBuilder: React.FC = () => {
                 <span className="step-tag">{t('tag_will') || 'Will Builder'}</span>
                 <h2>{t('title_will') || 'Will Structure Builder'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '16px' }}>{t('desc_will')}</p>
+                <button
+                    onClick={fillDemoData}
+                    disabled={demoFilled}
+                    style={{
+                        marginTop: '12px', padding: '8px 18px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600,
+                        border: '1px solid rgba(16,185,129,0.3)', cursor: demoFilled ? 'default' : 'pointer',
+                        background: demoFilled ? 'rgba(16,185,129,0.1)' : 'rgba(16,185,129,0.05)',
+                        color: '#10b981', whiteSpace: 'nowrap', transition: 'all 0.2s',
+                    }}
+                >
+                    {demoFilled ? '\u2713 Demo data filled' : '\u26A1 Fill Demo Data'}
+                </button>
             </div>
 
             <div className="wizard-steps">
@@ -113,7 +154,14 @@ const WillBuilder: React.FC = () => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <button className="btn" onClick={() => setStep(3)}>Back</button>
-                        <button className="btn" style={{ background: 'var(--accent-gold)', color: 'var(--bg-color)' }} onClick={() => alert(t('auto_saved') || 'Saved!')}>Complete & Save</button>
+                        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                            {!docSaved ? (
+                                <button className="btn" style={{ background: 'transparent', border: '1px solid var(--accent-gold)', color: 'var(--accent-gold)' }} onClick={handleSaveToDocuments}>Save to Documents</button>
+                            ) : (
+                                <span style={{ color: '#10b981', fontSize: '0.85rem', fontWeight: 600 }}>{'\u2713'} Saved to Documents</span>
+                            )}
+                            <button className="btn" style={{ background: 'var(--accent-gold)', color: 'var(--bg-color)' }} onClick={() => alert(t('auto_saved') || 'Saved!')}>Complete & Save</button>
+                        </div>
                     </div>
                 </div>
             )}

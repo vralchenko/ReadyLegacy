@@ -3,9 +3,9 @@ import { test, expect } from '@playwright/test';
 test.describe('Home page', () => {
   test('renders hero section with title and CTA buttons', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('h1')).toContainText('estate planning');
-    await expect(page.getByRole('link', { name: /get started free/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /see services/i })).toBeVisible();
+    await expect(page.locator('h1')).toContainText(/estate planning/i);
+    await expect(page.getByRole('link', { name: /get started free/i }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: /see services/i }).first()).toBeVisible();
   });
 
   test('renders "What we offer" section with 3 pillars', async ({ page }) => {
@@ -107,7 +107,7 @@ test.describe('Language switch', () => {
     const deButton = page.getByRole('button', { name: /de/i });
     if (await deButton.isVisible()) {
       await deButton.click();
-      await expect(page.getByText(/Was wir bieten|Digitale Plattform/i).first()).toBeVisible();
+      await expect(page.getByText(/Was wir anbieten|Digitale Plattform/i).first()).toBeVisible();
     }
   });
 });

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import usePersistedState from '../../hooks/useSyncedState';
+import { saveToDocuments } from '../../lib/saveDocument';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface MemoryItem {
@@ -46,6 +47,35 @@ const LeaveBehind: React.FC = () => {
     // View/filter state
     const [filter, setFilter] = useState<'all' | MemoryItem['type']>('all');
     const [viewing, setViewing] = useState<MemoryItem | null>(null);
+    const [docSaved, setDocSaved] = useState(false);
+    const [demoFilled, setDemoFilled] = useState(false);
+
+    const fillDemoData = () => {
+        const today = new Date().toLocaleDateString();
+        const demoItems: MemoryItem[] = [
+            { id: '1', type: 'text', title: 'Letter to Sofia', content: 'My dearest Sofia, if you are reading this, I want you to know that you have been the greatest joy of my life. From the moment you were born, everything changed for the better. Always follow your heart, be kind, and never stop learning. I am so proud of the woman you are becoming. With all my love, Papa.', recipient: 'Daughter Sofia', createdAt: today, tags: ['family', 'love', 'personal'] },
+            { id: '2', type: 'text', title: 'Message to Anna', content: 'My dear Anna, thank you for 20 beautiful years together. You made our house a home and our life an adventure. Take care of yourself, travel to those places we always talked about, and know that our love was the best thing that ever happened to me.', recipient: 'Wife Anna', createdAt: today, tags: ['love', 'marriage'] },
+            { id: '3', type: 'photo', title: 'Summer in Ticino 2019', content: 'The photo album from our family vacation in Lugano. We rented that little house by the lake and spent two weeks swimming, hiking, and eating gelato. The photos are in the shared Google Photos album titled "Ticino 2019".', recipient: 'Everyone', createdAt: today, tags: ['vacation', 'family', 'photos'] },
+            { id: '4', type: 'video', title: 'Birthday wishes for Alexander', content: 'Video recorded on iPhone, saved to iCloud. A special birthday message for when Alexander turns 18. Located in: iCloud Drive > Legacy > Videos > Alexander_18.mov', recipient: 'Nephew Alexander', createdAt: today, tags: ['birthday', 'milestone'] },
+            { id: '5', type: 'link', title: 'Our Spotify Playlist', content: 'https://open.spotify.com/playlist/example — A playlist of all the songs that meant something to us over the years. From our first dance to road trip favorites.', recipient: 'Wife Anna', createdAt: today, tags: ['music', 'memories'] },
+        ];
+        setItems(demoItems);
+        setDemoFilled(true);
+    };
+
+    const handleSaveToDocuments = async () => {
+        try {
+            await saveToDocuments(
+                'Digital Legacy Vault',
+                'Legacy Vault',
+                '\uD83D\uDC8C',
+                { memories: items.map(({ type, title, content, recipient, tags }) => ({ type, title, content, recipient, tags })) }
+            );
+            setDocSaved(true);
+        } catch {
+            alert('Failed to save to Documents');
+        }
+    };
 
     // ─── Wizard logic ──────────────────────────────────────────────────────────
     const resetWizard = () => {
@@ -99,6 +129,18 @@ const LeaveBehind: React.FC = () => {
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     {t('lb_desc') || 'Create personal messages, photos, videos, and memories to be shared with your loved ones — a living archive of your story.'}
                 </p>
+                <button
+                    onClick={fillDemoData}
+                    disabled={demoFilled}
+                    style={{
+                        marginTop: '12px', padding: '8px 18px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600,
+                        border: '1px solid rgba(16,185,129,0.3)', cursor: demoFilled ? 'default' : 'pointer',
+                        background: demoFilled ? 'rgba(16,185,129,0.1)' : 'rgba(16,185,129,0.05)',
+                        color: '#10b981', whiteSpace: 'nowrap', transition: 'all 0.2s',
+                    }}
+                >
+                    {demoFilled ? '\u2713 Demo data filled' : '\u26A1 Fill Demo Data'}
+                </button>
             </div>
 
             {/* Stats bar */}
@@ -120,17 +162,36 @@ const LeaveBehind: React.FC = () => {
                         </button>
                     ) : null
                 ))}
-                <button
-                    onClick={() => setWizardOpen(true)}
-                    style={{
-                        marginLeft: 'auto', padding: '6px 20px', borderRadius: '20px',
-                        border: '1px solid var(--accent-gold)', background: 'rgba(255,215,0,0.1)',
-                        color: 'var(--accent-gold)', fontSize: '0.8rem', cursor: 'pointer',
-                        fontWeight: 700, transition: 'all 0.2s'
-                    }}
-                >
-                    {t('lb_add') || '+ Add Memory'}
-                </button>
+                <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {items.length > 0 && (
+                        !docSaved ? (
+                            <button
+                                onClick={handleSaveToDocuments}
+                                style={{
+                                    padding: '6px 16px', borderRadius: '20px',
+                                    border: '1px solid var(--accent-gold)', background: 'transparent',
+                                    color: 'var(--accent-gold)', fontSize: '0.8rem', cursor: 'pointer',
+                                    fontWeight: 600, transition: 'all 0.2s'
+                                }}
+                            >
+                                Save to Documents
+                            </button>
+                        ) : (
+                            <span style={{ color: '#10b981', fontSize: '0.8rem', fontWeight: 600 }}>{'\u2713'} Saved</span>
+                        )
+                    )}
+                    <button
+                        onClick={() => setWizardOpen(true)}
+                        style={{
+                            padding: '6px 20px', borderRadius: '20px',
+                            border: '1px solid var(--accent-gold)', background: 'rgba(255,215,0,0.1)',
+                            color: 'var(--accent-gold)', fontSize: '0.8rem', cursor: 'pointer',
+                            fontWeight: 700, transition: 'all 0.2s'
+                        }}
+                    >
+                        {t('lb_add') || '+ Add Memory'}
+                    </button>
+                </div>
             </div>
 
             {/* Empty state */}

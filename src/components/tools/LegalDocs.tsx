@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import usePersistedState from '../../hooks/useSyncedState';
+import { saveToDocuments } from '../../lib/saveDocument';
 
 interface DocRecord {
     id: string;
@@ -138,6 +139,38 @@ const LegalDocs: React.FC = () => {
         return r.status === 'completed' || r.status === 'filed';
     }).length;
 
+    const [docSaved, setDocSaved] = useState(false);
+    const [demoFilled, setDemoFilled] = useState(false);
+
+    const fillDemoData = () => {
+        const today = new Date().toLocaleDateString();
+        const demoRecords: Record<string, DocRecord> = {
+            living_will: { id: 'living_will', docType: 'living_will', status: 'completed', notes: 'Signed before two witnesses in March 2024. Copy given to Dr. Meier.', lastUpdated: today, location: 'Home safe, top shelf' },
+            advance_care: { id: 'advance_care', docType: 'advance_care', status: 'filed', notes: 'Notarized at Notariat Luzern. Maria designated as primary representative.', lastUpdated: today, location: 'Notary office — Dr. Keller, Luzern' },
+            power_of_attorney: { id: 'power_of_attorney', docType: 'power_of_attorney', status: 'completed', notes: 'General PoA for financial matters. Granted to wife Anna.', lastUpdated: today, location: 'Bank vault — UBS Luzern' },
+            will: { id: 'will', docType: 'will', status: 'filed', notes: 'Handwritten, dated, and signed. Reviewed by estate lawyer.', lastUpdated: today, location: 'Registered at Bezirksgericht Luzern' },
+            organ_donation: { id: 'organ_donation', docType: 'organ_donation', status: 'completed', notes: 'Registered with Swisstransplant. Donor card in wallet.', lastUpdated: today, location: 'Wallet + digital copy in email' },
+            burial_directive: { id: 'burial_directive', docType: 'burial_directive', status: 'in_progress', notes: 'Draft started. Prefer cremation at Friedental.', lastUpdated: today, location: '' },
+            insurance_policies: { id: 'insurance_policies', docType: 'insurance_policies', status: 'completed', notes: 'Swiss Life term policy, Helsana health, Zurich household. All contacts documented.', lastUpdated: today, location: 'Home office filing cabinet, folder "Insurance"' },
+            digital_testament: { id: 'digital_testament', docType: 'digital_testament', status: 'not_started', notes: '', lastUpdated: '', location: '' },
+        };
+        setRecords(demoRecords);
+        setDemoFilled(true);
+    };
+
+    const handleSaveToDocuments = async () => {
+        try {
+            const data: Record<string, unknown> = {};
+            for (const doc of DOCUMENTS) {
+                data[doc.key] = getRecord(doc.key);
+            }
+            await saveToDocuments('Legal Documents Summary', 'Legal Documents', '\u2696\uFE0F', data);
+            setDocSaved(true);
+        } catch {
+            alert('Failed to save to Documents');
+        }
+    };
+
     return (
         <div id="legal-docs" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '32px' }}>
@@ -146,6 +179,18 @@ const LegalDocs: React.FC = () => {
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     All your essential legal documents in one place. Track their status and store location information for your heirs.
                 </p>
+                <button
+                    onClick={fillDemoData}
+                    disabled={demoFilled}
+                    style={{
+                        marginTop: '12px', padding: '8px 18px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600,
+                        border: '1px solid rgba(16,185,129,0.3)', cursor: demoFilled ? 'default' : 'pointer',
+                        background: demoFilled ? 'rgba(16,185,129,0.1)' : 'rgba(16,185,129,0.05)',
+                        color: '#10b981', whiteSpace: 'nowrap', transition: 'all 0.2s',
+                    }}
+                >
+                    {demoFilled ? '\u2713 Demo data filled' : '\u26A1 Fill Demo Data'}
+                </button>
             </div>
 
             {/* Progress summary */}
@@ -163,6 +208,15 @@ const LegalDocs: React.FC = () => {
                         </div>
                     );
                 })}
+            </div>
+
+            {/* Save to Documents */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+                {!docSaved ? (
+                    <button className="btn" style={{ background: 'transparent', border: '1px solid var(--accent-gold)', color: 'var(--accent-gold)', padding: '6px 18px', borderRadius: '8px', fontSize: '0.85rem', cursor: 'pointer', fontWeight: 600 }} onClick={handleSaveToDocuments}>Save to Documents</button>
+                ) : (
+                    <span style={{ color: '#10b981', fontSize: '0.85rem', fontWeight: 600 }}>{'\u2713'} Saved to Documents</span>
+                )}
             </div>
 
             {/* Progress bar */}
