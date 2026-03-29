@@ -1430,12 +1430,12 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
     font-family: var(--font-heading);
     font-size: 2.4rem;
     color: var(--text-color);
-    margin-bottom: 32px;
+    margin-bottom: 20px;
 }
 
-[data-theme="light"] .services-section {
+[data-theme="light"] .services-section.section-padding {
     background: var(--secondary-bg);
-    padding: 60px 0;
+    padding: 10px 0 60px;
 }
 
 /* CTA Section */
@@ -2257,7 +2257,7 @@ footer {
 
 /* ─── Light Theme: Increase section spacing ─── */
 [data-theme="light"] .hero {
-    padding-bottom: 20px;
+    padding-bottom: 0;
 }
 
 [data-theme="light"] .products {

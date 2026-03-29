@@ -8,18 +8,24 @@ const SERVICES = [
         icon: '🛡️',
         tools: ['svc_ready_t1', 'svc_ready_t2', 'svc_ready_t3', 'svc_ready_t4', 'svc_ready_t5', 'svc_ready_t6'],
         link: '/tools',
+        price: 'Free',
+        priceKey: 'svc_ready_price',
     },
     {
         key: 'svc_legacy',
         icon: '✦',
         tools: ['svc_legacy_t1', 'svc_legacy_t2', 'svc_legacy_t3'],
         link: '/tools?tool=leave-behind',
+        price: '15 CHF/mo',
+        priceKey: 'svc_legacy_price',
     },
     {
         key: 'svc_honored',
         icon: '🕊️',
         tools: ['svc_honored_t1', 'svc_honored_t2', 'svc_honored_t3'],
         link: '/tools?tool=bereavement-support',
+        price: 'Free',
+        priceKey: 'svc_honored_price',
     },
 ];
 
@@ -56,13 +62,13 @@ const Home: React.FC = () => {
     return (
         <div className="home-page">
             {/* Hero — Compact */}
-            <section className="hero hero-redesigned" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+            <section className="hero hero-redesigned" style={{ paddingTop: '10px', paddingBottom: '20px' }}>
                 <div className="container">
                     <div className="hero-content" style={{ maxWidth: '700px' }}>
-                        <h1 style={{ fontSize: '2.2rem', lineHeight: 1.3, marginBottom: '12px' }}>
+                        <h1 style={{ fontSize: '2.2rem', lineHeight: 1.3, marginBottom: '8px' }}>
                             {t('hero_clear') || 'Digital platform for estate planning, legacy management, and bereavement support.'}
                         </h1>
-                        <p className="hero-desc" style={{ fontSize: '1.05rem', marginBottom: '20px' }}>
+                        <p className="hero-desc" style={{ fontSize: '1.05rem', marginBottom: '10px' }}>
                             {t('hero_sub') || 'Organize documents, preserve memories, and support loved ones — all in one secure place.'}
                         </p>
                         <div className="hero-actions">
@@ -85,6 +91,9 @@ const Home: React.FC = () => {
                                     <h3>{t(`${svc.key}_title`) || svc.key}</h3>
                                     <div className="product-tag">{t(`${svc.key}_tag`) || ''}</div>
                                 </div>
+                                <div className="product-price" style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--primary-color)', margin: '8px 0 12px' }}>
+                                    {t(svc.priceKey) || svc.price}
+                                </div>
                                 <p>{t(`${svc.key}_desc`) || ''}</p>
                                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px 0' }}>
                                     {svc.tools.map(tk => (
@@ -103,32 +112,14 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
-            {/* Pricing */}
-            <section className="pricing-section section-padding">
-                <div className="container">
-                    <h2 className="pricing-title">{t('pricing_title') || 'Choose your plan'}</h2>
-                    <p className="pricing-subtitle">{t('pricing_subtitle') || 'Start free. Upgrade when you\'re ready.'}</p>
-                    <div className="pricing-grid pricing-grid--three">
-                        {PRICING.map(tier => (
-                            <div className={`pricing-card ${tier.popular ? 'pricing-card--premium' : ''}`} key={tier.key}>
-                                {tier.popular && <div className="pricing-badge">Popular</div>}
-                                <div className="pricing-header">
-                                    <h3>{t(`pricing_${tier.key}_name`) || tier.key}</h3>
-                                    <div className="pricing-price">
-                                        <span className="price-amount">{tier.price}</span>
-                                        <span className="price-currency">{t('pricing_currency') || 'CHF'}</span>
-                                    </div>
-                                    <span className="price-period">{t(tier.period) || ''}</span>
-                                </div>
-                                <ul className="pricing-features">
-                                    {tier.features.map(fk => (
-                                        <li key={fk}>{t(fk) || fk}</li>
-                                    ))}
-                                </ul>
-                                <Link to="/login" className={tier.popular ? 'btn' : 'btn btn-outline'}>{t(tier.btnKey) || 'Get Started'}</Link>
-                            </div>
-                        ))}
-                    </div>
+            {/* Pricing summary */}
+            <section className="pricing-section section-padding" style={{ textAlign: 'center' }}>
+                <div className="container" style={{ maxWidth: '600px' }}>
+                    <h2 className="pricing-title">{t('pricing_title') || 'Simple pricing'}</h2>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', marginBottom: '24px' }}>
+                        {t('pricing_summary') || 'Estate planning tools are free. Digital Legacy features start at 15 CHF/month. No hidden fees.'}
+                    </p>
+                    <Link to="/login" className="btn hero-cta">{t('cta_get_started') || 'Get Started Free'}</Link>
                 </div>
             </section>
 

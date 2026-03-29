@@ -223,8 +223,12 @@
   "feat_5_title": "Unterstützung in der Trauer",
   "feat_5_desc": "Wenn die Zeit kommt, begleiten wir Ihre Familie mit emotionalen Ressourcen, Checklisten und Ihren Botschaften.",
 
-  "pricing_title": "Wählen Sie Ihren Plan",
+  "pricing_title": "Einfache Preise",
   "pricing_subtitle": "Kostenlos starten. Upgraden, wenn Sie bereit sind.",
+  "pricing_summary": "Nachlassplanung-Tools sind kostenlos. Digital Legacy ab 15 CHF/Monat. Keine versteckten Kosten.",
+  "svc_ready_price": "Kostenlos",
+  "svc_legacy_price": "15 CHF/Mt.",
+  "svc_honored_price": "Kostenlos",
   "pricing_free_name": "Kostenlos",
   "pricing_free_price": "0",
   "pricing_free_period": "für immer",
@@ -459,15 +463,15 @@
   "privacy_jurisdiction_title": "Anwendbares Recht",
   "privacy_jurisdiction_text": "Diese Datenschutzerklärung unterliegt dem Schweizer Recht. Die zuständige Aufsichtsbehörde ist der Eidgenössische Datenschutz- und Öffentlichkeitsbeauftragte (EDÖB).",
 
-  "hero_clear": "Digitale Plattform für Nachlassplanung, Vermächtnisgestaltung und Trauerbegleitung.",
-  "hero_sub": "Dokumente organisieren, Erinnerungen bewahren und Angehörige unterstützen — alles an einem sicheren Ort.",
+  "hero_clear": "Nachlassplanung, digitales Vermächtnis und Trauerbegleitung — in einer Plattform.",
+  "hero_sub": "Testamente, Vorsorgeaufträge und Vermögenslisten speichern. Nachrichten für Angehörige aufnehmen. Trauerunterstützung bei Bedarf.",
   "hero_learn": "Services ansehen",
   "cta_get_started": "Kostenlos starten",
 
   "svc_title": "Was wir anbieten",
   "svc_ready_title": "Bereit sein",
   "svc_ready_tag": "Nachlassplanung",
-  "svc_ready_desc": "Übernehmen Sie die Kontrolle über Ihre Zukunft. Organisieren Sie Rechtsdokumente, Vermögenswerte und letzte Wünsche sicher — damit nichts dem Zufall überlassen wird.",
+  "svc_ready_desc": "Testament, Vorsorgeauftrag, Vermögenslisten und Versicherungsdokumente speichern. Schritt-für-Schritt-Anleitungen helfen beim korrekten Ausfüllen.",
   "svc_ready_t1": "Vermögensübersicht & Nachlasszusammenfassung",
   "svc_ready_t2": "Testament-Struktur-Planer",
   "svc_ready_t3": "Rechtsdokumente & Vorsorgeaufträge",
@@ -478,7 +482,7 @@
 
   "svc_legacy_title": "Hinterlassen",
   "svc_legacy_tag": "Digitales Erbe",
-  "svc_legacy_desc": "Schaffen Sie bleibende Erinnerungen für Ihre Liebsten — Nachrichten, Fotos, Videos und eine digitale Präsenz, die Sie überdauert.",
+  "svc_legacy_desc": "Video- und Audionachrichten aufnehmen, Fotos hochladen und Briefe an die Familie schreiben. Zustellung wann und wie Sie es wünschen.",
   "svc_legacy_t1": "Persönliche Nachrichten & Briefe",
   "svc_legacy_t2": "Medien-Tresor (Fotos, Videos, Audio)",
   "svc_legacy_t3": "KI-Avatar (Beta)",
@@ -486,7 +490,7 @@
 
   "svc_honored_title": "Gedenken",
   "svc_honored_tag": "Trauerbegleitung",
-  "svc_honored_desc": "Unterstützung für Hinterbliebene — emotionale Begleitung, Unterstützungsnetzwerke und praktische Checklisten für die schwersten Momente.",
+  "svc_honored_desc": "Checklisten nach dem Verlust (wen benachrichtigen, was kündigen), Trauerberater-Verzeichnis und lokale Selbsthilfegruppen in der Schweiz.",
   "svc_honored_t1": "Trauerressourcen & geführte Heilung",
   "svc_honored_t2": "Selbsthilfegruppen & Berater",
   "svc_honored_t3": "Praktische Checklisten nach Verlust",
@@ -501,7 +505,7 @@
   "pricing_family_f5": "KI-Avatar (Beta)",
   "pricing_family_btn": "Familientarif starten",
 
-  "cta_final_title": "Erstellen Sie Ihr kostenloses Konto",
-  "cta_final_desc": "Organisieren Sie Ihren Nachlass, bewahren Sie Ihr Vermächtnis und schützen Sie Ihre Liebsten — alles an einem Ort.",
+  "cta_final_title": "Kostenloses Konto erstellen",
+  "cta_final_desc": "Nachlassplanung-Tools kostenlos nutzen. Digitales Vermächtnis hinzufügen, wenn Sie bereit sind.",
   "cta_final_btn": "Kostenloses Konto erstellen"
 }
