@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
+import { useDemoMode } from '../context/DemoContext';
 import useSyncedState from '../hooks/useSyncedState';
 
 interface ProfileData {
@@ -37,6 +38,7 @@ const Profile: React.FC = () => {
     const { language, setLanguage, t } = useLanguage();
     const { theme, toggleTheme } = useTheme();
     const { user } = useAuth();
+    const { demoMode, setDemoMode } = useDemoMode();
 
     const getInitialProfile = (): ProfileData => {
         const defaultData: ProfileData = {
@@ -316,6 +318,30 @@ const Profile: React.FC = () => {
                                                     cursor: 'pointer', fontSize: '1.1rem', fontWeight: theme === t.key ? 700 : 400, transition: 'all 0.2s'
                                                 }}
                                             >{t.label}</button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Demo Mode */}
+                                <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '24px' }}>
+                                    <h4 style={{ marginBottom: '8px', fontSize: '1.4rem' }}>Demo Mode</h4>
+                                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '16px' }}>
+                                        Pre-fill all tools with sample data for demonstration purposes.
+                                    </p>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        {([false, true] as const).map(on => (
+                                            <button
+                                                key={String(on)}
+                                                onClick={() => setDemoMode(on)}
+                                                style={{
+                                                    padding: '10px 20px', borderRadius: '10px',
+                                                    border: `1px solid ${demoMode === on ? (on ? '#10b981' : 'var(--accent-gold)') : 'var(--glass-border)'}`,
+                                                    background: demoMode === on ? 'var(--secondary-bg)' : 'transparent',
+                                                    color: demoMode === on ? (on ? '#10b981' : 'var(--accent-gold)') : 'var(--text-muted)',
+                                                    cursor: 'pointer', fontWeight: demoMode === on ? 700 : 400,
+                                                    fontSize: '0.9rem', transition: 'all 0.2s', textTransform: 'uppercase'
+                                                }}
+                                            >{on ? 'ON' : 'OFF'}</button>
                                         ))}
                                     </div>
                                 </div>

@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useDemoMode } from '../../context/DemoContext';
+import { DEMO_LEGACY_ITEMS } from '../../lib/demoData';
 import usePersistedState from '../../hooks/useSyncedState';
 import { saveToDocuments } from '../../lib/saveDocument';
 
@@ -48,20 +50,42 @@ const LeaveBehind: React.FC = () => {
     const [filter, setFilter] = useState<'all' | MemoryItem['type']>('all');
     const [viewing, setViewing] = useState<MemoryItem | null>(null);
     const [docSaved, setDocSaved] = useState(false);
-    const [demoFilled, setDemoFilled] = useState(false);
+    const { demoMode } = useDemoMode();
+    const [editing, setEditing] = useState(false);
+    const [editTitle, setEditTitle] = useState('');
+    const [editContent, setEditContent] = useState('');
+    const [editRecipient, setEditRecipient] = useState('');
+    const [editTags, setEditTags] = useState('');
 
-    const fillDemoData = () => {
-        const today = new Date().toLocaleDateString();
-        const demoItems: MemoryItem[] = [
-            { id: '1', type: 'text', title: 'Letter to Sofia', content: 'My dearest Sofia, if you are reading this, I want you to know that you have been the greatest joy of my life. From the moment you were born, everything changed for the better. Always follow your heart, be kind, and never stop learning. I am so proud of the woman you are becoming. With all my love, Papa.', recipient: 'Daughter Sofia', createdAt: today, tags: ['family', 'love', 'personal'] },
-            { id: '2', type: 'text', title: 'Message to Anna', content: 'My dear Anna, thank you for 20 beautiful years together. You made our house a home and our life an adventure. Take care of yourself, travel to those places we always talked about, and know that our love was the best thing that ever happened to me.', recipient: 'Wife Anna', createdAt: today, tags: ['love', 'marriage'] },
-            { id: '3', type: 'photo', title: 'Summer in Ticino 2019', content: 'The photo album from our family vacation in Lugano. We rented that little house by the lake and spent two weeks swimming, hiking, and eating gelato. The photos are in the shared Google Photos album titled "Ticino 2019".', recipient: 'Everyone', createdAt: today, tags: ['vacation', 'family', 'photos'] },
-            { id: '4', type: 'video', title: 'Birthday wishes for Alexander', content: 'Video recorded on iPhone, saved to iCloud. A special birthday message for when Alexander turns 18. Located in: iCloud Drive > Legacy > Videos > Alexander_18.mov', recipient: 'Nephew Alexander', createdAt: today, tags: ['birthday', 'milestone'] },
-            { id: '5', type: 'link', title: 'Our Spotify Playlist', content: 'https://open.spotify.com/playlist/example — A playlist of all the songs that meant something to us over the years. From our first dance to road trip favorites.', recipient: 'Wife Anna', createdAt: today, tags: ['music', 'memories'] },
-        ];
-        setItems(demoItems);
-        setDemoFilled(true);
+    const startEditing = () => {
+        if (!viewing) return;
+        setEditTitle(viewing.title);
+        setEditContent(viewing.content);
+        setEditRecipient(viewing.recipient || '');
+        setEditTags(viewing.tags.join(', '));
+        setEditing(true);
     };
+
+    const saveEditing = () => {
+        if (!viewing) return;
+        const updated: MemoryItem = {
+            ...viewing,
+            title: editTitle.trim(),
+            content: editContent.trim(),
+            recipient: editRecipient.trim(),
+            tags: editTags.split(',').map(t => t.trim()).filter(Boolean),
+        };
+        setItems(items.map(i => i.id === viewing.id ? updated : i));
+        setViewing(updated);
+        setEditing(false);
+        setDocSaved(false);
+    };
+
+    useEffect(() => {
+        if (demoMode) {
+            setItems(DEMO_LEGACY_ITEMS());
+        }
+    }, [demoMode]);
 
     const handleSaveToDocuments = async () => {
         try {
@@ -129,18 +153,6 @@ const LeaveBehind: React.FC = () => {
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     {t('lb_desc') || 'Create personal messages, photos, videos, and memories to be shared with your loved ones — a living archive of your story.'}
                 </p>
-                <button
-                    onClick={fillDemoData}
-                    disabled={demoFilled}
-                    style={{
-                        marginTop: '12px', padding: '8px 18px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600,
-                        border: '1px solid rgba(16,185,129,0.3)', cursor: demoFilled ? 'default' : 'pointer',
-                        background: demoFilled ? 'rgba(16,185,129,0.1)' : 'rgba(16,185,129,0.05)',
-                        color: '#10b981', whiteSpace: 'nowrap', transition: 'all 0.2s',
-                    }}
-                >
-                    {demoFilled ? '\u2713 Demo data filled' : '\u26A1 Fill Demo Data'}
-                </button>
             </div>
 
             {/* Stats bar */}
@@ -392,39 +404,60 @@ const LeaveBehind: React.FC = () => {
                             )}
 
                             {/* Navigation */}
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px' }}>
                                 <button
                                     onClick={() => wizardStep === 0 ? resetWizard() : setWizardStep(s => s - 1)}
                                     style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}
                                 >
-                                    {wizardStep === 0 ? (t('profile_cancel') || 'Cancel') : (t('lb_back') || '← Back')}
+                                    {wizardStep === 0 ? (t('profile_cancel') || 'Cancel') : (t('lb_back') || '\u2190 Back')}
                                 </button>
-                                <button
-                                    onClick={() => wizardStep === WIZARD_STEPS.length - 1 ? submitItem() : setWizardStep(s => s + 1)}
-                                    disabled={!canProceed()}
-                                    style={{
-                                        padding: '10px 24px', borderRadius: '8px', border: 'none',
-                                        background: canProceed() ? 'var(--accent-gold)' : 'var(--glass-border)',
-                                        color: canProceed() ? '#000' : 'var(--text-muted)',
-                                        cursor: canProceed() ? 'pointer' : 'not-allowed',
-                                        fontSize: '0.85rem', fontWeight: 700, transition: 'all 0.2s'
-                                    }}
-                                >
-                                    {wizardStep === WIZARD_STEPS.length - 1 ? (t('lb_submit') || '✓ Add to Vault') : (t('lb_next') || 'Next →')}
-                                </button>
+                                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                    {wizardStep === 0 && (
+                                        <button
+                                            onClick={() => {
+                                                setSelectedType('text');
+                                                setTitle('Letter to Sofia');
+                                                setContent('My dearest Sofia, if you are reading this, I want you to know that you have been the greatest joy of my life. Always follow your heart, be kind, and never stop learning. With all my love, Papa.');
+                                                setRecipient('Daughter Sofia');
+                                                setTagsInput('family, love, personal');
+                                                setWizardStep(3);
+                                            }}
+                                            style={{
+                                                padding: '8px 16px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 600,
+                                                border: '1px solid rgba(16,185,129,0.3)', cursor: 'pointer',
+                                                background: 'rgba(16,185,129,0.05)', color: '#10b981', transition: 'all 0.2s',
+                                            }}
+                                        >
+                                            {'\u26A1'} Fill Demo
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={() => wizardStep === WIZARD_STEPS.length - 1 ? submitItem() : setWizardStep(s => s + 1)}
+                                        disabled={!canProceed()}
+                                        style={{
+                                            padding: '10px 24px', borderRadius: '8px', border: 'none',
+                                            background: canProceed() ? 'var(--accent-gold)' : 'var(--glass-border)',
+                                            color: canProceed() ? '#fff' : 'var(--text-muted)',
+                                            cursor: canProceed() ? 'pointer' : 'not-allowed',
+                                            fontSize: '0.85rem', fontWeight: 700, transition: 'all 0.2s'
+                                        }}
+                                    >
+                                        {wizardStep === WIZARD_STEPS.length - 1 ? (t('lb_submit') || '\u2713 Add to Vault') : (t('lb_next') || 'Next \u2192')}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* ─── VIEW MODAL ────────────────────────────────────────────── */}
+            {/* ─── VIEW / EDIT MODAL ─────────────────────────────────────── */}
             {viewing && (
                 <div style={{
                     position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 9000,
                     display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px',
                     backdropFilter: 'blur(8px)'
-                }} onClick={() => setViewing(null)}>
+                }} onClick={() => { setViewing(null); setEditing(false); }}>
                     <div
                         onClick={e => e.stopPropagation()}
                         style={{
@@ -436,39 +469,71 @@ const LeaveBehind: React.FC = () => {
                         <div style={{ height: '4px', background: TYPE_COLORS[viewing.type] }} />
                         <div style={{ padding: '24px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-                                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                                    <span style={{ fontSize: '1.8rem' }}>{getTypeIcon(viewing.type)}</span>
-                                    <div>
-                                        <h3 style={{ margin: 0 }}>{viewing.title}</h3>
+                                <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flex: 1, minWidth: 0 }}>
+                                    <span style={{ fontSize: '1.8rem', flexShrink: 0 }}>{getTypeIcon(viewing.type)}</span>
+                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                        {editing ? (
+                                            <input type="text" value={editTitle} onChange={e => setEditTitle(e.target.value)} style={{ width: '100%', padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '1.1rem', fontWeight: 700, boxSizing: 'border-box' }} />
+                                        ) : (
+                                            <h3 style={{ margin: 0 }}>{viewing.title}</h3>
+                                        )}
                                         <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>{viewing.createdAt}</div>
                                     </div>
                                 </div>
                                 <button
-                                    onClick={() => setViewing(null)}
-                                    style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}
-                                >×</button>
+                                    onClick={() => { setViewing(null); setEditing(false); }}
+                                    style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer', flexShrink: 0 }}
+                                >{'\u00D7'}</button>
                             </div>
-                            <div style={{ fontSize: '0.95rem', lineHeight: '1.7', opacity: 0.85, marginBottom: '16px', whiteSpace: 'pre-wrap' }}>
-                                {viewing.content}
-                            </div>
-                            {viewing.recipient && (
-                                <div style={{ padding: '10px 14px', borderRadius: '8px', background: 'rgba(255,215,0,0.05)', border: '1px solid rgba(255,215,0,0.15)', fontSize: '0.85rem' }}>
-                                    💌 {t('lb_intended_for') || 'Intended for:'} <strong style={{ color: 'var(--accent-gold)' }}>{viewing.recipient}</strong>
+
+                            {editing ? (
+                                <textarea value={editContent} onChange={e => setEditContent(e.target.value)} rows={6} style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.95rem', lineHeight: '1.7', boxSizing: 'border-box', resize: 'vertical', marginBottom: '16px' }} />
+                            ) : (
+                                <div style={{ fontSize: '0.95rem', lineHeight: '1.7', opacity: 0.85, marginBottom: '16px', whiteSpace: 'pre-wrap' }}>
+                                    {viewing.content}
                                 </div>
                             )}
-                            {viewing.tags.length > 0 && (
+
+                            {editing ? (
+                                <div style={{ marginBottom: '14px' }}>
+                                    <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>Recipient</label>
+                                    <input type="text" value={editRecipient} onChange={e => setEditRecipient(e.target.value)} placeholder="e.g. Daughter Sofia" style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.85rem', boxSizing: 'border-box' }} />
+                                </div>
+                            ) : viewing.recipient ? (
+                                <div style={{ padding: '10px 14px', borderRadius: '8px', background: 'rgba(255,215,0,0.05)', border: '1px solid rgba(255,215,0,0.15)', fontSize: '0.85rem' }}>
+                                    {'\uD83D\uDC8C'} {t('lb_intended_for') || 'Intended for:'} <strong style={{ color: 'var(--accent-gold)' }}>{viewing.recipient}</strong>
+                                </div>
+                            ) : null}
+
+                            {editing ? (
+                                <div style={{ marginTop: '14px' }}>
+                                    <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>Tags (comma separated)</label>
+                                    <input type="text" value={editTags} onChange={e => setEditTags(e.target.value)} placeholder="e.g. family, love" style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.85rem', boxSizing: 'border-box' }} />
+                                </div>
+                            ) : viewing.tags.length > 0 ? (
                                 <div style={{ marginTop: '14px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                     {viewing.tags.map(tag => (
                                         <span key={tag} style={{ fontSize: '0.72rem', padding: '3px 10px', borderRadius: '12px', background: 'rgba(255,215,0,0.08)', color: 'rgba(255,215,0,0.7)' }}>#{tag}</span>
                                     ))}
                                 </div>
-                            )}
-                            <button
-                                onClick={() => { setItems(items.filter(i => i.id !== viewing.id)); setViewing(null); }}
-                                style={{ marginTop: '20px', padding: '8px 16px', borderRadius: '8px', border: '1px solid rgba(255,100,100,0.3)', background: 'transparent', color: 'rgba(255,100,100,0.7)', cursor: 'pointer', fontSize: '0.8rem' }}
-                            >
-                                {t('lb_delete') || 'Delete this memory'}
-                            </button>
+                            ) : null}
+
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
+                                <button
+                                    onClick={() => { setItems(items.filter(i => i.id !== viewing.id)); setViewing(null); setEditing(false); }}
+                                    style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid rgba(255,100,100,0.3)', background: 'transparent', color: 'rgba(255,100,100,0.7)', cursor: 'pointer', fontSize: '0.8rem' }}
+                                >
+                                    {t('lb_delete') || 'Delete'}
+                                </button>
+                                {editing ? (
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <button onClick={() => setEditing(false)} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.8rem' }}>Cancel</button>
+                                        <button onClick={saveEditing} style={{ padding: '8px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}>Save</button>
+                                    </div>
+                                ) : (
+                                    <button onClick={startEditing} style={{ padding: '8px 20px', borderRadius: '8px', border: '1px solid var(--accent-gold)', background: 'transparent', color: 'var(--accent-gold)', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}>Edit</button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

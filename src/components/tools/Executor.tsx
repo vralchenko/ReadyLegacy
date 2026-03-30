@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useDemoMode } from '../../context/DemoContext';
+import { DEMO_TASKS } from '../../lib/demoData';
 import usePersistedState from '../../hooks/useSyncedState';
 import { saveToDocuments } from '../../lib/saveDocument';
 
@@ -27,27 +29,13 @@ const Executor: React.FC = () => {
     const [newCategory, setNewCategory] = useState('Legal');
     const [filter, setFilter] = useState<'all' | 'open' | 'done'>('all');
     const [docSaved, setDocSaved] = useState(false);
-    const [demoFilled, setDemoFilled] = useState(false);
+    const { demoMode } = useDemoMode();
 
-    const fillDemoData = () => {
-        const today = new Date().toLocaleDateString();
-        const demoTasks: Task[] = [
-            { id: '1', text: 'Register death at Zivilstandsamt within 2 days', category: 'Legal', done: true, createdAt: today },
-            { id: '2', text: 'Notify employer and cancel employment contract', category: 'Legal', done: true, createdAt: today },
-            { id: '3', text: 'Contact UBS to freeze joint accounts', category: 'Financial', done: false, createdAt: today },
-            { id: '4', text: 'File insurance claim with Swiss Life', category: 'Financial', done: false, createdAt: today },
-            { id: '5', text: 'Cancel health insurance (Helsana)', category: 'Financial', done: false, createdAt: today },
-            { id: '6', text: 'Notify AHV/IV and pension fund', category: 'Financial', done: false, createdAt: today },
-            { id: '7', text: 'Inform close family and friends', category: 'Family', done: true, createdAt: today },
-            { id: '8', text: 'Arrange funeral at Friedental Cemetery', category: 'Family', done: false, createdAt: today },
-            { id: '9', text: 'Collect original will from Bezirksgericht', category: 'Documents', done: false, createdAt: today },
-            { id: '10', text: 'Request Erbschein (certificate of inheritance)', category: 'Documents', done: false, createdAt: today },
-            { id: '11', text: 'Cancel subscriptions (Netflix, Spotify, gym)', category: 'Other', done: false, createdAt: today },
-            { id: '12', text: 'Redirect mail via Post.ch', category: 'Other', done: false, createdAt: today },
-        ];
-        setTasks(demoTasks);
-        setDemoFilled(true);
-    };
+    useEffect(() => {
+        if (demoMode) {
+            setTasks(DEMO_TASKS());
+        }
+    }, [demoMode]);
 
     const handleSaveToDocuments = async () => {
         try {
@@ -102,18 +90,6 @@ const Executor: React.FC = () => {
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     {t('desc_executor') || 'Track all tasks that need to be completed before and after — organized, clear, and persistent.'}
                 </p>
-                <button
-                    onClick={fillDemoData}
-                    disabled={demoFilled}
-                    style={{
-                        marginTop: '12px', padding: '8px 18px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600,
-                        border: '1px solid rgba(16,185,129,0.3)', cursor: demoFilled ? 'default' : 'pointer',
-                        background: demoFilled ? 'rgba(16,185,129,0.1)' : 'rgba(16,185,129,0.05)',
-                        color: '#10b981', whiteSpace: 'nowrap', transition: 'all 0.2s',
-                    }}
-                >
-                    {demoFilled ? '\u2713 Demo data filled' : '\u26A1 Fill Demo Data'}
-                </button>
             </div>
 
             {/* Progress bar */}

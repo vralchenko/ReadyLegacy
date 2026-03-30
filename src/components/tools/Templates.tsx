@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { apiFetch } from '../../lib/api';
+import { DEMO_TEMPLATES } from '../../lib/demoData';
 
 // ─── Template definitions ─────────────────────────────────────────────────────
 interface TemplateField {
@@ -188,7 +189,7 @@ const TEMPLATES: Template[] = [
 ];
 
 // ─── Wizard Component ─────────────────────────────────────────────────────────
-const TemplateWizard: React.FC<{ template: Template; initialData?: Record<string, string>; onClose: () => void; onComplete: (data: Record<string, string>) => void }> = ({ template, initialData, onClose, onComplete }) => {
+const TemplateWizard: React.FC<{ template: Template; initialData?: Record<string, string>; demoData?: Record<string, string>; onClose: () => void; onComplete: (data: Record<string, string>) => void }> = ({ template, initialData, demoData, onClose, onComplete }) => {
     const { t } = useLanguage();
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState<Record<string, string>>(initialData || {});
@@ -294,26 +295,40 @@ const TemplateWizard: React.FC<{ template: Template; initialData?: Record<string
                 </div>
 
                 {/* Footer */}
-                <div style={{ padding: '16px 24px', borderTop: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', flexShrink: 0 }}>
+                <div style={{ padding: '16px 24px', borderTop: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
                     <button
                         onClick={() => step === 0 ? onClose() : setStep(s => s - 1)}
                         style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.85rem' }}
                     >
-                        {step === 0 ? (t('profile_cancel') || 'Cancel') : (t('lb_back') || '← Back')}
+                        {step === 0 ? (t('profile_cancel') || 'Cancel') : (t('lb_back') || '\u2190 Back')}
                     </button>
-                    <button
-                        onClick={() => isLastStep ? onComplete(formData) : setStep(s => s + 1)}
-                        disabled={!canProceed()}
-                        style={{
-                            padding: '10px 24px', borderRadius: '8px', border: 'none',
-                            background: canProceed() ? 'var(--accent-gold)' : 'var(--glass-border)',
-                            color: canProceed() ? '#fff' : 'var(--text-muted)',
-                            cursor: canProceed() ? 'pointer' : 'not-allowed',
-                            fontSize: '0.85rem', fontWeight: 700, transition: 'all 0.2s'
-                        }}
-                    >
-                        {isLastStep ? (t('tmpl_generate') || '✓ Generate Preview') : (t('lb_next') || 'Next →')}
-                    </button>
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                        {demoData && step === 0 && (
+                            <button
+                                onClick={() => { setFormData(demoData); setStep(template.steps.length - 1); }}
+                                style={{
+                                    padding: '8px 16px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 600,
+                                    border: '1px solid rgba(16,185,129,0.3)', cursor: 'pointer',
+                                    background: 'rgba(16,185,129,0.05)', color: '#10b981', transition: 'all 0.2s',
+                                }}
+                            >
+                                {'\u26A1'} Fill Demo
+                            </button>
+                        )}
+                        <button
+                            onClick={() => isLastStep ? onComplete(formData) : setStep(s => s + 1)}
+                            disabled={!canProceed()}
+                            style={{
+                                padding: '10px 24px', borderRadius: '8px', border: 'none',
+                                background: canProceed() ? 'var(--accent-gold)' : 'var(--glass-border)',
+                                color: canProceed() ? '#fff' : 'var(--text-muted)',
+                                cursor: canProceed() ? 'pointer' : 'not-allowed',
+                                fontSize: '0.85rem', fontWeight: 700, transition: 'all 0.2s'
+                            }}
+                        >
+                            {isLastStep ? (t('tmpl_generate') || '\u2713 Generate Preview') : (t('lb_next') || 'Next \u2192')}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -387,8 +402,6 @@ const Templates: React.FC = () => {
     const [editDocId, setEditDocId] = useState<string | null>(null);
     const [previewData, setPreviewData] = useState<{ template: Template; data: Record<string, string> } | null>(null);
     const [docSaved, setDocSaved] = useState(false);
-    const [demoLoading, setDemoLoading] = useState(false);
-    const [demoDone, setDemoDone] = useState(false);
 
     // Auto-open wizard when navigated from Documents with editDoc state
     useEffect(() => {
@@ -406,72 +419,6 @@ const Templates: React.FC = () => {
         window.history.replaceState({}, '');
     }, [location.state]);
 
-    const DEMO_DATA: Record<string, Record<string, string>> = {
-        poa: {
-            grantor_name: 'Viktor Ralchenko', grantor_dob: '1978-10-21',
-            grantor_address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
-            attorney_name: 'Olga Sushchinskaya', attorney_relation: 'Spouse / Partner',
-            attorney_address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
-            scope: 'General (all matters)', scope_details: 'Full authority over all financial and legal matters in case of incapacity.',
-            valid_from: '2026-04-01',
-        },
-        funeral: {
-            name: 'Viktor Ralchenko', dob: '1978-10-21',
-            burial_type: 'Cremation', ceremony: 'Civil / Secular ceremony',
-            location: 'Friedental Cemetery, Luzern',
-            music: 'Johann Sebastian Bach — Air on the G String, Ludovico Einaudi — Nuvole Bianche',
-            readings: 'Do not stand at my grave and weep — Mary Elizabeth Frye',
-            other_wishes: 'Small gathering, close family and friends only. Donations to Swiss Red Cross instead of flowers.',
-        },
-        waiver: {
-            name: 'Anna Ralchenko', dob: '2005-03-15',
-            address: 'Zürichstrasse 10, 6004 Luzern, Switzerland',
-            deceased_name: 'Grandmother Maria Ralchenko', relationship: 'Other relative',
-            reason: 'Voluntarily waiving inheritance in favor of remaining family members.',
-            declaration_date: '2026-03-28',
-        },
-        gift: {
-            donor_name: 'Viktor Ralchenko',
-            donor_address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
-            recipient_name: 'Anna Ralchenko', relationship: 'Child',
-            gift_description: 'Savings account at UBS — CHF 50,000 for university education',
-            gift_value: 'CHF 50,000',
-            conditions: 'To be used exclusively for higher education expenses.',
-            gift_date: '2026-06-01',
-        },
-        advance: {
-            name: 'Viktor Ralchenko', dob: '1978-10-21',
-            address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
-            agent_name: 'Dr. Inna Praxmarer', agent_relation: 'Close Friend',
-            agent_contact: '+41 79 123 45 67 / inna@readylegacy.ch',
-            personal_care: 'Full authority', financial: 'Day-to-day finances only',
-            special_wishes: 'No life-prolonging measures if prognosis is terminal. Prefer palliative care at home.',
-        },
-    };
-
-    const fillDemoDocuments = async () => {
-        setDemoLoading(true);
-        try {
-            for (const tmpl of TEMPLATES) {
-                const data = DEMO_DATA[tmpl.id];
-                if (!data) continue;
-                await apiFetch('/documents', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        title: tmpl.title,
-                        type: tmpl.subtitle || tmpl.title,
-                        icon: tmpl.icon,
-                        data,
-                    }),
-                });
-            }
-            setDemoDone(true);
-        } catch (e) {
-            console.error('Demo fill failed:', e);
-        } finally {
-            setDemoLoading(false);
-        }
-    };
 
     const saveDocument = async () => {
         if (!previewData) return;
@@ -504,26 +451,12 @@ const Templates: React.FC = () => {
     return (
         <div id="templates" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', flexWrap: 'wrap' }}>
-                    <div>
-                        <span className="step-tag">{t('tag_templates') || 'Request Templates'}</span>
-                        <h2 style={{ fontSize: '1.6rem', marginBottom: '4px' }}>{t('title_templates') || 'Document Templates'}</h2>
-                        <p style={{ opacity: 0.7, fontSize: '0.9rem', marginTop: '0' }}>
-                            {t('tmpl_desc') || 'Fill in templates step-by-step. Each wizard guides you through the required information to generate a draft document for legal review.'}
-                        </p>
-                    </div>
-                    <button
-                        onClick={fillDemoDocuments}
-                        disabled={demoLoading || demoDone}
-                        style={{
-                            padding: '10px 20px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600,
-                            border: '1px solid rgba(16,185,129,0.3)', cursor: demoLoading || demoDone ? 'default' : 'pointer',
-                            background: demoDone ? 'rgba(16,185,129,0.1)' : 'rgba(16,185,129,0.05)',
-                            color: '#10b981', whiteSpace: 'nowrap', transition: 'all 0.2s',
-                        }}
-                    >
-                        {demoLoading ? 'Creating...' : demoDone ? '✓ 5 documents created' : '⚡ Fill Demo Documents'}
-                    </button>
+                <div>
+                    <span className="step-tag">{t('tag_templates') || 'Request Templates'}</span>
+                    <h2 style={{ fontSize: '1.6rem', marginBottom: '4px' }}>{t('title_templates') || 'Document Templates'}</h2>
+                    <p style={{ opacity: 0.7, fontSize: '0.9rem', marginTop: '0' }}>
+                        {t('tmpl_desc') || 'Fill in templates step-by-step. Each wizard guides you through the required information to generate a draft document for legal review.'}
+                    </p>
                 </div>
             </div>
 
@@ -572,6 +505,7 @@ const Templates: React.FC = () => {
                 <TemplateWizard
                     template={activeWizard}
                     initialData={editInitialData}
+                    demoData={DEMO_TEMPLATES[activeWizard.id]}
                     onClose={() => { setActiveWizard(null); setEditInitialData(undefined); setEditDocId(null); }}
                     onComplete={(data) => {
                         setPreviewData({ template: activeWizard, data });

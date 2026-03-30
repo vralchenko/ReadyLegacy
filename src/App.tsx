@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
+import { DemoProvider } from './context/DemoContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget/ChatWidget';
@@ -25,7 +26,9 @@ const App: React.FC = () => {
             <LanguageProvider>
                 <ThemeProvider>
                     <AuthProvider>
-                        <Main />
+                        <DemoProvider>
+                            <Main />
+                        </DemoProvider>
                     </AuthProvider>
                 </ThemeProvider>
             </LanguageProvider>

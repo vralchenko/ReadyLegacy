@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useDemoMode } from '../../context/DemoContext';
+import { DEMO_WILL } from '../../lib/demoData';
 import usePersistedState from '../../hooks/useSyncedState';
 import { saveToDocuments } from '../../lib/saveDocument';
 
@@ -16,19 +18,20 @@ const WillBuilder: React.FC = () => {
     const [willHandwritten, setWillHandwritten] = usePersistedState('will_handwritten', false);
     const [willDated, setWillDated] = usePersistedState('will_dated', false);
     const [docSaved, setDocSaved] = useState(false);
-    const [demoFilled, setDemoFilled] = useState(false);
+    const { demoMode } = useDemoMode();
 
-    const fillDemoData = () => {
-        setWillName('Viktor Ralchenko');
-        setWillOrigin('Luzern, Switzerland');
-        setWillSpouseQ('50');
-        setWillChildrenQ('50');
-        setWillOthers('Swiss Red Cross — 5% of remaining estate');
-        setWillLegacies('Family watch collection to nephew Alexander\nGrandmother\'s ring to daughter Sofia\nLibrary of first editions to the University of Zurich');
-        setWillHandwritten(true);
-        setWillDated(true);
-        setDemoFilled(true);
-    };
+    useEffect(() => {
+        if (demoMode) {
+            setWillName(DEMO_WILL.will_name);
+            setWillOrigin(DEMO_WILL.will_origin);
+            setWillSpouseQ(DEMO_WILL.will_spouse_q);
+            setWillChildrenQ(DEMO_WILL.will_children_q);
+            setWillOthers(DEMO_WILL.will_others);
+            setWillLegacies(DEMO_WILL.will_legacies);
+            setWillHandwritten(DEMO_WILL.will_handwritten);
+            setWillDated(DEMO_WILL.will_dated);
+        }
+    }, [demoMode]);
 
     const handleSaveToDocuments = async () => {
         try {
@@ -50,18 +53,6 @@ const WillBuilder: React.FC = () => {
                 <span className="step-tag">{t('tag_will') || 'Will Builder'}</span>
                 <h2>{t('title_will') || 'Will Structure Builder'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '16px' }}>{t('desc_will')}</p>
-                <button
-                    onClick={fillDemoData}
-                    disabled={demoFilled}
-                    style={{
-                        marginTop: '12px', padding: '8px 18px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600,
-                        border: '1px solid rgba(16,185,129,0.3)', cursor: demoFilled ? 'default' : 'pointer',
-                        background: demoFilled ? 'rgba(16,185,129,0.1)' : 'rgba(16,185,129,0.05)',
-                        color: '#10b981', whiteSpace: 'nowrap', transition: 'all 0.2s',
-                    }}
-                >
-                    {demoFilled ? '\u2713 Demo data filled' : '\u26A1 Fill Demo Data'}
-                </button>
             </div>
 
             <div className="wizard-steps">

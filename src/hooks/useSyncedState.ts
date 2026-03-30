@@ -20,9 +20,9 @@ function useSyncedState<T>(key: string, initialValue: T): [T, (value: T | ((prev
         localStorage.setItem('readylegacy_' + key, typeof state === 'string' ? state : JSON.stringify(state));
     }, [key, state]);
 
-    // Fetch server value on mount if authenticated
+    // Fetch server value on mount if authenticated (skip in demo mode)
     useEffect(() => {
-        if (!isAuthenticated) return;
+        if (!isAuthenticated || localStorage.getItem('readylegacy_demo_mode') === 'true') return;
         apiFetch<{ key: string; value: T | null }>(`/user-data?key=${encodeURIComponent(key)}`)
             .then(({ value }) => {
                 if (value !== null && value !== undefined) {
@@ -38,7 +38,7 @@ function useSyncedState<T>(key: string, initialValue: T): [T, (value: T | ((prev
         setState(prev => {
             const next = typeof value === 'function' ? (value as (prev: T) => T)(prev) : value;
 
-            if (isAuthenticated) {
+            if (isAuthenticated && localStorage.getItem('readylegacy_demo_mode') !== 'true') {
                 if (debounceRef.current) clearTimeout(debounceRef.current);
                 debounceRef.current = setTimeout(() => {
                     apiFetch('/user-data', {

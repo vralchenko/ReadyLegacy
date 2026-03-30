@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useDemoMode } from '../../context/DemoContext';
 import { saveToDocuments } from '../../lib/saveDocument';
 
 // ─── Persistent input hook ────────────────────────────────────────────────────
-const useInput = (key: string) => {
+const useInput = (key: string, resetSignal?: boolean) => {
     const [value, setValue] = useState(() => localStorage.getItem(`readylegacy_${key}`) || '');
+
+    useEffect(() => {
+        setValue(localStorage.getItem(`readylegacy_${key}`) || '');
+    }, [resetSignal, key]);
+
     const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const newValue = e.target.value;
         setValue(newValue);
@@ -14,7 +20,7 @@ const useInput = (key: string) => {
 };
 
 // ─── Dynamic list hook ────────────────────────────────────────────────────────
-const useAssetList = (key: string) => {
+const useAssetList = (key: string, resetSignal?: boolean) => {
     const [items, setItems] = useState<any[]>(() => {
         try {
             const stored = localStorage.getItem(`readylegacy_list_${key}`);
@@ -23,6 +29,13 @@ const useAssetList = (key: string) => {
             return [];
         }
     });
+
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem(`readylegacy_list_${key}`);
+            setItems(stored ? JSON.parse(stored) : []);
+        } catch { setItems([]); }
+    }, [resetSignal, key]);
 
     const addItem = (item: any) => {
         const newItems = [...items, { ...item, id: Date.now().toString() }];
@@ -40,12 +53,13 @@ const useAssetList = (key: string) => {
 };
 
 // ─── Dynamic Asset List Component ─────────────────────────────────────────────
-const DynamicAssetList = ({ title, itemKey, fields }: {
+const DynamicAssetList = ({ title, itemKey, fields, demoMode }: {
     title: string;
     itemKey: string;
     fields?: { key: string; label: string; placeholder?: string; type?: string }[];
+    demoMode?: boolean;
 }) => {
-    const { items, addItem, removeItem } = useAssetList(itemKey);
+    const { items, addItem, removeItem } = useAssetList(itemKey, demoMode);
     const [isAdding, setIsAdding] = useState(false);
     const [viewingItem, setViewingItem] = useState<any>(null);
     const [formData, setFormData] = useState<Record<string, string>>({});
@@ -177,66 +191,18 @@ const validate = (value: string, required = true) => required && !value.trim() ?
 // ─── Main Component ───────────────────────────────────────────────────────────
 const AssetOverview: React.FC = () => {
     const { t } = useLanguage();
+    const { demoMode } = useDemoMode();
     const [step, setStep] = useState(1);
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    const assetBrought = useInput('asset_brought');
-    const assetMortgages = useInput('asset_mortgages');
-    const assetDebts = useInput('asset_debts');
-    const funeralType = useInput('funeral_type');
-    const funeralLocation = useInput('funeral_location');
-    const funeralNotes = useInput('funeral_notes');
-    const othersNotes = useInput('others_notes');
+    const assetBrought = useInput('asset_brought', demoMode);
+    const assetMortgages = useInput('asset_mortgages', demoMode);
+    const assetDebts = useInput('asset_debts', demoMode);
+    const funeralType = useInput('funeral_type', demoMode);
+    const funeralLocation = useInput('funeral_location', demoMode);
+    const funeralNotes = useInput('funeral_notes', demoMode);
+    const othersNotes = useInput('others_notes', demoMode);
     const [docSaved, setDocSaved] = useState(false);
-
-    const fillDemoData = () => {
-        // useInput fields
-        localStorage.setItem('readylegacy_asset_brought', 'Apartment in Luzern, inherited from family (est. 450,000 CHF)');
-        localStorage.setItem('readylegacy_asset_mortgages', '180,000 CHF — Raiffeisen Bank, fixed rate until 2029');
-        localStorage.setItem('readylegacy_asset_debts', 'Car lease: 12,000 CHF remaining (BMW Financial Services)');
-        localStorage.setItem('readylegacy_funeral_type', 'cremation');
-        localStorage.setItem('readylegacy_funeral_location', 'Friedental Cemetery, Luzern');
-        localStorage.setItem('readylegacy_funeral_notes', 'Simple ceremony with close family. No flowers — donations to Swiss Red Cross instead.');
-        localStorage.setItem('readylegacy_others_notes', 'All personal journals in the top drawer of the study desk — please give to Sofia.');
-
-        // useAssetList items
-        const ts = () => Date.now().toString() + Math.random().toString(36).slice(2, 6);
-        localStorage.setItem('readylegacy_list_bank', JSON.stringify([
-            { id: ts(), name: 'UBS Savings Account', value: '85,000 CHF' },
-            { id: ts(), name: 'PostFinance Checking', value: '12,400 CHF' },
-        ]));
-        localStorage.setItem('readylegacy_list_securities', JSON.stringify([
-            { id: ts(), name: 'UBS Global Equity Fund', value: '45,000 CHF' },
-            { id: ts(), name: 'Vanguard S&P 500 ETF', value: '32,000 CHF' },
-        ]));
-        localStorage.setItem('readylegacy_list_bvg', JSON.stringify([
-            { id: ts(), name: 'Pensionskasse Stadt Luzern', value: '280,000 CHF (vested)' },
-        ]));
-        localStorage.setItem('readylegacy_list_insurance', JSON.stringify([
-            { id: ts(), name: 'Swiss Life — Term Life', value: '500,000 CHF payout' },
-            { id: ts(), name: 'Helsana — Health Insurance', value: 'Basic + supplementary' },
-        ]));
-        localStorage.setItem('readylegacy_list_real_estate', JSON.stringify([
-            { id: ts(), name: 'Family apartment', value: '450,000 CHF', address: 'Bahnhofstrasse 42, 6003 Luzern' },
-        ]));
-        localStorage.setItem('readylegacy_list_crypto_wallets', JSON.stringify([
-            { id: ts(), name: 'Bitcoin — Ledger Nano X', location: 'Home safe', instructions: 'Seed phrase in bank vault envelope #12' },
-        ]));
-        localStorage.setItem('readylegacy_list_online_accounts', JSON.stringify([
-            { id: ts(), name: 'Gmail', wish: 'Delete after 6 months' },
-            { id: ts(), name: 'Facebook', wish: 'Memorialize' },
-            { id: ts(), name: 'LinkedIn', wish: 'Delete' },
-        ]));
-        localStorage.setItem('readylegacy_list_sentimental_items', JSON.stringify([
-            { id: ts(), name: 'Grandfather\'s pocket watch', recipient: 'Nephew Alexander', note: 'Given to me on my 18th birthday' },
-            { id: ts(), name: 'Wedding photo album', recipient: 'Daughter Sofia', note: 'All the memories from 2005' },
-        ]));
-        localStorage.setItem('readylegacy_list_pets', JSON.stringify([
-            { id: ts(), name: 'Luna (Golden Retriever)', caretaker: 'Sister Maria in Bern' },
-        ]));
-
-        window.location.reload();
-    };
 
     const getAllAssetListData = () => {
         const lists: Record<string, unknown[]> = {};
@@ -303,17 +269,6 @@ const AssetOverview: React.FC = () => {
                 <span className="step-tag">{t('tag_assets') || 'Asset Overview'}</span>
                 <h2>{t('title_assets') || 'Asset Overview Wizard'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '16px' }}>{t('desc_assets') || 'A comprehensive overview of your personal assets, wishes, and digital legacy.'}</p>
-                <button
-                    onClick={fillDemoData}
-                    style={{
-                        marginTop: '12px', padding: '8px 18px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600,
-                        border: '1px solid rgba(16,185,129,0.3)', cursor: 'pointer',
-                        background: 'rgba(16,185,129,0.05)',
-                        color: '#10b981', whiteSpace: 'nowrap', transition: 'all 0.2s',
-                    }}
-                >
-                    {'\u26A1'} Fill Demo Data
-                </button>
             </div>
 
             {/* Step indicator */}
@@ -348,11 +303,11 @@ const AssetOverview: React.FC = () => {
                     <div className="tool-section">
                         <h3>1.2 Financial Assets</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                            <DynamicAssetList title={t('label_bank') || 'Bank & Savings'} itemKey="bank" />
-                            <DynamicAssetList title={t('label_securities') || 'Securities & Stocks'} itemKey="securities" />
-                            <DynamicAssetList title={t('label_bvg') || 'Pension Fund'} itemKey="bvg" />
-                            <DynamicAssetList title={t('label_insurance') || 'Insurance'} itemKey="insurance" />
-                            <DynamicAssetList title={t('auto_real_estate') || 'Real Estate'} itemKey="real_estate" fields={[
+                            <DynamicAssetList title={t('label_bank') || 'Bank & Savings'} itemKey="bank" demoMode={demoMode} />
+                            <DynamicAssetList title={t('label_securities') || 'Securities & Stocks'} itemKey="securities" demoMode={demoMode} />
+                            <DynamicAssetList title={t('label_bvg') || 'Pension Fund'} itemKey="bvg" demoMode={demoMode} />
+                            <DynamicAssetList title={t('label_insurance') || 'Insurance'} itemKey="insurance" demoMode={demoMode} />
+                            <DynamicAssetList title={t('auto_real_estate') || 'Real Estate'} itemKey="real_estate" demoMode={demoMode} fields={[
                                 { key: 'name', label: 'Property', placeholder: 'e.g. Vienna apartment' },
                                 { key: 'value', label: 'Estimated Value', placeholder: 'e.g. 350,000 EUR' },
                                 { key: 'address', label: 'Address', placeholder: 'Street, City' },
@@ -399,6 +354,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList
                                 title={t('auto_crypto_wallets') || '🔐 Crypto Wallets'}
                                 itemKey="crypto_wallets"
+                                demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Wallet / Coin', placeholder: 'e.g. Bitcoin — Ledger Nano X' },
                                     { key: 'location', label: 'Where stored', placeholder: 'e.g. Hardware wallet, paper wallet...' },
@@ -408,6 +364,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList
                                 title={t('auto_crypto_exchange') || '📈 Crypto Exchanges'}
                                 itemKey="crypto_exchanges"
+                                demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Exchange', placeholder: 'e.g. Binance, Coinbase, Kraken...' },
                                     { key: 'email', label: 'Registered email', placeholder: 'e.g. john@email.com' },
@@ -417,6 +374,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList
                                 title={t('auto_hardware_device') || '💳 Hardware Device (Ledger, Trezor, etc.)'}
                                 itemKey="hardware_wallets"
+                                demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Device', placeholder: 'e.g. Ledger Nano X' },
                                     { key: 'location', label: 'Physical location', placeholder: 'e.g. Home safe, bank vault...' },
@@ -426,6 +384,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList
                                 title={t('auto_online_accounts') || '🌐 Online Accounts (Email, Social Media, etc.)'}
                                 itemKey="online_accounts"
+                                demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Platform / Service', placeholder: 'e.g. Gmail, Facebook, iCloud...' },
                                     { key: 'wish', label: 'Your wish for this account', placeholder: 'e.g. Delete, memorialize, pass to...' },
@@ -434,6 +393,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList
                                 title={t('auto_online_banking_') || '💰 Online Banking & Fintech'}
                                 itemKey="online_banking"
+                                demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Bank / App', placeholder: 'e.g. N26, Revolut, PayPal...' },
                                     { key: 'instructions', label: 'Instructions', placeholder: 'e.g. Contact bank to close account...' },
@@ -475,6 +435,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList
                                 title={t('auto_music_ceremony_') || '🎵 Music & Ceremony Wishes'}
                                 itemKey="funeral_music"
+                                demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Song / Piece', placeholder: 'e.g. Ave Maria, Beethoven 7th...' },
                                     { key: 'note', label: 'Note', placeholder: 'e.g. For the opening of the ceremony...' },
@@ -483,6 +444,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList
                                 title={t('auto_people_to_notif') || '👥 People to Notify / Invite'}
                                 itemKey="funeral_people"
+                                demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Name', placeholder: 'e.g. Old school friends' },
                                     { key: 'contact', label: 'Contact', placeholder: 'e.g. email or phone' },
@@ -491,6 +453,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList
                                 title={t('auto_flowers_donatio') || '🌸 Flowers & Donations'}
                                 itemKey="funeral_flowers"
+                                demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Preference', placeholder: 'e.g. White roses, or donations to charity X' },
                                 ]}
@@ -526,6 +489,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList
                                 title={t('auto_sentimental_ite') || '💎 Sentimental Items & Heirlooms'}
                                 itemKey="sentimental_items"
+                                demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Item', placeholder: 'e.g. Grandmother\'s ring, old watch...' },
                                     { key: 'recipient', label: 'Intended for', placeholder: 'e.g. My daughter Sofia' },
@@ -535,6 +499,7 @@ const AssetOverview: React.FC = () => {
                             <DynamicAssetList
                                 title={t('auto_pets') || '🐾 Pets'}
                                 itemKey="pets"
+                                demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Pet name', placeholder: 'e.g. Max the golden retriever' },
                                     { key: 'caretaker', label: 'Intended caretaker', placeholder: 'e.g. My sister Maria' },
