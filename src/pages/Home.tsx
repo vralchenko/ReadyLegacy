@@ -15,14 +15,14 @@ const SERVICES = [
         icon: '✦',
         tier: 'paid' as const,
         tools: ['svc_legacy_t1', 'svc_legacy_t2', 'svc_legacy_t3'],
-        link: '/tools?tool=leave-behind',
+        link: '/tools',
     },
     {
         key: 'svc_honored',
         icon: '🕊️',
         tier: 'free' as const,
         tools: ['svc_honored_t1', 'svc_honored_t2', 'svc_honored_t3'],
-        link: '/tools?tool=bereavement-support',
+        link: '/tools',
     },
 ];
 
