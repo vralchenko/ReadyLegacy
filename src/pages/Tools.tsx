@@ -62,10 +62,8 @@ const Tools: React.FC = () => {
     const [activeTool, setActiveTool] = useState(initialTool);
 
     useEffect(() => {
-        const tool = searchParams.get('tool');
-        if (tool) {
-            setActiveTool(tool);
-        }
+        const tool = searchParams.get('tool') || '';
+        setActiveTool(tool);
     }, [searchParams]);
 
     const handleSelectTool = (tool: string) => {
