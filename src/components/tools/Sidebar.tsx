@@ -98,6 +98,10 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool }) => {
                     flex-direction: row;
                     align-items: center;
                     gap: 10px;
+                    position: sticky;
+                    top: 0;
+                    z-index: 10;
+                    background: var(--glass-bg);
                 }
                 .home-link-btn {
                     display: flex;
