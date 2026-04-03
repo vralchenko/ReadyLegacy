@@ -266,8 +266,7 @@ const AssetOverview: React.FC = () => {
     return (
         <div id="asset-overview" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '40px' }}>
-                <span className="step-tag">{t('tag_assets') || 'Asset Overview'}</span>
-                <h2>{t('title_assets') || 'Asset Overview Wizard'}</h2>
+                <h2 style={{ fontWeight: 700 }}>{t('tag_assets') || 'Asset Overview'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '16px' }}>{t('desc_assets') || 'A comprehensive overview of your personal assets, wishes, and digital legacy.'}</p>
                 <button onClick={() => { fillDemoAssets(); window.location.reload(); }} style={{ marginTop: '12px', padding: '6px 14px', borderRadius: '8px', border: '1px solid #10b981', background: 'rgba(16,185,129,0.08)', color: '#10b981', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}>⚡ Fill Demo Data</button>
             </div>

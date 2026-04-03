@@ -166,8 +166,7 @@ const LegalDocs: React.FC = () => {
     return (
         <div id="legal-docs" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '32px' }}>
-                <span className="step-tag">{t('tag_legal') || 'Legal Framework'}</span>
-                <h2>{t('title_legal') || 'Legal Framework'}</h2>
+                <h2 style={{ fontWeight: 700 }}>{t('tag_legal') || 'Legal Framework'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     All your essential legal documents in one place. Track their status and store location information for your heirs.
                 </p>

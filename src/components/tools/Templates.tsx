@@ -452,8 +452,7 @@ const Templates: React.FC = () => {
         <div id="templates" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '16px' }}>
                 <div>
-                    <span className="step-tag">{t('tag_templates') || 'Request Templates'}</span>
-                    <h2 style={{ fontSize: '1.6rem', marginBottom: '4px' }}>{t('title_templates') || 'Document Templates'}</h2>
+                    <h2 style={{ fontWeight: 700 }}>{t('tag_templates') || 'Request Templates'}</h2>
                     <p style={{ opacity: 0.7, fontSize: '0.9rem', marginTop: '0' }}>
                         {t('tmpl_desc') || 'Fill in templates step-by-step. Each wizard guides you through the required information to generate a draft document for legal review.'}
                     </p>

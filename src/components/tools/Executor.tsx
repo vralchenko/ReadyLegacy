@@ -85,8 +85,7 @@ const Executor: React.FC = () => {
     return (
         <div id="executor" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '32px' }}>
-                <span className="step-tag">{t('tag_executor') || 'Task Management'}</span>
-                <h2>{t('title_executor') || 'ToDo List'}</h2>
+                <h2 style={{ fontWeight: 700 }}>{t('tag_executor') || 'Task Management'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     {t('desc_executor') || 'Track all tasks that need to be completed before and after — organized, clear, and persistent.'}
                 </p>

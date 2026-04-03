@@ -148,8 +148,7 @@ const LeaveBehind: React.FC = () => {
     return (
         <div id="leave-behind" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '32px' }}>
-                <span className="step-tag">{t('p2_title') || 'Leave Behind'}</span>
-                <h2>{t('lb_title') || 'Digital Legacy Vault'}</h2>
+                <h2 style={{ fontWeight: 700 }}>{t('p2_title') || 'Leave Behind'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     {t('lb_desc') || 'Create personal messages, photos, videos, and memories to be shared with your loved ones — a living archive of your story.'}
                 </p>

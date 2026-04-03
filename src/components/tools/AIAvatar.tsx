@@ -64,8 +64,7 @@ const AIAvatar: React.FC = () => {
     return (
         <div id="ai-avatar" className="tool-panel active" style={{ maxWidth: '900px' }}>
             <div className="tool-header" style={{ marginBottom: '32px' }}>
-                <span className="step-tag">Future Legacy</span>
-                <h2>AI Avatar (Digital Twin)</h2>
+                <h2 style={{ fontWeight: 700 }}>Future Legacy</h2>
                 <p style={{ opacity: 0.7, marginTop: '12px', lineHeight: '1.6' }}>
                     Create a conscious digital version of yourself. Your AI Avatar uses your messages, voice recordings, and values to interact with future generations, preserving your essence and wisdom forever.
                 </p>

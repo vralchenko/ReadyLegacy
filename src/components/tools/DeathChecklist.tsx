@@ -76,8 +76,7 @@ const DeathChecklist: React.FC = () => {
     return (
         <div id="death-checklist" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '32px' }}>
-                <span className="step-tag">{t('tag_checklist') || 'After Death Guide'}</span>
-                <h2>{t('title_checklist') || 'Step-by-Step After Death Guide'}</h2>
+                <h2 style={{ fontWeight: 700 }}>{t('tag_checklist') || 'After Death Guide'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     {t('desc_checklist') || 'A comprehensive guide for what needs to happen after a loved one passes. Track each step to ensure nothing is missed.'}
                 </p>

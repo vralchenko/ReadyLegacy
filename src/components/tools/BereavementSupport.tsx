@@ -40,8 +40,7 @@ const BereavementSupport: React.FC = () => {
     return (
         <div id="bereavement-support" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '32px' }}>
-                <span className="step-tag">{t('tag_bereavement') || 'Healing & Support'}</span>
-                <h2>{t('title_bereavement') || 'Bereavement Path'}</h2>
+                <h2 style={{ fontWeight: 700 }}>{t('tag_bereavement') || 'Healing & Support'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     {t('desc_bereavement') || 'A supportive space for emotional healing, self-help resources, and connecting with others who understand.'}
                 </p>

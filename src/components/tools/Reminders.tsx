@@ -94,8 +94,7 @@ const Reminders: React.FC = () => {
     return (
         <div id="reminders" className="tool-panel active">
             <div className="tool-header" style={{ marginBottom: '32px' }}>
-                <span className="step-tag">Notifications</span>
-                <h2>Email Reminders</h2>
+                <h2 style={{ fontWeight: 700 }}>Notifications</h2>
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     Stay on top of your estate planning with smart reminders. Set annual reviews, incomplete section alerts, or custom date reminders.
                 </p>
