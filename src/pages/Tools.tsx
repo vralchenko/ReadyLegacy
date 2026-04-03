@@ -70,17 +70,19 @@ const Tools: React.FC = () => {
 
     // Scroll to section if hash is present (e.g. /tools#leave_behind)
     useEffect(() => {
-        if (location.hash && !activeTool) {
-            const id = location.hash.replace('#', '');
-            setTimeout(() => {
-                const el = document.getElementById(id);
-                if (el) {
-                    const y = el.getBoundingClientRect().top + window.scrollY - 80;
-                    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
-                }
-            }, 150);
-        }
-    }, [location.hash, activeTool]);
+        if (!location.hash) return;
+        const id = location.hash.replace('#', '');
+        const tryScroll = (attempts: number) => {
+            const el = document.getElementById(id);
+            if (el) {
+                const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+            } else if (attempts > 0) {
+                setTimeout(() => tryScroll(attempts - 1), 200);
+            }
+        };
+        setTimeout(() => tryScroll(5), 300);
+    }, [location.hash]);
 
     const handleSelectTool = (tool: string) => {
         setActiveTool(tool);
