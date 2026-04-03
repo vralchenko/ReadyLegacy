@@ -95,8 +95,9 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool }) => {
                     padding-bottom: 16px;
                     border-bottom: 1px solid var(--glass-border);
                     display: flex;
-                    flex-direction: column;
-                    gap: 8px;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 10px;
                 }
                 .home-link-btn {
                     display: flex;
