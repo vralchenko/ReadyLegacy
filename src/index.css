@@ -771,6 +771,7 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
     padding: 24px;
     border-radius: 20px;
     position: relative;
+    text-align: left;
     overflow: hidden;
     transition: var(--transition);
     box-shadow: var(--card-shadow);
