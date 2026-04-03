@@ -75,8 +75,15 @@ const Tools: React.FC = () => {
         const tryScroll = (attempts: number) => {
             const el = document.getElementById(id);
             if (el) {
-                const y = el.getBoundingClientRect().top + window.scrollY - 80;
-                window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+                // body.demo-mode uses <main> as scroll container, not window
+                const scrollContainer = document.querySelector('main') || window;
+                if (scrollContainer instanceof HTMLElement) {
+                    const y = el.offsetTop - 80;
+                    scrollContainer.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+                } else {
+                    const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+                }
             } else if (attempts > 0) {
                 setTimeout(() => tryScroll(attempts - 1), 200);
             }
