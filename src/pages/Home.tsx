@@ -8,7 +8,7 @@ const SERVICES = [
         icon: '🛡️',
         tier: 'free' as const,
         tools: ['svc_ready_t1', 'svc_ready_t2', 'svc_ready_t3', 'svc_ready_t4', 'svc_ready_t5', 'svc_ready_t6'],
-        link: '/tools',
+        link: '/tools#be_ready',
     },
     {
         key: 'svc_legacy',
