@@ -98,19 +98,9 @@ const Tools: React.FC = () => {
                     <div style={{ padding: '8px 0' }}>
                         {TOOL_CARDS.map(section => (
                             <div key={section.section} style={{ marginBottom: '40px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-                                    <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-color)', margin: 0 }}>
-                                        {t(SECTION_LABELS[section.section]) || section.section}
-                                    </h2>
-                                    <span style={{
-                                        padding: '3px 10px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700,
-                                        background: SECTION_TIER[section.section] === 'free' ? 'rgba(52,211,153,0.12)' : 'rgba(251,191,36,0.12)',
-                                        color: SECTION_TIER[section.section] === 'free' ? '#34d399' : 'var(--accent-gold)',
-                                        border: `1px solid ${SECTION_TIER[section.section] === 'free' ? 'rgba(52,211,153,0.3)' : 'rgba(251,191,36,0.3)'}`,
-                                    }}>
-                                        {SECTION_TIER[section.section] === 'free' ? 'Free' : '15 CHF/mo'}
-                                    </span>
-                                </div>
+                                <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-color)', marginBottom: '4px' }}>
+                                    {t(SECTION_LABELS[section.section]) || section.section}
+                                </h2>
                                 <p style={{ color: 'var(--text-muted)', marginBottom: '18px', fontSize: '0.95rem' }}>
                                     {t('tools_your_tools') || 'Your tools'}
                                 </p>
