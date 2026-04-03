@@ -99,9 +99,6 @@ const Tools: React.FC = () => {
                                 <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-color)', marginBottom: '4px' }}>
                                     {t(SECTION_LABELS[section.section]) || section.section}
                                 </h2>
-                                <p style={{ color: 'var(--text-muted)', marginBottom: '18px', fontSize: '0.95rem' }}>
-                                    {t('tools_your_tools') || 'Your tools'}
-                                </p>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '14px' }}>
                                     {section.tools.map(tool => {
                                         const labels = TOOL_LABELS[tool.key];
