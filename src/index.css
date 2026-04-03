@@ -947,9 +947,9 @@ header.menu-open .mobile-toggle .bar:nth-child(3) {
 }
 
 .founder-bio {
-    font-size: 0.9rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
-    line-height: 1.6;
+    line-height: 1.5;
     margin-bottom: 16px;
     max-width: 320px;
     margin-left: auto;
