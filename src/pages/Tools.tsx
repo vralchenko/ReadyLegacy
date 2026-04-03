@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import Sidebar from '../components/tools/Sidebar';
 import AssetOverview from '../components/tools/AssetOverview';
@@ -61,10 +61,22 @@ const Tools: React.FC = () => {
     const initialTool = searchParams.get('tool') || '';
     const [activeTool, setActiveTool] = useState(initialTool);
 
+    const location = useLocation();
+
     useEffect(() => {
         const tool = searchParams.get('tool') || '';
         setActiveTool(tool);
     }, [searchParams]);
+
+    // Scroll to section if hash is present (e.g. /tools#leave_behind)
+    useEffect(() => {
+        if (location.hash && !activeTool) {
+            const id = location.hash.replace('#', '');
+            setTimeout(() => {
+                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    }, [location.hash, activeTool]);
 
     const handleSelectTool = (tool: string) => {
         setActiveTool(tool);
@@ -95,7 +107,7 @@ const Tools: React.FC = () => {
                 <div className="tools-content">
                     <div style={{ padding: '8px 0' }}>
                         {TOOL_CARDS.map(section => (
-                            <div key={section.section} style={{ marginBottom: '40px' }}>
+                            <div key={section.section} id={section.section} style={{ marginBottom: '40px', scrollMarginTop: '80px' }}>
                                 <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-color)', marginBottom: '4px' }}>
                                     {t(SECTION_LABELS[section.section]) || section.section}
                                 </h2>
