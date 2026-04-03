@@ -1,11 +1,10 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Home page', () => {
-  test('renders hero section with title and CTA buttons', async ({ page }) => {
+  test('renders hero section with title and CTA button', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('h1')).toContainText(/estate planning/i);
-    await expect(page.getByRole('link', { name: /get started free/i }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: /see services/i }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: /create your profile/i }).first()).toBeVisible();
   });
 
   test('renders "What we offer" section with 3 pillars', async ({ page }) => {
@@ -14,6 +13,26 @@ test.describe('Home page', () => {
     await expect(page.getByRole('heading', { name: 'Be Ready' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Leave Behind' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Be Honored' })).toBeVisible();
+  });
+
+  test('shows Free and Paid tier badges', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.getByText('Free').first()).toBeVisible();
+    await expect(page.getByText('15 CHF / month').first()).toBeVisible();
+  });
+
+  test('product cards are clickable links', async ({ page }) => {
+    await page.goto('/');
+    const card = page.locator('.product-card-clickable').first();
+    await expect(card).toBeVisible();
+    // Verify it's an <a> tag (Link component)
+    await expect(card).toHaveAttribute('href', /\/tools/);
+  });
+
+  test('no pricing section or Create Free Account section exists', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.getByText('Simple pricing')).not.toBeVisible();
+    await expect(page.getByText('Start your free account')).not.toBeVisible();
   });
 
   test('header navigation links are visible', async ({ page }) => {

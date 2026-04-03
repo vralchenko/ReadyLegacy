@@ -60,7 +60,7 @@ test.describe('AssetOverview — Save to Documents', () => {
         await page.locator('#asset-overview input[type="text"]').first().fill('Family apartment');
 
         // Navigate to step 6 via step indicator
-        await page.getByText('06. Others').click();
+        await page.getByText('05. Others').click();
         await page.waitForTimeout(300);
 
         // "Save to Documents" button should be visible
