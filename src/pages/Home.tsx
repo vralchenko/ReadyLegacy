@@ -84,7 +84,7 @@ const Home: React.FC = () => {
                                             <div className="product-tag">{t(`${svc.key}_tag`) || ''}</div>
                                         </div>
                                         <p>{t(`${svc.key}_desc`) || ''}</p>
-                                        <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px 0' }}>
+                                        <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px 0', textAlign: 'left' }}>
                                             {svc.tools.map(tk => (
                                                 <li key={tk} style={{ padding: '4px 0', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
                                                     <span style={{ color: 'var(--accent-gold)', marginRight: '8px' }}>✓</span>
