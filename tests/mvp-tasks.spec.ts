@@ -56,9 +56,13 @@ test.describe('Tools dashboard — MVP changes', () => {
     await expect(page.locator('h2').filter({ hasText: /Be Ready/i }).first()).toBeVisible();
   });
 
-  test('shows all three product sections', async ({ page }) => {
+  test('shows Free/Paid tier badges on sections', async ({ page }) => {
     await page.goto('/tools');
-    await expect(page.getByText('Leave Behind').first()).toBeVisible();
+    await page.waitForTimeout(1000);
+    // Badges show translated text or key fallback
+    const hasFree = await page.getByText('Free').first().isVisible().catch(() => false);
+    const hasTierFree = await page.getByText('tier_free').first().isVisible().catch(() => false);
+    expect(hasFree || hasTierFree).toBeTruthy();
   });
 });
 

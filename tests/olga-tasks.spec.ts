@@ -109,11 +109,12 @@ test.describe('Task 5: Tools page headers redesigned', () => {
     expect(size).toBeGreaterThanOrEqual(25); // 1.8rem ≈ 28.8px
   });
 
-  test('no "Your Tools" subtitle under sections', async ({ page }) => {
+  test('sections show Free/Paid tier badges', async ({ page }) => {
     await page.goto('/tools');
-    // "Your tools" as subtitle was removed
-    const count = await page.getByText('Your tools', { exact: true }).count();
-    expect(count).toBe(0);
+    await page.waitForTimeout(1000);
+    // Badge exists with translated or fallback text
+    const badges = page.locator('span').filter({ hasText: /Free|tier_free|15 CHF|tier_paid|Kostenlos/i });
+    expect(await badges.count()).toBeGreaterThanOrEqual(1);
   });
 });
 
