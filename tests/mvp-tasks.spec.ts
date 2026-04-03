@@ -198,11 +198,12 @@ test.describe('Executor — per-tool demo', () => {
 test.describe('Leave Behind — Social Accounts', () => {
   test.use({ storageState: AUTH_FILE });
 
-  test.fixme('Social Media Accounts section exists in DOM', async ({ page }) => {
+  test('shows Social Media Accounts section', async ({ page }) => {
     await page.goto('/tools?tool=leave-behind');
-    await page.waitForTimeout(1500);
-    const count = await page.locator('text=Social Media Accounts').count();
-    expect(count).toBeGreaterThanOrEqual(1);
+    await page.waitForTimeout(1000);
+    const el = page.getByText('Social Media Accounts').first();
+    await el.scrollIntoViewIfNeeded();
+    await expect(el).toBeVisible();
   });
 
   test('can add a social account', async ({ page }) => {
