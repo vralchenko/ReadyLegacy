@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useDemoMode } from '../../context/DemoContext';
-import { DEMO_LEGAL_DOCS } from '../../lib/demoData';
+import { DEMO_LEGAL_DOCS, fillDemoLegal } from '../../lib/demoData';
 import usePersistedState from '../../hooks/useSyncedState';
 import { saveToDocuments } from '../../lib/saveDocument';
 
@@ -171,6 +171,7 @@ const LegalDocs: React.FC = () => {
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     All your essential legal documents in one place. Track their status and store location information for your heirs.
                 </p>
+                <button onClick={() => { fillDemoLegal(); window.location.reload(); }} style={{ marginTop: '12px', padding: '6px 14px', borderRadius: '8px', border: '1px solid #10b981', background: 'rgba(16,185,129,0.08)', color: '#10b981', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}>⚡ Fill Demo Data</button>
             </div>
 
             {/* Progress summary */}
@@ -330,7 +331,7 @@ const LegalDocs: React.FC = () => {
                                                     }}
                                                 />
                                                 <div style={{ display: 'flex', gap: '8px' }}>
-                                                    <button onClick={() => saveNotes(doc.key)} style={{ padding: '6px 16px', borderRadius: '6px', border: 'none', background: 'var(--accent-gold)', color: '#000', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}>Save</button>
+                                                    <button onClick={() => saveNotes(doc.key)} style={{ padding: '6px 16px', borderRadius: '6px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}>Save</button>
                                                     <button onClick={() => setEditingNotes(null)} style={{ padding: '6px 16px', borderRadius: '6px', border: '1px solid var(--glass-border)', background: 'transparent', color: 'var(--text-color)', cursor: 'pointer', fontSize: '0.8rem' }}>Cancel</button>
                                                 </div>
                                             </div>

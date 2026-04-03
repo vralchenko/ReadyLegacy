@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useDemoMode } from '../../context/DemoContext';
-import { DEMO_WILL } from '../../lib/demoData';
+import { DEMO_WILL, fillDemoWill } from '../../lib/demoData';
 import usePersistedState from '../../hooks/useSyncedState';
 import { saveToDocuments } from '../../lib/saveDocument';
 
@@ -53,6 +53,7 @@ const WillBuilder: React.FC = () => {
                 <span className="step-tag">{t('tag_will') || 'Will Builder'}</span>
                 <h2>{t('title_will') || 'Will Structure Builder'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '16px' }}>{t('desc_will')}</p>
+                <button onClick={() => { fillDemoWill(); window.location.reload(); }} style={{ marginTop: '12px', padding: '6px 14px', borderRadius: '8px', border: '1px solid #10b981', background: 'rgba(16,185,129,0.08)', color: '#10b981', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}>⚡ Fill Demo Data</button>
             </div>
 
             <div className="wizard-steps">

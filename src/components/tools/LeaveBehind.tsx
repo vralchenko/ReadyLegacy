@@ -538,6 +538,101 @@ const LeaveBehind: React.FC = () => {
                     </div>
                 </div>
             )}
+            {/* Social Accounts */}
+            <SocialAccounts />
+        </div>
+    );
+};
+
+// ─── Social Accounts Sub-Component ───────────────────────────────────────────
+interface SocialAccount { id: string; platform: string; username: string; wish: string; }
+
+const PLATFORM_PRESETS = [
+    { name: 'Facebook', icon: '📘' },
+    { name: 'Instagram', icon: '📷' },
+    { name: 'LinkedIn', icon: '💼' },
+    { name: 'X / Twitter', icon: '🐦' },
+    { name: 'TikTok', icon: '🎵' },
+    { name: 'YouTube', icon: '🎬' },
+    { name: 'Other', icon: '🌐' },
+];
+
+const SocialAccounts: React.FC = () => {
+    const { t } = useLanguage();
+    const [accounts, setAccounts] = usePersistedState<SocialAccount[]>('social_accounts', []);
+    const [adding, setAdding] = useState(false);
+    const [draft, setDraft] = useState({ platform: '', username: '', wish: '' });
+
+    const addAccount = () => {
+        if (!draft.platform) return;
+        setAccounts([...accounts, { ...draft, id: Date.now().toString() }]);
+        setDraft({ platform: '', username: '', wish: '' });
+        setAdding(false);
+    };
+
+    return (
+        <div style={{ marginTop: '40px', padding: '24px', borderRadius: '16px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('lb_social_title') || 'Social Media Accounts'}</h3>
+                <button onClick={() => setAdding(!adding)} style={{
+                    padding: '6px 14px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer',
+                    border: '1px solid var(--accent-gold)', color: adding ? '#ff6b6b' : 'var(--accent-gold)',
+                    background: adding ? 'rgba(255,107,107,0.1)' : 'rgba(251,191,36,0.08)',
+                }}>
+                    {adding ? 'Cancel' : '+ Add Account'}
+                </button>
+            </div>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '16px' }}>
+                {t('lb_social_desc') || 'Document your social media accounts and what you want to happen with them.'}
+            </p>
+
+            {adding && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px', padding: '16px', borderRadius: '12px', background: 'var(--secondary-bg)', border: '1px solid var(--glass-border)' }}>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                        {PLATFORM_PRESETS.map(p => (
+                            <button key={p.name} onClick={() => setDraft({ ...draft, platform: p.name })} style={{
+                                padding: '6px 12px', borderRadius: '8px', fontSize: '0.8rem', cursor: 'pointer',
+                                border: `1px solid ${draft.platform === p.name ? 'var(--accent-gold)' : 'var(--glass-border)'}`,
+                                background: draft.platform === p.name ? 'rgba(251,191,36,0.1)' : 'transparent',
+                                color: draft.platform === p.name ? 'var(--accent-gold)' : 'var(--text-muted)',
+                            }}>
+                                {p.icon} {p.name}
+                            </button>
+                        ))}
+                    </div>
+                    <input placeholder="Username or profile URL" value={draft.username} onChange={e => setDraft({ ...draft, username: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.85rem' }} />
+                    <select value={draft.wish} onChange={e => setDraft({ ...draft, wish: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.85rem' }}>
+                        <option value="">What should happen?</option>
+                        <option value="Delete">Delete the account</option>
+                        <option value="Memorialize">Memorialize</option>
+                        <option value="Transfer">Transfer to someone</option>
+                        <option value="Keep">Keep as is</option>
+                    </select>
+                    <div style={{ textAlign: 'right' }}>
+                        <button onClick={addAccount} style={{ padding: '8px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}>Add</button>
+                    </div>
+                </div>
+            )}
+
+            {accounts.length === 0 && !adding && (
+                <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', borderRadius: '12px', border: '1px dashed var(--glass-border)' }}>
+                    No social accounts added yet.
+                </div>
+            )}
+
+            {accounts.map(acc => (
+                <div key={acc.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', borderRadius: '10px', marginBottom: '8px', background: 'var(--secondary-bg)', border: '1px solid var(--glass-border)' }}>
+                    <div>
+                        <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                            {PLATFORM_PRESETS.find(p => p.name === acc.platform)?.icon || '🌐'} {acc.platform}
+                        </div>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                            {[acc.username, acc.wish].filter(Boolean).join(' · ')}
+                        </div>
+                    </div>
+                    <button onClick={() => setAccounts(accounts.filter(a => a.id !== acc.id))} style={{ background: 'none', border: 'none', color: '#ff6b6b', cursor: 'pointer', fontSize: '0.8rem' }}>Remove</button>
+                </div>
+            ))}
         </div>
     );
 };

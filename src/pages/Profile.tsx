@@ -6,6 +6,14 @@ import { useAuth } from '../context/AuthContext';
 import { useDemoMode } from '../context/DemoContext';
 import useSyncedState from '../hooks/useSyncedState';
 
+interface Beneficiary {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    relationship: string;
+}
+
 interface ProfileData {
     name: string;
     email: string;
@@ -56,6 +64,19 @@ const Profile: React.FC = () => {
     const [draft, setDraft] = useState<ProfileData>(profile);
     const [saved, setSaved] = useState(false);
     const [activeTab, setActiveTab] = useState<'overview' | 'settings' | 'plan'>('overview');
+
+    // Beneficiaries
+    const [beneficiaries, setBeneficiaries] = useSyncedState<Beneficiary[]>('beneficiaries', []);
+    const [addingBeneficiary, setAddingBeneficiary] = useState(false);
+    const [benDraft, setBenDraft] = useState<Omit<Beneficiary, 'id'>>({ name: '', email: '', phone: '', relationship: '' });
+
+    const addBeneficiary = () => {
+        if (!benDraft.name) return;
+        setBeneficiaries([...beneficiaries, { ...benDraft, id: Date.now().toString() }]);
+        setBenDraft({ name: '', email: '', phone: '', relationship: '' });
+        setAddingBeneficiary(false);
+    };
+    const removeBeneficiary = (id: string) => setBeneficiaries(beneficiaries.filter(b => b.id !== id));
     const location = useLocation();
 
     useEffect(() => {
@@ -275,6 +296,53 @@ const Profile: React.FC = () => {
                                             {profile.bio || 'Not set'}
                                         </div>
                                     )}
+                                </div>
+
+                                {/* My Beneficiaries */}
+                                <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid var(--glass-border)' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                                        <h3 style={{ fontSize: '1.4rem', margin: 0 }}>My Beneficiaries</h3>
+                                        <button onClick={() => setAddingBeneficiary(!addingBeneficiary)} style={{
+                                            padding: '8px 16px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer',
+                                            border: '1px solid var(--accent-gold)', color: addingBeneficiary ? '#ff6b6b' : 'var(--accent-gold)',
+                                            background: addingBeneficiary ? 'rgba(255,107,107,0.1)' : 'rgba(251,191,36,0.08)',
+                                        }}>
+                                            {addingBeneficiary ? 'Cancel' : '+ Add Beneficiary'}
+                                        </button>
+                                    </div>
+                                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '16px' }}>
+                                        People who will be notified and receive access when the heartbeat protocol is activated.
+                                    </p>
+
+                                    {addingBeneficiary && (
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '16px', padding: '16px', borderRadius: '12px', background: 'var(--secondary-bg)', border: '1px solid var(--glass-border)' }}>
+                                            <input placeholder="Full Name *" value={benDraft.name} onChange={e => setBenDraft({ ...benDraft, name: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
+                                            <input placeholder="Email" value={benDraft.email} onChange={e => setBenDraft({ ...benDraft, email: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
+                                            <input placeholder="Phone" value={benDraft.phone} onChange={e => setBenDraft({ ...benDraft, phone: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
+                                            <input placeholder="Relationship (e.g. Spouse, Child)" value={benDraft.relationship} onChange={e => setBenDraft({ ...benDraft, relationship: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
+                                            <div style={{ gridColumn: '1 / -1', textAlign: 'right' }}>
+                                                <button onClick={addBeneficiary} style={{ padding: '8px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>Add</button>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {beneficiaries.length === 0 && !addingBeneficiary && (
+                                        <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem', borderRadius: '12px', border: '1px dashed var(--glass-border)' }}>
+                                            No beneficiaries added yet. Click "+ Add Beneficiary" to get started.
+                                        </div>
+                                    )}
+
+                                    {beneficiaries.map(b => (
+                                        <div key={b.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', borderRadius: '10px', marginBottom: '8px', background: 'var(--secondary-bg)', border: '1px solid var(--glass-border)' }}>
+                                            <div>
+                                                <div style={{ fontWeight: 600, fontSize: '0.95rem' }}>{b.name}</div>
+                                                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                                                    {[b.relationship, b.email, b.phone].filter(Boolean).join(' · ')}
+                                                </div>
+                                            </div>
+                                            <button onClick={() => removeBeneficiary(b.id)} style={{ background: 'none', border: 'none', color: '#ff6b6b', cursor: 'pointer', fontSize: '0.8rem' }}>Remove</button>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         )}

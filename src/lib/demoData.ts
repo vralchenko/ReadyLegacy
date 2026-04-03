@@ -3,7 +3,7 @@
 
 // ─── Will Builder ────────────────────────────────────────────────────────────
 export const DEMO_WILL = {
-    will_name: 'Viktor Ralchenko',
+    will_name: 'Thomas Müller',
     will_origin: 'Luzern, Switzerland',
     will_spouse_q: '50',
     will_children_q: '50',
@@ -48,8 +48,8 @@ export const DEMO_ASSET_LISTS: Record<string, Record<string, string>[]> = {
         { name: 'Bitcoin — Ledger Nano X', location: 'Home safe', instructions: 'Seed phrase in bank vault envelope #12' },
     ],
     crypto_exchanges: [
-        { name: 'Binance', email: 'v.ralchenko@gmail.com', instructions: '2FA on phone — backup codes in bank vault' },
-        { name: 'Coinbase', email: 'v.ralchenko@gmail.com', instructions: 'Contact support with death certificate' },
+        { name: 'Binance', email: 't.mueller@gmail.com', instructions: '2FA on phone — backup codes in bank vault' },
+        { name: 'Coinbase', email: 't.mueller@gmail.com', instructions: 'Contact support with death certificate' },
     ],
     hardware_wallets: [
         { name: 'Ledger Nano X', location: 'Home safe', instructions: 'PIN in sealed envelope in bank vault' },
@@ -132,7 +132,7 @@ export const DEMO_LEGACY_ITEMS = () => {
 // ─── Templates ───────────────────────────────────────────────────────────────
 export const DEMO_TEMPLATES: Record<string, Record<string, string>> = {
     poa: {
-        grantor_name: 'Viktor Ralchenko', grantor_dob: '1978-10-21',
+        grantor_name: 'Thomas Müller', grantor_dob: '1982-06-15',
         grantor_address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
         attorney_name: 'Olga Sushchinskaya', attorney_relation: 'Spouse / Partner',
         attorney_address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
@@ -140,7 +140,7 @@ export const DEMO_TEMPLATES: Record<string, Record<string, string>> = {
         valid_from: '2026-04-01',
     },
     funeral: {
-        name: 'Viktor Ralchenko', dob: '1978-10-21',
+        name: 'Thomas Müller', dob: '1982-06-15',
         burial_type: 'Cremation', ceremony: 'Civil / Secular ceremony',
         location: 'Friedental Cemetery, Luzern',
         music: 'Johann Sebastian Bach — Air on the G String, Ludovico Einaudi — Nuvole Bianche',
@@ -148,23 +148,23 @@ export const DEMO_TEMPLATES: Record<string, Record<string, string>> = {
         other_wishes: 'Small gathering, close family and friends only. Donations to Swiss Red Cross instead of flowers.',
     },
     waiver: {
-        name: 'Anna Ralchenko', dob: '2005-03-15',
+        name: 'Anna Müller', dob: '2005-03-15',
         address: 'Z\u00fcrichstrasse 10, 6004 Luzern, Switzerland',
-        deceased_name: 'Grandmother Maria Ralchenko', relationship: 'Other relative',
+        deceased_name: 'Grandmother Maria Müller', relationship: 'Other relative',
         reason: 'Voluntarily waiving inheritance in favor of remaining family members.',
         declaration_date: '2026-03-28',
     },
     gift: {
-        donor_name: 'Viktor Ralchenko',
+        donor_name: 'Thomas Müller',
         donor_address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
-        recipient_name: 'Anna Ralchenko', relationship: 'Child',
+        recipient_name: 'Anna Müller', relationship: 'Child',
         gift_description: 'Savings account at UBS — CHF 50,000 for university education',
         gift_value: 'CHF 50,000',
         conditions: 'To be used exclusively for higher education expenses.',
         gift_date: '2026-06-01',
     },
     advance: {
-        name: 'Viktor Ralchenko', dob: '1978-10-21',
+        name: 'Thomas Müller', dob: '1982-06-15',
         address: 'Bahnhofstrasse 42, 6003 Luzern, Switzerland',
         agent_name: 'Dr. Inna Praxmarer', agent_relation: 'Close Friend',
         agent_contact: '+41 79 123 45 67 / inna@readylegacy.ch',
@@ -177,6 +177,42 @@ export const DEMO_TEMPLATES: Record<string, Record<string, string>> = {
 
 const uid = () => Date.now().toString() + Math.random().toString(36).slice(2, 6);
 
+// ─── Per-tool fill helpers ───────────────────────────────────────────────────
+export function fillDemoWill() {
+    const entries: [string, string | boolean][] = [
+        ['will_name', DEMO_WILL.will_name], ['will_origin', DEMO_WILL.will_origin],
+        ['will_spouse_q', DEMO_WILL.will_spouse_q], ['will_children_q', DEMO_WILL.will_children_q],
+        ['will_others', DEMO_WILL.will_others], ['will_legacies', DEMO_WILL.will_legacies],
+        ['will_handwritten', DEMO_WILL.will_handwritten], ['will_dated', DEMO_WILL.will_dated],
+    ];
+    for (const [key, val] of entries) {
+        localStorage.setItem(`readylegacy_${key}`, typeof val === 'string' ? val : JSON.stringify(val));
+    }
+}
+
+export function fillDemoAssets() {
+    for (const [key, val] of Object.entries(DEMO_ASSET_INPUTS)) {
+        localStorage.setItem(`readylegacy_${key}`, val);
+    }
+    for (const [key, items] of Object.entries(DEMO_ASSET_LISTS)) {
+        const withIds = items.map(item => ({ ...item, id: uid() }));
+        localStorage.setItem(`readylegacy_list_${key}`, JSON.stringify(withIds));
+    }
+}
+
+export function fillDemoLegal() {
+    localStorage.setItem('readylegacy_legal_docs_v2', JSON.stringify(DEMO_LEGAL_DOCS()));
+}
+
+export function fillDemoTasks() {
+    localStorage.setItem('readylegacy_todo_tasks', JSON.stringify(DEMO_TASKS()));
+}
+
+export function fillDemoLegacy() {
+    localStorage.setItem('readylegacy_legacy_vault_v2', JSON.stringify(DEMO_LEGACY_ITEMS()));
+}
+
+// ─── Fill all (bulk) ────────────────────────────────────────────────────────
 export function fillAllDemoData() {
     // Will Builder
     const willEntries: [string, string | boolean][] = [

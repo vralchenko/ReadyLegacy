@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useDemoMode } from '../../context/DemoContext';
-import { DEMO_TASKS } from '../../lib/demoData';
+import { DEMO_TASKS, fillDemoTasks } from '../../lib/demoData';
 import usePersistedState from '../../hooks/useSyncedState';
 import { saveToDocuments } from '../../lib/saveDocument';
 
@@ -90,6 +90,7 @@ const Executor: React.FC = () => {
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     {t('desc_executor') || 'Track all tasks that need to be completed before and after — organized, clear, and persistent.'}
                 </p>
+                <button onClick={() => { fillDemoTasks(); window.location.reload(); }} style={{ marginTop: '12px', padding: '6px 14px', borderRadius: '8px', border: '1px solid #10b981', background: 'rgba(16,185,129,0.08)', color: '#10b981', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}>⚡ Fill Demo Data</button>
             </div>
 
             {/* Progress bar */}

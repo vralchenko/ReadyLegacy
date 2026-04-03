@@ -2,57 +2,34 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
-const SERVICES = [
+const TIERS = [
     {
-        key: 'svc_ready',
-        icon: '🛡️',
-        tools: ['svc_ready_t1', 'svc_ready_t2', 'svc_ready_t3', 'svc_ready_t4', 'svc_ready_t5', 'svc_ready_t6'],
-        link: '/tools',
-        price: 'Free',
-        priceKey: 'svc_ready_price',
+        tier: 'free',
+        services: [
+            {
+                key: 'svc_ready',
+                icon: '🛡️',
+                tools: ['svc_ready_t1', 'svc_ready_t2', 'svc_ready_t3', 'svc_ready_t4', 'svc_ready_t5', 'svc_ready_t6'],
+                link: '/tools',
+            },
+            {
+                key: 'svc_honored',
+                icon: '🕊️',
+                tools: ['svc_honored_t1', 'svc_honored_t2', 'svc_honored_t3'],
+                link: '/tools?tool=bereavement-support',
+            },
+        ],
     },
     {
-        key: 'svc_legacy',
-        icon: '✦',
-        tools: ['svc_legacy_t1', 'svc_legacy_t2', 'svc_legacy_t3'],
-        link: '/tools?tool=leave-behind',
-        price: '15 CHF/mo',
-        priceKey: 'svc_legacy_price',
-    },
-    {
-        key: 'svc_honored',
-        icon: '🕊️',
-        tools: ['svc_honored_t1', 'svc_honored_t2', 'svc_honored_t3'],
-        link: '/tools?tool=bereavement-support',
-        price: 'Free',
-        priceKey: 'svc_honored_price',
-    },
-];
-
-const PRICING = [
-    {
-        key: 'free',
-        price: '0',
-        period: 'pricing_free_period',
-        features: ['pricing_free_f1', 'pricing_free_f2', 'pricing_free_f3', 'pricing_free_f4'],
-        btnKey: 'pricing_free_btn',
-        popular: false,
-    },
-    {
-        key: 'premium',
-        price: '15',
-        period: 'pricing_premium_period',
-        features: ['pricing_premium_f1', 'pricing_premium_f2', 'pricing_premium_f3', 'pricing_premium_f4', 'pricing_premium_f5', 'pricing_premium_f6'],
-        btnKey: 'pricing_premium_btn',
-        popular: true,
-    },
-    {
-        key: 'family',
-        price: '25',
-        period: 'pricing_family_period',
-        features: ['pricing_family_f1', 'pricing_family_f2', 'pricing_family_f3', 'pricing_family_f4', 'pricing_family_f5'],
-        btnKey: 'pricing_family_btn',
-        popular: false,
+        tier: 'paid',
+        services: [
+            {
+                key: 'svc_legacy',
+                icon: '✦',
+                tools: ['svc_legacy_t1', 'svc_legacy_t2', 'svc_legacy_t3'],
+                link: '/tools?tool=leave-behind',
+            },
+        ],
     },
 ];
 
@@ -72,67 +49,60 @@ const Home: React.FC = () => {
                             {t('hero_sub') || 'Organize documents, preserve memories, and support loved ones — all in one secure place.'}
                         </p>
                         <div className="hero-actions">
-                            <Link to="/login" className="btn hero-cta" style={{ fontSize: '0.85rem', padding: '12px 28px', marginTop: '0' }}>{t('cta_get_started') || 'Get Started Free'}</Link>
-                            <a href="#services" className="btn btn-outline hero-cta" style={{ fontSize: '0.85rem', padding: '12px 28px', marginTop: '0' }}>{t('hero_learn') || 'See Services'}</a>
+                            <Link to="/login" className="btn hero-cta" style={{ fontSize: '0.85rem', padding: '12px 28px', marginTop: '0' }}>{t('cta_create_profile') || 'Create Your Profile'}</Link>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Services */}
+            {/* Services — split by tier */}
             <section id="services" className="services-section section-padding">
                 <div className="container">
                     <h2 className="services-title">{t('svc_title') || 'What we offer'}</h2>
-                    <div className="products-grid">
-                        {SERVICES.map((svc, i) => (
-                            <div className="product-card" key={svc.key}>
-                                <div className="product-card-header">
-                                    <span className="card-number">0{i + 1}</span>
-                                    <h3>{t(`${svc.key}_title`) || svc.key}</h3>
-                                    <div className="product-tag">{t(`${svc.key}_tag`) || ''}</div>
-                                </div>
-                                <div className="product-price" style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--primary-color)', margin: '8px 0 12px' }}>
-                                    {t(svc.priceKey) || svc.price}
-                                </div>
-                                <p>{t(`${svc.key}_desc`) || ''}</p>
-                                <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px 0' }}>
-                                    {svc.tools.map(tk => (
-                                        <li key={tk} style={{ padding: '4px 0', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                                            <span style={{ color: 'var(--accent-gold)', marginRight: '8px' }}>✓</span>
-                                            {t(tk) || tk}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <Link to={svc.link} className="btn" style={{ fontSize: '0.85rem', padding: '10px 20px' }}>
-                                    {t(`${svc.key}_btn`) || 'Learn more'}
-                                </Link>
+
+                    {TIERS.map(({ tier, services }) => (
+                        <div key={tier} style={{ marginBottom: '48px' }}>
+                            <div style={{
+                                display: 'inline-block',
+                                padding: '6px 16px',
+                                borderRadius: '20px',
+                                fontSize: '0.85rem',
+                                fontWeight: 700,
+                                marginBottom: '20px',
+                                background: tier === 'free' ? 'rgba(52,211,153,0.12)' : 'rgba(251,191,36,0.12)',
+                                color: tier === 'free' ? '#34d399' : 'var(--accent-gold)',
+                                border: `1px solid ${tier === 'free' ? 'rgba(52,211,153,0.3)' : 'rgba(251,191,36,0.3)'}`,
+                            }}>
+                                {tier === 'free' ? (t('tier_free') || 'Free') : (t('tier_paid') || '15 CHF / month')}
                             </div>
-                        ))}
-                    </div>
+                            <div className="products-grid">
+                                {services.map((svc, i) => (
+                                    <Link to={svc.link} className="product-card product-card-clickable" key={svc.key} style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
+                                        <div className="product-card-header">
+                                            <span className="card-number">{svc.icon}</span>
+                                            <h3>{t(`${svc.key}_title`) || svc.key}</h3>
+                                            <div className="product-tag">{t(`${svc.key}_tag`) || ''}</div>
+                                        </div>
+                                        <p>{t(`${svc.key}_desc`) || ''}</p>
+                                        <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px 0' }}>
+                                            {svc.tools.map(tk => (
+                                                <li key={tk} style={{ padding: '4px 0', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+                                                    <span style={{ color: 'var(--accent-gold)', marginRight: '8px' }}>✓</span>
+                                                    {t(tk) || tk}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <span className="btn" style={{ fontSize: '0.85rem', padding: '10px 20px' }}>
+                                            {t(`${svc.key}_btn`) || 'Learn more'}
+                                        </span>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </section>
 
-            {/* Pricing summary */}
-            <section className="pricing-section section-padding" style={{ textAlign: 'center' }}>
-                <div className="container" style={{ maxWidth: '600px' }}>
-                    <h2 className="pricing-title">{t('pricing_title') || 'Simple pricing'}</h2>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', marginBottom: '24px' }}>
-                        {t('pricing_summary') || 'Estate planning tools are free. Digital Legacy features start at 15 CHF/month. No hidden fees.'}
-                    </p>
-                    <Link to="/login" className="btn hero-cta">{t('cta_get_started') || 'Get Started Free'}</Link>
-                </div>
-            </section>
-
-            {/* Final CTA */}
-            <section className="cta-section section-padding">
-                <div className="container" style={{ textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '2.4rem', marginBottom: '16px' }}>{t('cta_final_title') || 'Start your free account'}</h2>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '32px', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto' }}>
-                        {t('cta_final_desc') || 'Organize your estate, preserve your legacy, and protect your loved ones — all in one place.'}
-                    </p>
-                    <Link to="/login" className="btn hero-cta">{t('cta_final_btn') || 'Create Free Account'}</Link>
-                </div>
-            </section>
         </div>
     );
 };

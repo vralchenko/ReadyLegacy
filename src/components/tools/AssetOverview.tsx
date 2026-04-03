@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useDemoMode } from '../../context/DemoContext';
+import { fillDemoAssets } from '../../lib/demoData';
 import { saveToDocuments } from '../../lib/saveDocument';
 
 // ─── Persistent input hook ────────────────────────────────────────────────────
@@ -192,7 +193,7 @@ const validate = (value: string, required = true) => required && !value.trim() ?
 const AssetOverview: React.FC = () => {
     const { t } = useLanguage();
     const { demoMode } = useDemoMode();
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     const assetBrought = useInput('asset_brought', demoMode);
@@ -255,12 +256,11 @@ const AssetOverview: React.FC = () => {
     };
 
     const STEPS = [
-        { num: 1, label: '01. Personal' },
-        { num: 2, label: '02. Assets' },
-        { num: 3, label: '03. Liabilities' },
-        { num: 4, label: '04. Digital Legacy' },
-        { num: 5, label: '05. Funeral Wishes' },
-        { num: 6, label: '06. Others' },
+        { num: 2, label: '01. Assets' },
+        { num: 3, label: '02. Liabilities' },
+        { num: 4, label: '03. Digital Legacy' },
+        { num: 5, label: '04. Funeral Wishes' },
+        { num: 6, label: '05. Others' },
     ];
 
     return (
@@ -269,6 +269,7 @@ const AssetOverview: React.FC = () => {
                 <span className="step-tag">{t('tag_assets') || 'Asset Overview'}</span>
                 <h2>{t('title_assets') || 'Asset Overview Wizard'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '16px' }}>{t('desc_assets') || 'A comprehensive overview of your personal assets, wishes, and digital legacy.'}</p>
+                <button onClick={() => { fillDemoAssets(); window.location.reload(); }} style={{ marginTop: '12px', padding: '6px 14px', borderRadius: '8px', border: '1px solid #10b981', background: 'rgba(16,185,129,0.08)', color: '#10b981', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}>⚡ Fill Demo Data</button>
             </div>
 
             {/* Step indicator */}
@@ -280,30 +281,15 @@ const AssetOverview: React.FC = () => {
                 ))}
             </div>
 
-            {/* Step 1: Personal */}
-            {step === 1 && (
-                <div className="wizard-content-step active">
-                    <div className="tool-section">
-                        <h3>1.1 Personal Property</h3>
-                        <div className="form-group">
-                            <label>{t('label_brought') || 'Assets brought into the marriage'}</label>
-                            <input type="text" placeholder={t('auto_e_g_apartment_i') || 'e.g. Apartment in Vienna, inherited from family...'} {...assetBrought} />
-                            {errors['brought'] && <span style={{ color: '#ff6b6b', fontSize: '0.8rem' }}>{errors['brought']}</span>}
-                        </div>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                        <button className="btn" onClick={() => goNext(2)}>Next Step →</button>
-                    </div>
-                </div>
-            )}
-
             {/* Step 2: Assets */}
             {step === 2 && (
                 <div className="wizard-content-step active">
                     <div className="tool-section">
                         <h3>1.2 Financial Assets</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                            <DynamicAssetList title={t('label_bank') || 'Bank & Savings'} itemKey="bank" demoMode={demoMode} />
+                            <DynamicAssetList title={t('label_bank') || 'Bank & Savings'} itemKey="bank" demoMode={demoMode} fields={[
+                                { key: 'name', label: 'Account', placeholder: 'e.g. UBS Savings Account' },
+                            ]} />
                             <DynamicAssetList title={t('label_securities') || 'Securities & Stocks'} itemKey="securities" demoMode={demoMode} />
                             <DynamicAssetList title={t('label_bvg') || 'Pension Fund'} itemKey="bvg" demoMode={demoMode} />
                             <DynamicAssetList title={t('label_insurance') || 'Insurance'} itemKey="insurance" demoMode={demoMode} />
@@ -311,11 +297,12 @@ const AssetOverview: React.FC = () => {
                                 { key: 'name', label: 'Property', placeholder: 'e.g. Vienna apartment' },
                                 { key: 'value', label: 'Estimated Value', placeholder: 'e.g. 350,000 EUR' },
                                 { key: 'address', label: 'Address', placeholder: 'Street, City' },
+                                { key: 'ownership', label: 'Ownership', placeholder: 'Personal or Shared (e.g. 50% with spouse)' },
+                                { key: 'co_owners', label: 'Co-owners', placeholder: 'e.g. Spouse name, share %' },
                             ]} />
                         </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <button className="btn" onClick={() => setStep(1)}>← Back</button>
+                    <div style={{ textAlign: 'right' }}>
                         <button className="btn" onClick={() => goNext(3)}>Next →</button>
                     </div>
                 </div>
@@ -346,7 +333,7 @@ const AssetOverview: React.FC = () => {
             {step === 4 && (
                 <div className="wizard-content-step active">
                     <div className="tool-section">
-                        <h3>1.4 Digital Legacy Wishes</h3>
+                        <h3>Digital Legacy Inventory</h3>
                         <p style={{ opacity: 0.6, fontSize: '0.85rem', marginBottom: '20px' }}>
                             Document your digital assets so that your heirs can access or properly close these accounts. ⚠️ Never store actual passwords here — use a secure password manager.
                         </p>

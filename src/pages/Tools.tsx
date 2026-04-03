@@ -49,6 +49,12 @@ const SECTION_LABELS: Record<string, string> = {
     be_honored: 'p3_title',
 };
 
+const SECTION_TIER: Record<string, 'free' | 'paid'> = {
+    be_ready: 'free',
+    leave_behind: 'paid',
+    be_honored: 'free',
+};
+
 const Tools: React.FC = () => {
     const { t } = useLanguage();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -90,18 +96,24 @@ const Tools: React.FC = () => {
                 <Sidebar activeTool={activeTool} onSelectTool={handleSelectTool} />
                 <div className="tools-content">
                     <div style={{ padding: '8px 0' }}>
-                        <h2 style={{ fontSize: '2rem', marginBottom: '8px', color: 'var(--text-color)' }}>
-                            {t('tools_dashboard_title') || 'Your Tools'}
-                        </h2>
-                        <p style={{ color: 'var(--text-muted)', marginBottom: '32px', fontSize: '1.05rem' }}>
-                            {t('tools_dashboard_desc') || 'Everything you need to organize your legacy — choose a tool to get started.'}
-                        </p>
-
                         {TOOL_CARDS.map(section => (
-                            <div key={section.section} style={{ marginBottom: '32px' }}>
-                                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '2px', color: 'var(--text-muted)', marginBottom: '14px', paddingLeft: '4px' }}>
-                                    {t(SECTION_LABELS[section.section]) || section.section}
+                            <div key={section.section} style={{ marginBottom: '40px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
+                                    <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-color)', margin: 0 }}>
+                                        {t(SECTION_LABELS[section.section]) || section.section}
+                                    </h2>
+                                    <span style={{
+                                        padding: '3px 10px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700,
+                                        background: SECTION_TIER[section.section] === 'free' ? 'rgba(52,211,153,0.12)' : 'rgba(251,191,36,0.12)',
+                                        color: SECTION_TIER[section.section] === 'free' ? '#34d399' : 'var(--accent-gold)',
+                                        border: `1px solid ${SECTION_TIER[section.section] === 'free' ? 'rgba(52,211,153,0.3)' : 'rgba(251,191,36,0.3)'}`,
+                                    }}>
+                                        {SECTION_TIER[section.section] === 'free' ? 'Free' : '15 CHF/mo'}
+                                    </span>
                                 </div>
+                                <p style={{ color: 'var(--text-muted)', marginBottom: '18px', fontSize: '0.95rem' }}>
+                                    {t('tools_your_tools') || 'Your tools'}
+                                </p>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '14px' }}>
                                     {section.tools.map(tool => {
                                         const labels = TOOL_LABELS[tool.key];
