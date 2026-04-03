@@ -151,6 +151,9 @@ nav {
 
 .nav-links a.active {
     color: var(--accent-gold);
+    font-weight: 700;
+    border-bottom: 2px solid var(--accent-gold);
+    padding-bottom: 2px;
 }
 
 .header-right {

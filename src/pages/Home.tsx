@@ -67,13 +67,6 @@ const Home: React.FC = () => {
                                         <h3>{t(`${svc.key}_title`) || svc.key}</h3>
                                         <div className="product-tag">{t(`${svc.key}_tag`) || ''}</div>
                                     </div>
-                                    <div style={{
-                                        display: 'inline-block', padding: '4px 12px', borderRadius: '12px',
-                                        fontSize: '0.75rem', fontWeight: 700, marginBottom: '12px', alignSelf: 'flex-start',
-                                        background: ts.bg, color: ts.color, border: `1px solid ${ts.border}`,
-                                    }}>
-                                        {t(ts.label) || ts.fallback}
-                                    </div>
                                     <p>{t(`${svc.key}_desc`) || ''}</p>
                                     <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px 0', textAlign: 'left' }}>
                                         {svc.tools.map(tk => (
