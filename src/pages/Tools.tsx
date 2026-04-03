@@ -73,8 +73,12 @@ const Tools: React.FC = () => {
         if (location.hash && !activeTool) {
             const id = location.hash.replace('#', '');
             setTimeout(() => {
-                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+                const el = document.getElementById(id);
+                if (el) {
+                    const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+                }
+            }, 150);
         }
     }, [location.hash, activeTool]);
 
@@ -107,7 +111,7 @@ const Tools: React.FC = () => {
                 <div className="tools-content">
                     <div style={{ padding: '8px 0' }}>
                         {TOOL_CARDS.map(section => (
-                            <div key={section.section} id={section.section} style={{ marginBottom: '40px', scrollMarginTop: '500px' }}>
+                            <div key={section.section} id={section.section} style={{ marginBottom: '40px', scrollMarginTop: '80px' }}>
                                 <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-color)', marginBottom: '4px' }}>
                                     {t(SECTION_LABELS[section.section]) || section.section}
                                 </h2>
