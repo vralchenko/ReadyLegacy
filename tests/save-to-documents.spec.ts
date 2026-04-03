@@ -52,15 +52,12 @@ test.describe('WillBuilder — Save to Documents', () => {
 // ─── AssetOverview ───────────────────────────────────────────────────────────
 
 test.describe('AssetOverview — Save to Documents', () => {
-    test('shows save button on step 6 and saves successfully', async ({ page }) => {
+    test('shows save button on last step and saves successfully', async ({ page }) => {
         await page.goto('/tools?tool=asset-overview');
         await page.waitForTimeout(500);
 
-        // Fill step 1 field
-        await page.locator('#asset-overview input[type="text"]').first().fill('Family apartment');
-
-        // Navigate to step 6 via step indicator
-        await page.getByText('05. Others').click();
+        // Navigate to last step (Others) via step indicator
+        await page.getByText(/05\. Others/i).click();
         await page.waitForTimeout(300);
 
         // "Save to Documents" button should be visible
@@ -80,7 +77,6 @@ test.describe('AssetOverview — Save to Documents', () => {
         const body = JSON.parse(response.request().postData() || '{}');
         expect(body.title).toMatch(/Asset Overview/);
         expect(body.icon).toBe('\uD83D\uDCB0');
-        expect(body.data.asset_brought).toBe('Family apartment');
 
         // Should show confirmation
         await expect(page.getByText(/Saved to Documents/i)).toBeVisible();

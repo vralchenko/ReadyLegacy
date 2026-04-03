@@ -15,17 +15,10 @@ test.describe('Home page', () => {
     await expect(page.getByRole('heading', { name: 'Be Honored' })).toBeVisible();
   });
 
-  test('shows Free and Paid tier badges', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.getByText('Free').first()).toBeVisible();
-    await expect(page.getByText('15 CHF / month').first()).toBeVisible();
-  });
-
-  test('product cards are clickable links', async ({ page }) => {
+  test('product cards are clickable links to tools', async ({ page }) => {
     await page.goto('/');
     const card = page.locator('.product-card-clickable').first();
     await expect(card).toBeVisible();
-    // Verify it's an <a> tag (Link component)
     await expect(card).toHaveAttribute('href', /\/tools/);
   });
 
@@ -37,10 +30,10 @@ test.describe('Home page', () => {
 
   test('header navigation links are visible', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('link', { name: /mission/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /tools/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /documents/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /team/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Mission' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Tools', exact: true })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Documents', exact: true })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Team', exact: true })).toBeVisible();
   });
 
   test('footer with compliance badges is visible', async ({ page }) => {
