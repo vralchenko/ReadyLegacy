@@ -107,7 +107,7 @@ const Tools: React.FC = () => {
                 <div className="tools-content">
                     <div style={{ padding: '8px 0' }}>
                         {TOOL_CARDS.map(section => (
-                            <div key={section.section} id={section.section} style={{ marginBottom: '40px', scrollMarginTop: '350px' }}>
+                            <div key={section.section} id={section.section} style={{ marginBottom: '40px', scrollMarginTop: '500px' }}>
                                 <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-color)', marginBottom: '4px' }}>
                                     {t(SECTION_LABELS[section.section]) || section.section}
                                 </h2>
