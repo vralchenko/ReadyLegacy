@@ -668,7 +668,7 @@ const Templates: React.FC = () => {
         if (!previewData) return;
         if (!user) {
             const tool = searchParams.get('tool') || 'templates';
-            navigate(`/login?returnTo=${encodeURIComponent(`/tools?tool=${tool}`)}`);
+            navigate(`/pricing?returnTo=${encodeURIComponent(`/tools?tool=${tool}`)}`);
             return;
         }
         try {

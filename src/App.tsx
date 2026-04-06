@@ -19,6 +19,7 @@ import Documents from './pages/Documents';
 import Profile from './pages/Profile';
 import Impressum from './pages/Impressum';
 import Privacy from './pages/Privacy';
+import Pricing from './pages/Pricing';
 
 const App: React.FC = () => {
     return (
@@ -57,6 +58,7 @@ const Main = () => {
                     <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                     <Route path="/impressum" element={<Impressum />} />
                     <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/pricing" element={<Pricing />} />
                 </Routes>
             </main>
             <Footer />

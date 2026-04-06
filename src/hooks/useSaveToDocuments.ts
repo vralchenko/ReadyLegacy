@@ -4,7 +4,7 @@ import { saveToDocuments } from '../lib/saveDocument';
 
 /**
  * Wraps saveToDocuments with auth check.
- * If not logged in, redirects to /login with returnTo param.
+ * If not logged in, redirects to /pricing with returnTo param.
  * Returns false if redirected, true if saved successfully.
  */
 export function useSaveToDocuments() {
@@ -21,7 +21,7 @@ export function useSaveToDocuments() {
         if (!user) {
             const tool = searchParams.get('tool') || '';
             const returnTo = tool ? `/tools?tool=${tool}` : '/tools';
-            navigate(`/login?returnTo=${encodeURIComponent(returnTo)}`);
+            navigate(`/pricing?returnTo=${encodeURIComponent(returnTo)}`);
             return false;
         }
         await saveToDocuments(title, type, icon, data);

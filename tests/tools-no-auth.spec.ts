@@ -10,7 +10,7 @@ test('tools page accessible without login', async ({ browser }) => {
     await ctx.close();
 });
 
-test('save button redirects to login when not authenticated', async ({ browser }) => {
+test('save button redirects to pricing when not authenticated', async ({ browser }) => {
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
     await page.goto('https://readylegacy.pages.dev/tools?tool=executor');
@@ -22,8 +22,8 @@ test('save button redirects to login when not authenticated', async ({ browser }
     const saveBtn = page.locator('button:has-text("Save to Documents")');
     if (await saveBtn.isVisible({ timeout: 5000 })) {
         await saveBtn.click();
-        // Should redirect to login with returnTo param
-        await expect(page).toHaveURL(/\/login\?returnTo=/, { timeout: 10000 });
+        // Should redirect to pricing with returnTo param
+        await expect(page).toHaveURL(/\/pricing\?returnTo=/, { timeout: 10000 });
     }
     await ctx.close();
 });
