@@ -4,11 +4,14 @@ import usePersistedState from '../../hooks/useSyncedState';
 
 // ─── Support Groups Data ──────────────────────────────────────────────────────
 const SUPPORT_GROUPS = [
-    { name: 'Verwaiste Eltern', region: 'Germany / Austria / CH', type: 'In-Person & Online', url: '#', desc: 'Support for parents who have lost a child.' },
-    { name: 'Grief Share', region: 'International', type: 'Online', url: '#', desc: 'Grief recovery support groups and resources.' },
-    { name: 'The Compassionate Friends', region: 'International', type: 'In-Person & Online', url: '#', desc: 'Supporting family members after the death of a child.' },
-    { name: 'Caritas Grief Counseling', region: 'Austria / Germany', type: 'In-Person', url: '#', desc: 'Professional grief counseling services.' },
-    { name: 'Online Grief Support', region: 'Global', type: 'Online', url: '#', desc: '24/7 forums and chat groups for those in grief.' },
+    { name: 'Telefonische Lebenshilfe (Die Dargebotene Hand)', region: 'Switzerland', type: 'Phone & Online', url: 'https://www.143.ch', desc: '24/7 crisis hotline — call 143. Confidential support for anyone in emotional distress.' },
+    { name: 'VIDUA Schweiz', region: 'Switzerland', type: 'In-Person & Online', url: 'https://www.vidua.ch', desc: 'Support organization for widows and widowers in Switzerland.' },
+    { name: 'Refugium', region: 'Switzerland', type: 'In-Person & Online', url: 'https://www.refugium.ch', desc: 'Support for people affected by the suicide of a loved one.' },
+    { name: 'Seelsorge.net', region: 'German-speaking', type: 'Online', url: 'https://www.seelsorge.net', desc: 'Online spiritual counseling and emotional support — anonymous and free.' },
+    { name: 'Krisenintervention Schweiz', region: 'Switzerland', type: 'In-Person', url: 'https://www.ipsilon.ch', desc: 'Crisis intervention and suicide prevention network across Switzerland.' },
+    { name: 'Selbsthilfe Schweiz', region: 'Switzerland', type: 'In-Person & Online', url: 'https://www.selbsthilfeschweiz.ch', desc: 'Self-help groups directory — find local groups for grief, bereavement, and loss.' },
+    { name: 'Verwaiste Eltern', region: 'Germany / Austria / CH', type: 'In-Person & Online', url: 'https://www.verwaiste-eltern.ch', desc: 'Support for parents who have lost a child.' },
+    { name: 'The Compassionate Friends', region: 'International', type: 'In-Person & Online', url: 'https://www.compassionatefriends.org', desc: 'Supporting family members after the death of a child.' },
 ];
 
 // ─── Main Component ───────────────────────────────────────────────────────────

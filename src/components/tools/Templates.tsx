@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { apiFetch } from '../../lib/api';
+import { useAuth } from '../../context/AuthContext';
 import { DEMO_TEMPLATES } from '../../lib/demoData';
 
 // ─── Template definitions ─────────────────────────────────────────────────────
@@ -184,6 +185,246 @@ const TEMPLATES: Template[] = [
                     { key: 'special_wishes', label: 'Special Wishes or Instructions', type: 'textarea', placeholder: 'Any specific wishes to be respected...' },
                 ]
             }
+        ]
+    },
+    {
+        id: 'registry_notification',
+        icon: '🏛️',
+        title: 'Death Registration (Zivilstandsamt)',
+        subtitle: 'Meldung an das Zivilstandsamt',
+        desc: 'Notification form to register a death at the Swiss civil registry office.',
+        steps: [
+            {
+                title: 'Reporter Information',
+                fields: [
+                    { key: 'reporter_name', label: 'Your Full Name', type: 'text', required: true },
+                    { key: 'reporter_relation', label: 'Relationship to Deceased', type: 'select', options: ['Spouse / Partner', 'Child', 'Sibling', 'Parent', 'Other relative', 'Hospital / Nursing home', 'Executor'] },
+                    { key: 'reporter_address', label: 'Your Address', type: 'textarea', placeholder: 'Street, City, Canton' },
+                    { key: 'reporter_phone', label: 'Phone Number', type: 'text', placeholder: '+41 ...' },
+                ]
+            },
+            {
+                title: 'Deceased Information',
+                fields: [
+                    { key: 'deceased_name', label: 'Full Name of Deceased', type: 'text', required: true },
+                    { key: 'deceased_dob', label: 'Date of Birth', type: 'date', required: true },
+                    { key: 'deceased_dod', label: 'Date of Death', type: 'date', required: true },
+                    { key: 'deceased_place', label: 'Place of Death', type: 'text', placeholder: 'City, Canton', required: true },
+                    { key: 'deceased_nationality', label: 'Nationality', type: 'text', placeholder: 'e.g. Swiss, German...' },
+                    { key: 'deceased_marital', label: 'Marital Status', type: 'select', options: ['Single', 'Married', 'Widowed', 'Divorced', 'Registered partnership'] },
+                ]
+            },
+            {
+                title: 'Documents & Burial',
+                fields: [
+                    { key: 'has_death_cert', label: 'Medical Death Certificate Available?', type: 'select', options: ['Yes', 'Not yet'] },
+                    { key: 'has_family_book', label: 'Familienbüchlein Available?', type: 'select', options: ['Yes', 'No', 'Not applicable'] },
+                    { key: 'burial_type', label: 'Burial Type', type: 'select', options: ['Erdbestattung (burial)', 'Kremation (cremation)', 'Not yet decided'] },
+                    { key: 'burial_location', label: 'Preferred Cemetery / Location', type: 'text', placeholder: 'e.g. Friedental, Luzern' },
+                ]
+            },
+        ]
+    },
+    {
+        id: 'termination_letter',
+        icon: '✉️',
+        title: 'Contract Termination Letter',
+        subtitle: 'Kündigungsschreiben',
+        desc: 'A letter to terminate contracts, subscriptions, or rental agreements after a death.',
+        steps: [
+            {
+                title: 'Sender Information',
+                fields: [
+                    { key: 'sender_name', label: 'Your Full Name', type: 'text', required: true },
+                    { key: 'sender_address', label: 'Your Address', type: 'textarea', placeholder: 'Street, City, Postal Code' },
+                    { key: 'sender_role', label: 'Your Role', type: 'select', options: ['Heir', 'Executor', 'Spouse / Partner', 'Legal representative'] },
+                ]
+            },
+            {
+                title: 'Contract Details',
+                fields: [
+                    { key: 'company_name', label: 'Company / Organization Name', type: 'text', required: true },
+                    { key: 'company_address', label: 'Company Address', type: 'textarea' },
+                    { key: 'contract_type', label: 'Type of Contract', type: 'select', options: ['Rental agreement', 'Health insurance', 'Phone / Mobile', 'Internet / TV', 'Magazine / Newspaper', 'GA / Halbtax / SBB', 'Gym / Club membership', 'Other subscription'], required: true },
+                    { key: 'contract_number', label: 'Contract / Customer Number', type: 'text', placeholder: 'If known' },
+                ]
+            },
+            {
+                title: 'Termination Details',
+                fields: [
+                    { key: 'deceased_name', label: 'Name of Deceased Contract Holder', type: 'text', required: true },
+                    { key: 'termination_date', label: 'Requested Termination Date', type: 'date' },
+                    { key: 'additional_notes', label: 'Additional Notes', type: 'textarea', placeholder: 'e.g. Please send final invoice to my address...' },
+                ]
+            },
+        ]
+    },
+    {
+        id: 'death_notice',
+        icon: '📰',
+        title: 'Death Notice',
+        subtitle: 'Todesanzeige',
+        desc: 'A formal death announcement for publication in newspapers or online portals.',
+        steps: [
+            {
+                title: 'Deceased Information',
+                fields: [
+                    { key: 'deceased_name', label: 'Full Name of Deceased', type: 'text', required: true },
+                    { key: 'deceased_dob', label: 'Date of Birth', type: 'date' },
+                    { key: 'deceased_dod', label: 'Date of Death', type: 'date', required: true },
+                    { key: 'deceased_place', label: 'Place of Residence', type: 'text', placeholder: 'e.g. Luzern' },
+                ]
+            },
+            {
+                title: 'Notice Content',
+                fields: [
+                    { key: 'opening_text', label: 'Opening Text', type: 'textarea', placeholder: 'e.g. In loving memory...\nWith deep sadness we announce...', required: true },
+                    { key: 'family_names', label: 'Surviving Family Members', type: 'textarea', placeholder: 'e.g. Wife Anna, daughter Sofia, son Lukas...' },
+                    { key: 'funeral_info', label: 'Funeral Information', type: 'textarea', placeholder: 'Date, time, and place of the ceremony...' },
+                ]
+            },
+            {
+                title: 'Publication',
+                fields: [
+                    { key: 'instead_of_flowers', label: 'Instead of Flowers', type: 'textarea', placeholder: 'e.g. Donations to Swiss Red Cross...' },
+                    { key: 'publication_target', label: 'Where to Publish', type: 'select', options: ['Local newspaper', 'Regional newspaper', 'Online portal (e.g. todesanzeigen.ch)', 'Multiple outlets'] },
+                ]
+            },
+        ]
+    },
+    {
+        id: 'condolence_letter',
+        icon: '🕊️✉️',
+        title: 'Condolence Letter',
+        subtitle: 'Trauerbrief',
+        desc: 'A personal condolence letter to be sent to friends, colleagues, and extended family.',
+        steps: [
+            {
+                title: 'Sender Information',
+                fields: [
+                    { key: 'sender_name', label: 'Family / Sender Name', type: 'text', required: true },
+                    { key: 'sender_address', label: 'Return Address', type: 'textarea' },
+                ]
+            },
+            {
+                title: 'About the Deceased',
+                fields: [
+                    { key: 'deceased_name', label: 'Full Name of Deceased', type: 'text', required: true },
+                    { key: 'deceased_dob', label: 'Date of Birth', type: 'date' },
+                    { key: 'deceased_dod', label: 'Date of Death', type: 'date', required: true },
+                ]
+            },
+            {
+                title: 'Letter Content',
+                fields: [
+                    { key: 'personal_message', label: 'Personal Message', type: 'textarea', placeholder: 'A personal tribute or message about the deceased...', required: true },
+                    { key: 'funeral_details', label: 'Funeral Details (optional)', type: 'textarea', placeholder: 'Date, time, location of the ceremony...' },
+                    { key: 'instead_of_flowers', label: 'Instead of Flowers (optional)', type: 'textarea', placeholder: 'e.g. Donations to a specific charity...' },
+                ]
+            },
+        ]
+    },
+    {
+        id: 'widow_pension',
+        icon: '📋🏦',
+        title: 'Widow/Widower Pension Application',
+        subtitle: 'Antrag auf Witwen-/Witwerrente',
+        desc: 'Application for the AHV widow/widower pension after the death of a spouse.',
+        steps: [
+            {
+                title: 'Applicant Information',
+                fields: [
+                    { key: 'applicant_name', label: 'Your Full Name', type: 'text', required: true },
+                    { key: 'applicant_dob', label: 'Your Date of Birth', type: 'date', required: true },
+                    { key: 'applicant_ahv', label: 'Your AHV Number (756.xxxx.xxxx.xx)', type: 'text', placeholder: '756.1234.5678.90', required: true },
+                    { key: 'applicant_address', label: 'Your Address', type: 'textarea' },
+                ]
+            },
+            {
+                title: 'Deceased Spouse Information',
+                fields: [
+                    { key: 'spouse_name', label: 'Name of Deceased Spouse', type: 'text', required: true },
+                    { key: 'spouse_dob', label: 'Date of Birth', type: 'date' },
+                    { key: 'spouse_dod', label: 'Date of Death', type: 'date', required: true },
+                    { key: 'spouse_ahv', label: 'AHV Number of Deceased', type: 'text', placeholder: '756.1234.5678.90' },
+                    { key: 'marriage_date', label: 'Date of Marriage', type: 'date' },
+                ]
+            },
+            {
+                title: 'Pension Details',
+                fields: [
+                    { key: 'has_children', label: 'Do you have children under 18?', type: 'select', options: ['Yes', 'No'], required: true },
+                    { key: 'children_count', label: 'Number of Children', type: 'text', placeholder: 'e.g. 2' },
+                    { key: 'current_income', label: 'Your Current Annual Income (CHF)', type: 'text', placeholder: 'e.g. 60,000' },
+                    { key: 'ahv_office', label: 'Relevant AHV Office / Ausgleichskasse', type: 'text', placeholder: 'e.g. SVA Luzern' },
+                ]
+            },
+        ]
+    },
+    {
+        id: 'pro_senectute_checklist',
+        icon: '📋🇨🇭',
+        title: 'After Death Checklist (Pro Senectute)',
+        subtitle: 'Checkliste Todesfall — Pro Senectute',
+        desc: 'A comprehensive Swiss checklist for everything that needs to happen after a loved one passes away, organized in 5 phases.',
+        steps: [
+            {
+                title: 'Phase 1: First Hours',
+                fields: [
+                    { key: 'p1_doctor', label: 'Call a doctor for the death certificate (Todesbescheinigung)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p1_nursing', label: 'Notify nursing home administration (if applicable)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p1_police', label: 'Call police if accident/suicide suspected', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p1_family', label: 'Inform relatives and close friends', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p1_directives', label: 'Locate death-related directives (Verfügungen)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p1_employer', label: 'Notify employer of deceased + your own', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                ]
+            },
+            {
+                title: 'Phase 2: Within 2 Days',
+                fields: [
+                    { key: 'p2_zivilstandsamt', label: 'Register death at Zivilstandsamt (civil registry)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p2_docs_note', label: 'Documents brought: medical cert, Familienbüchlein, ID, residence permit', type: 'textarea', placeholder: 'Note which documents were submitted...' },
+                    { key: 'p2_funeral_coord', label: 'Coordinate funeral date/place/type with registry', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p2_todesschein', label: 'Obtain official death certificate (Todesschein)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                ]
+            },
+            {
+                title: 'Phase 3: Funeral Arrangements',
+                fields: [
+                    { key: 'p3_parish', label: 'Contact parish / spiritual advisor / funeral home', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p3_todesanzeige', label: 'Publish death notice (Todesanzeige) in press', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p3_trauerbriefe', label: 'Prepare condolence letters (Trauerbriefe)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p3_aufbahrung', label: 'Arrange viewing (Aufbahrung)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                ]
+            },
+            {
+                title: 'Phase 4: After the Funeral',
+                fields: [
+                    { key: 'p4_ahv', label: 'AHV/IV — state pension insurance', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p4_pensionskasse', label: 'Pensionskasse — occupational pension (2nd pillar)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p4_krankenkasse', label: 'Krankenkasse — cancel health insurance', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p4_banks', label: 'Banks — freeze or transfer accounts', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p4_steuern', label: 'Steuerbehörde — notify tax authority', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p4_post', label: 'Post — redirect or cancel mail', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p4_subscriptions', label: 'Cancel subscriptions (GA/Halbtax, phone, TV)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p4_rental', label: 'Terminate or transfer rental agreement', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p4_online', label: 'Handle online accounts (social media, email)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                ]
+            },
+            {
+                title: 'Phase 5: Estate & Finances',
+                fields: [
+                    { key: 'p5_will', label: 'Submit the will to competent authority', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p5_testament', label: 'Attend will opening (Testamentseröffnung)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p5_erbteilung', label: 'Distribute estate (Erbteilung)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p5_wohnung', label: 'Organize apartment clearing (Wohnungsräumung)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p5_witwen', label: 'Widow/widower pension (Witwen-/Witwerrente AHV)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p5_waisen', label: 'Orphan pension (Waisenrente AHV)', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p5_bvg', label: 'BVG pension from occupational fund', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p5_lebensversicherung', label: 'Life insurance payouts', type: 'select', options: ['Done', 'Pending', 'N/A'] },
+                    { key: 'p5_notes', label: 'Additional Notes', type: 'textarea', placeholder: 'Any additional items or notes...' },
+                ]
+            },
         ]
     },
 ];
@@ -396,6 +637,9 @@ const TemplatePreview: React.FC<{ template: Template; data: Record<string, strin
 // ─── Main Templates Component ─────────────────────────────────────────────────
 const Templates: React.FC = () => {
     const { t } = useLanguage();
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const location = useLocation();
     const [activeWizard, setActiveWizard] = useState<Template | null>(null);
     const [editInitialData, setEditInitialData] = useState<Record<string, string> | undefined>(undefined);
@@ -422,6 +666,11 @@ const Templates: React.FC = () => {
 
     const saveDocument = async () => {
         if (!previewData) return;
+        if (!user) {
+            const tool = searchParams.get('tool') || 'templates';
+            navigate(`/login?returnTo=${encodeURIComponent(`/tools?tool=${tool}`)}`);
+            return;
+        }
         try {
             if (editDocId) {
                 // Update existing document

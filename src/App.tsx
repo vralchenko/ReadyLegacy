@@ -49,7 +49,7 @@ const Main = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/mission" element={<Mission />} />
-                    <Route path="/tools" element={<ProtectedRoute><Tools /></ProtectedRoute>} />
+                    <Route path="/tools" element={<Tools />} />
                     <Route path="/team" element={<Team />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/login" element={<Login />} />

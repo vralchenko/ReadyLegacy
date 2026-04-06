@@ -86,6 +86,31 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
+            {/* Data Security — Placeholder */}
+            <section style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
+                <div style={{ padding: '32px', borderRadius: '16px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', textAlign: 'center' }}>
+                    <div style={{ fontSize: '2.4rem', marginBottom: '12px' }}>🔒</div>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--text-color)', marginBottom: '8px' }}>
+                        {t('security_title') || 'Your Data is Safe'}
+                    </h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.6, maxWidth: '600px', margin: '0 auto 20px' }}>
+                        {t('security_desc') || 'We take data privacy seriously. Your personal information is encrypted, stored securely in Switzerland, and never shared with third parties.'}
+                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap' }}>
+                        {[
+                            { icon: '🇨🇭', text: t('security_swiss') || 'Swiss Hosting' },
+                            { icon: '🔐', text: t('security_encrypted') || 'End-to-End Encryption' },
+                            { icon: '🛡️', text: t('security_gdpr') || 'GDPR Compliant' },
+                        ].map((item, i) => (
+                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', borderRadius: '10px', background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.2)' }}>
+                                <span style={{ fontSize: '1.2rem' }}>{item.icon}</span>
+                                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#34d399' }}>{item.text}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
         </div>
     );
 };

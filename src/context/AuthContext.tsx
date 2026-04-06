@@ -7,6 +7,7 @@ interface User {
     name: string;
     plan: string;
     provider: string;
+    picture?: string;
 }
 
 interface AuthContextType {
@@ -69,10 +70,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             return;
         }
         apiFetch<{ user: User }>('/auth/me')
-            .then(({ user }) => {
-                setUser(user);
-                // Also keep legacy key in sync for any components that still read it
-                localStorage.setItem('readylegacy_user', JSON.stringify(user));
+            .then(({ user: serverUser }) => {
+                // Preserve picture from localStorage (set by Google OAuth callback) since DB doesn't store it
+                const stored = localStorage.getItem('readylegacy_user');
+                const picture = stored ? (JSON.parse(stored).picture || '') : '';
+                const merged = { ...serverUser, picture };
+                setUser(merged);
+                localStorage.setItem('readylegacy_user', JSON.stringify(merged));
             })
             .catch(() => {
                 localStorage.removeItem('readylegacy_token');

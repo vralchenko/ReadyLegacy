@@ -46,7 +46,13 @@ const Header: React.FC = () => {
 
                         <div className="header-right">
                             {user && (
-                                <Link to="/profile" onClick={closeMenu} style={{ fontSize: '1.2rem', color: 'var(--text-muted)', marginRight: '4px' }}>👤</Link>
+                                <Link to="/profile" onClick={closeMenu} style={{ marginRight: '4px', display: 'flex', alignItems: 'center' }}>
+                                    {user.picture ? (
+                                        <img src={user.picture} alt="" referrerPolicy="no-referrer" style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }} />
+                                    ) : (
+                                        <span style={{ fontSize: '1.2rem', color: 'var(--text-muted)' }}>{'\uD83D\uDC64'}</span>
+                                    )}
+                                </Link>
                             )}
                             {user ? (
                                 <a href="/" onClick={handleLogout} style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginRight: '8px', cursor: 'pointer', textDecoration: 'none', whiteSpace: 'nowrap' }}>{t('nav_logout') || 'Sign Out'}</a>

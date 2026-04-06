@@ -171,6 +171,45 @@ export const DEMO_TEMPLATES: Record<string, Record<string, string>> = {
         personal_care: 'Full authority', financial: 'Day-to-day finances only',
         special_wishes: 'No life-prolonging measures if prognosis is terminal. Prefer palliative care at home.',
     },
+    registry_notification: {
+        reporter_name: 'Anna Müller', reporter_relation: 'Spouse / Partner',
+        reporter_address: 'Bahnhofstrasse 42, 6003 Luzern', reporter_phone: '+41 79 987 65 43',
+        deceased_name: 'Thomas Müller', deceased_dob: '1982-06-15', deceased_dod: '2026-04-01',
+        deceased_place: 'Luzern, LU', deceased_nationality: 'Swiss', deceased_marital: 'Married',
+        has_death_cert: 'Yes', has_family_book: 'Yes',
+        burial_type: 'Kremation (cremation)', burial_location: 'Friedental, Luzern',
+    },
+    termination_letter: {
+        sender_name: 'Anna Müller', sender_address: 'Bahnhofstrasse 42, 6003 Luzern', sender_role: 'Spouse / Partner',
+        company_name: 'Helsana Versicherungen AG', company_address: 'Zürichstrasse 130, 8600 Dübendorf',
+        contract_type: 'Health insurance', contract_number: 'KVG-2024-78901',
+        deceased_name: 'Thomas Müller', termination_date: '2026-04-30',
+        additional_notes: 'Please send the final statement and any refund to my address. Death certificate enclosed.',
+    },
+    death_notice: {
+        deceased_name: 'Thomas Müller', deceased_dob: '1982-06-15', deceased_dod: '2026-04-01',
+        deceased_place: 'Luzern',
+        opening_text: 'In stiller Trauer nehmen wir Abschied von unserem geliebten Ehemann, Vater und Freund.',
+        family_names: 'Anna Müller (Ehefrau)\nSofia Müller (Tochter)\nMaria Müller (Schwester, Bern)',
+        funeral_info: 'Die Abdankung findet am Freitag, 5. April 2026, um 14:00 Uhr in der Kapelle Friedental, Luzern statt.',
+        instead_of_flowers: 'Anstelle von Blumen bitten wir um Spenden an das Schweizerische Rote Kreuz.',
+        publication_target: 'Local newspaper',
+    },
+    condolence_letter: {
+        sender_name: 'Familie Müller', sender_address: 'Bahnhofstrasse 42, 6003 Luzern',
+        deceased_name: 'Thomas Müller', deceased_dob: '1982-06-15', deceased_dod: '2026-04-01',
+        personal_message: 'Thomas war ein liebevoller Ehemann und Vater, ein treuer Freund und ein Mensch, der immer für andere da war. Sein warmes Lächeln und sein offenes Herz werden uns für immer in Erinnerung bleiben.',
+        funeral_details: 'Abdankung: Freitag, 5. April 2026, 14:00 Uhr, Kapelle Friedental, Luzern.\nAnschliessend Beisammensein im Restaurant Friedental.',
+        instead_of_flowers: 'Anstelle von Blumen bitten wir um Spenden zugunsten des Schweizerischen Roten Kreuzes.',
+    },
+    widow_pension: {
+        applicant_name: 'Anna Müller', applicant_dob: '1985-03-22',
+        applicant_ahv: '756.1234.5678.90', applicant_address: 'Bahnhofstrasse 42, 6003 Luzern',
+        spouse_name: 'Thomas Müller', spouse_dob: '1982-06-15', spouse_dod: '2026-04-01',
+        spouse_ahv: '756.9876.5432.10', marriage_date: '2010-09-15',
+        has_children: 'Yes', children_count: '1',
+        current_income: '45,000', ahv_office: 'SVA Luzern',
+    },
 };
 
 // ─── Fill / Clear helpers ────────────────────────────────────────────────────

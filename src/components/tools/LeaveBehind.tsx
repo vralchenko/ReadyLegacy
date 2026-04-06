@@ -3,7 +3,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useDemoMode } from '../../context/DemoContext';
 import { DEMO_LEGACY_ITEMS } from '../../lib/demoData';
 import usePersistedState from '../../hooks/useSyncedState';
-import { saveToDocuments } from '../../lib/saveDocument';
+import { useSaveToDocuments } from '../../hooks/useSaveToDocuments';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface MemoryItem {
@@ -19,6 +19,7 @@ interface MemoryItem {
 // ─── Main Component ───────────────────────────────────────────────────────────
 const LeaveBehind: React.FC = () => {
     const { t } = useLanguage();
+    const saveToDocuments = useSaveToDocuments();
 
     // ─── Template wizard steps (translated) ──────────────────────────────────
     const WIZARD_STEPS = [
@@ -89,13 +90,13 @@ const LeaveBehind: React.FC = () => {
 
     const handleSaveToDocuments = async () => {
         try {
-            await saveToDocuments(
+            const saved = await saveToDocuments(
                 'Digital Legacy Vault',
                 'Legacy Vault',
                 '\uD83D\uDC8C',
                 { memories: items.map(({ type, title, content, recipient, tags }) => ({ type, title, content, recipient, tags })) }
             );
-            setDocSaved(true);
+            if (saved) setDocSaved(true);
         } catch {
             alert('Failed to save to Documents');
         }
@@ -195,8 +196,8 @@ const LeaveBehind: React.FC = () => {
                         onClick={() => setWizardOpen(true)}
                         style={{
                             padding: '6px 20px', borderRadius: '20px',
-                            border: '1px solid var(--accent-gold)', background: 'rgba(255,215,0,0.1)',
-                            color: 'var(--accent-gold)', fontSize: '0.8rem', cursor: 'pointer',
+                            border: 'none', background: 'var(--accent-gold)',
+                            color: '#fff', fontSize: '0.8rem', cursor: 'pointer',
                             fontWeight: 700, transition: 'all 0.2s'
                         }}
                     >
@@ -575,8 +576,8 @@ const SocialAccounts: React.FC = () => {
                 <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('lb_social_title') || 'Social Media Accounts'}</h3>
                 <button onClick={() => setAdding(!adding)} style={{
                     padding: '6px 14px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer',
-                    border: '1px solid var(--accent-gold)', color: adding ? '#ff6b6b' : 'var(--accent-gold)',
-                    background: adding ? 'rgba(255,107,107,0.1)' : 'rgba(251,191,36,0.08)',
+                    border: adding ? '1px solid #ff6b6b' : 'none', color: adding ? '#ff6b6b' : '#fff',
+                    background: adding ? 'rgba(255,107,107,0.1)' : 'var(--accent-gold)',
                 }}>
                     {adding ? 'Cancel' : '+ Add Account'}
                 </button>

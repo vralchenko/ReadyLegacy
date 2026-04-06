@@ -38,9 +38,11 @@ const Login: React.FC = () => {
         }
     }, []);
 
+    const returnTo = searchParams.get('returnTo') || '/profile';
+
     useEffect(() => {
-        if (user) navigate('/profile');
-    }, [user, navigate]);
+        if (user) navigate(returnTo);
+    }, [user, navigate, returnTo]);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -60,7 +62,7 @@ const Login: React.FC = () => {
             } else {
                 await register(email, password, name || 'User');
             }
-            navigate('/profile');
+            navigate(returnTo);
         } catch (err: any) {
             setError(err.message || 'Something went wrong. Please try again.');
         } finally {

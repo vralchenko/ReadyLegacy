@@ -3,7 +3,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useDemoMode } from '../../context/DemoContext';
 import { DEMO_TASKS, fillDemoTasks } from '../../lib/demoData';
 import usePersistedState from '../../hooks/useSyncedState';
-import { saveToDocuments } from '../../lib/saveDocument';
+import { useSaveToDocuments } from '../../hooks/useSaveToDocuments';
 
 interface Task {
     id: string;
@@ -24,6 +24,7 @@ const CATEGORY_KEYS: Record<string, string> = {
 
 const Executor: React.FC = () => {
     const { t } = useLanguage();
+    const saveToDocuments = useSaveToDocuments();
     const [tasks, setTasks] = usePersistedState<Task[]>('todo_tasks', []);
     const [newText, setNewText] = useState('');
     const [newCategory, setNewCategory] = useState('Legal');
@@ -40,13 +41,13 @@ const Executor: React.FC = () => {
     const handleSaveToDocuments = async () => {
         try {
             const date = new Date().toLocaleDateString();
-            await saveToDocuments(
+            const saved = await saveToDocuments(
                 `Executor Tasks — ${date}`,
                 'Executor Tasks',
                 '\u2705',
                 { tasks: tasks.map(({ text, category, done, createdAt }) => ({ text, category, done, createdAt })) }
             );
-            setDocSaved(true);
+            if (saved) setDocSaved(true);
         } catch {
             alert('Failed to save to Documents');
         }

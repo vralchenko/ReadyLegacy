@@ -17,11 +17,11 @@ export const useLanguage = () => {
 };
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [language, setLanguageState] = useState<string>(() => localStorage.getItem('continuum_lang') || 'en');
+    const [language, setLanguageState] = useState<string>(() => localStorage.getItem('readylegacy_lang') || 'en');
     const [translations, setTranslations] = useState<Translations>({});
 
     useEffect(() => {
-        localStorage.setItem('continuum_lang', language);
+        localStorage.setItem('readylegacy_lang', language);
         fetch(`/assets/locales/${language}.json`)
             .then(res => res.json())
             .then(data => setTranslations(data))

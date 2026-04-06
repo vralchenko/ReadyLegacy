@@ -144,8 +144,8 @@ const Reminders: React.FC = () => {
                     onClick={() => setShowForm(!showForm)}
                     style={{
                         padding: '8px 20px', borderRadius: '20px',
-                        border: '1px solid var(--accent-gold)', background: showForm ? 'rgba(255,215,0,0.1)' : 'transparent',
-                        color: 'var(--accent-gold)', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 700
+                        border: showForm ? '1px solid var(--accent-gold)' : 'none', background: showForm ? 'rgba(255,215,0,0.1)' : 'var(--accent-gold)',
+                        color: showForm ? 'var(--accent-gold)' : '#fff', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 700
                     }}
                 >
                     {showForm ? '× Cancel' : '+ Add Reminder'}

@@ -3,7 +3,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useDemoMode } from '../../context/DemoContext';
 import { DEMO_LEGAL_DOCS, fillDemoLegal } from '../../lib/demoData';
 import usePersistedState from '../../hooks/useSyncedState';
-import { saveToDocuments } from '../../lib/saveDocument';
+import { useSaveToDocuments } from '../../hooks/useSaveToDocuments';
 
 interface DocRecord {
     id: string;
@@ -105,6 +105,7 @@ const IMPORTANCE_COLORS: Record<string, string> = {
 
 const LegalDocs: React.FC = () => {
     const { t } = useLanguage();
+    const saveToDocuments = useSaveToDocuments();
     const [records, setRecords] = usePersistedState<Record<string, DocRecord>>('legal_docs_v2', {});
     const [expanded, setExpanded] = useState<string | null>(null);
     const [editingNotes, setEditingNotes] = useState<string | null>(null);
@@ -156,8 +157,8 @@ const LegalDocs: React.FC = () => {
             for (const doc of DOCUMENTS) {
                 data[doc.key] = getRecord(doc.key);
             }
-            await saveToDocuments('Legal Documents Summary', 'Legal Documents', '\u2696\uFE0F', data);
-            setDocSaved(true);
+            const saved = await saveToDocuments('Legal Documents Summary', 'Legal Documents', '\u2696\uFE0F', data);
+            if (saved) setDocSaved(true);
         } catch {
             alert('Failed to save to Documents');
         }

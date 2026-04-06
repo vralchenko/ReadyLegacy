@@ -3,10 +3,11 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useDemoMode } from '../../context/DemoContext';
 import { DEMO_WILL, fillDemoWill } from '../../lib/demoData';
 import usePersistedState from '../../hooks/useSyncedState';
-import { saveToDocuments } from '../../lib/saveDocument';
+import { useSaveToDocuments } from '../../hooks/useSaveToDocuments';
 
 const WillBuilder: React.FC = () => {
     const { t } = useLanguage();
+    const saveToDocuments = useSaveToDocuments();
     const [step, setStep] = useState(1);
 
     const [willName, setWillName] = usePersistedState('will_name', '');
@@ -35,13 +36,13 @@ const WillBuilder: React.FC = () => {
 
     const handleSaveToDocuments = async () => {
         try {
-            await saveToDocuments(
+            const saved = await saveToDocuments(
                 willName ? `Will — ${willName}` : 'Will Outline',
                 'Will',
                 '\uD83D\uDCDC',
                 { will_name: willName, will_origin: willOrigin, will_spouse_q: willSpouseQ, will_children_q: willChildrenQ, will_others: willOthers, will_legacies: willLegacies, will_handwritten: willHandwritten, will_dated: willDated }
             );
-            setDocSaved(true);
+            if (saved) setDocSaved(true);
         } catch {
             alert('Failed to save to Documents');
         }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import usePersistedState from '../../hooks/useSyncedState';
 
-// ─── After Death Checklist (expanded) ─────────────────────────────────────────
+// ─── After Death Checklist — Swiss-specific (Pro Senectute) ─────────────────
 
 interface CheckItem {
     key: string;
@@ -11,58 +11,95 @@ interface CheckItem {
     deadline?: string;
 }
 
-const PHASES: { title: string; subtitle: string; color: string; items: CheckItem[] }[] = [
-    {
-        title: 'Phase 1: First 24 Hours',
-        subtitle: 'Immediate actions right after death',
-        color: '#e8a87c',
-        items: [
-            { key: 'p1_doctor', label: 'Call a doctor to certify the death', deadline: 'Immediately' },
-            { key: 'p1_family', label: 'Inform immediate family members', deadline: 'Immediately' },
-            { key: 'p1_funeral', label: 'Contact a funeral home', deadline: 'Within 24h' },
-            { key: 'p1_executor', label: 'Notify the executor of the will', deadline: 'Within 24h' },
-        ]
-    },
-    {
-        title: 'Phase 2: First Week',
-        subtitle: 'Administrative and official notifications',
-        color: 'var(--accent-gold)',
-        items: [
-            { key: 'p2_registry', label: 'Register the death at the civil registry office', deadline: 'Within 3 days', note: 'Required in most countries' },
-            { key: 'p2_bank', label: 'Notify banks and financial institutions', deadline: 'Within 1 week' },
-            { key: 'p2_employer', label: 'Inform the employer or pension fund', deadline: 'Within 1 week' },
-            { key: 'p2_insurance', label: 'Contact life insurance companies', deadline: 'Within 1 week' },
-            { key: 'p2_will', label: 'Locate and file the will with notary/court', deadline: 'Within 1 week' },
-        ]
-    },
-    {
-        title: 'Phase 3: First Month',
-        subtitle: 'Legal, financial and property matters',
-        color: '#a8d8ea',
-        items: [
-            { key: 'p3_tax', label: 'File a final tax return for the deceased', deadline: 'First month' },
-            { key: 'p3_subscriptions', label: 'Cancel subscriptions and memberships', deadline: 'First month' },
-            { key: 'p3_property', label: 'Manage and distribute property per the will', deadline: 'First month' },
-            { key: 'p3_digital', label: 'Handle digital accounts (email, social media)', deadline: 'First month' },
-            { key: 'p3_authorities', label: 'Notify relevant government authorities', deadline: 'First month', note: 'e.g. immigration, pension office' },
-        ]
-    },
-    {
-        title: 'Phase 4: Ongoing',
-        subtitle: 'Long-term closure and memorialization',
-        color: 'var(--text-muted)',
-        items: [
-            { key: 'p4_estate', label: 'Complete estate settlement', deadline: 'Within 6-12 months' },
-            { key: 'p4_gravestone', label: 'Arrange gravestone or memorial', deadline: 'Within a few months' },
-            { key: 'p4_anniversary', label: 'Plan annual memorial observances', deadline: 'Ongoing' },
-            { key: 'p4_grief', label: 'Seek grief counseling or support group', deadline: 'As needed' },
-        ]
-    }
-];
+interface Phase {
+    title: string;
+    subtitle: string;
+    color: string;
+    items: CheckItem[];
+}
+
+const usePhases = (): Phase[] => {
+    const { t } = useLanguage();
+    return [
+        {
+            title: t('dc_phase1_title') || 'Phase 1: First Hours',
+            subtitle: t('dc_phase1_sub') || 'Immediate actions right after death',
+            color: '#e8a87c',
+            items: [
+                { key: 'p1_doctor_ch', label: t('dc_p1_doctor') || 'Call a doctor for the death certificate (Todesbescheinigung)', deadline: t('dc_immediately') || 'Immediately' },
+                { key: 'p1_nursing', label: t('dc_p1_nursing') || 'Notify nursing home administration (if applicable)', deadline: t('dc_immediately') || 'Immediately' },
+                { key: 'p1_police', label: t('dc_p1_police') || 'Call police if accident or suicide is suspected', deadline: t('dc_immediately') || 'Immediately' },
+                { key: 'p1_family_ch', label: t('dc_p1_family') || 'Inform relatives and close friends', deadline: t('dc_immediately') || 'Immediately' },
+                { key: 'p1_directives', label: t('dc_p1_directives') || 'Locate death-related directives (Verfügungen)', deadline: t('dc_immediately') || 'Immediately' },
+                { key: 'p1_employer', label: t('dc_p1_employer') || 'Notify employer of the deceased + your own (bereavement leave)', deadline: t('dc_same_day') || 'Same day' },
+            ]
+        },
+        {
+            title: t('dc_phase2_title') || 'Phase 2: Within 2 Days',
+            subtitle: t('dc_phase2_sub') || 'Civil registration and official documents',
+            color: 'var(--accent-gold)',
+            items: [
+                {
+                    key: 'p2_zivilstandsamt', label: t('dc_p2_zivilstandsamt') || 'Register the death at Zivilstandsamt (civil registry)',
+                    note: t('dc_p2_zivilstandsamt_note') || 'Bring: medical death certificate, Familienbüchlein, ID of deceased, residence permit (if foreign national)',
+                    deadline: t('dc_2_days') || 'Within 2 days'
+                },
+                { key: 'p2_funeral_coord', label: t('dc_p2_funeral_coord') || 'Coordinate with registry: funeral date/place, burial type, publication', deadline: t('dc_2_days') || 'Within 2 days' },
+                { key: 'p2_todesschein', label: t('dc_p2_todesschein') || 'Obtain official death certificate (Todesschein)', deadline: t('dc_2_days') || 'Within 2 days' },
+            ]
+        },
+        {
+            title: t('dc_phase3_title') || 'Phase 3: Funeral Arrangements',
+            subtitle: t('dc_phase3_sub') || 'Organizing the farewell',
+            color: '#a8d8ea',
+            items: [
+                { key: 'p3_parish', label: t('dc_p3_parish') || 'Contact parish / spiritual advisor / funeral home', deadline: t('dc_first_week') || 'First week' },
+                { key: 'p3_todesanzeige', label: t('dc_p3_todesanzeige') || 'Publish death notice (Todesanzeige) in press', deadline: t('dc_first_week') || 'First week' },
+                { key: 'p3_trauerbriefe', label: t('dc_p3_trauerbriefe') || 'Prepare and send condolence letters (Trauerbriefe)', deadline: t('dc_first_week') || 'First week' },
+                { key: 'p3_aufbahrung', label: t('dc_p3_aufbahrung') || 'Arrange viewing of the body (Aufbahrung)', deadline: t('dc_first_week') || 'First week' },
+            ]
+        },
+        {
+            title: t('dc_phase4_title') || 'Phase 4: After the Funeral',
+            subtitle: t('dc_phase4_sub') || 'Notifications to authorities and organizations',
+            color: '#c3aed6',
+            items: [
+                { key: 'p4_ahv', label: t('dc_p4_ahv') || 'AHV/IV — state pension insurance', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p4_pensionskasse', label: t('dc_p4_pensionskasse') || 'Pensionskasse — occupational pension fund (2nd pillar)', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p4_krankenkasse', label: t('dc_p4_krankenkasse') || 'Krankenkasse — cancel health insurance', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p4_strassenverkehrsamt', label: t('dc_p4_strassenverkehrsamt') || 'Strassenverkehrsamt — road traffic office', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p4_steuern', label: t('dc_p4_steuern') || 'Steuerbehörde — notify tax authority', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p4_banks', label: t('dc_p4_banks') || 'Banks — freeze or transfer accounts', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p4_post', label: t('dc_p4_post') || 'Post — redirect or cancel mail', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p4_subscriptions', label: t('dc_p4_subscriptions') || 'Cancel subscriptions: magazines, GA/Halbtax, phone, radio/TV', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p4_memberships', label: t('dc_p4_memberships') || 'Cancel memberships in organizations', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p4_rental', label: t('dc_p4_rental') || 'Terminate or transfer rental agreement', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p4_online', label: t('dc_p4_online') || 'Handle online accounts (social media, email, cloud storage)', deadline: t('dc_first_month') || 'First month' },
+            ]
+        },
+        {
+            title: t('dc_phase5_title') || 'Phase 5: Estate & Finances',
+            subtitle: t('dc_phase5_sub') || 'Inheritance, pensions and long-term settlement',
+            color: 'var(--text-muted)',
+            items: [
+                { key: 'p5_will_submit', label: t('dc_p5_will_submit') || 'Submit the will to the competent authority', deadline: t('dc_after_funeral') || 'After funeral' },
+                { key: 'p5_testament_opening', label: t('dc_p5_testament_opening') || 'Attend official will opening (Testamentseröffnung)', deadline: t('dc_as_scheduled') || 'As scheduled' },
+                { key: 'p5_erbteilung', label: t('dc_p5_erbteilung') || 'Distribute the estate (Erbteilung) among heirs', deadline: t('dc_months') || 'Within months' },
+                { key: 'p5_wohnung', label: t('dc_p5_wohnung') || 'Organize apartment clearing (Wohnungsräumung)', deadline: t('dc_months') || 'Within months' },
+                { key: 'p5_witwen', label: t('dc_p5_witwen') || 'Check entitlement to widow/widower pension (Witwen-/Witwerrente AHV)', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p5_waisen', label: t('dc_p5_waisen') || 'Check entitlement to orphan pension (Waisenrente AHV)', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p5_bvg', label: t('dc_p5_bvg') || 'Check entitlement to BVG pension from occupational fund', deadline: t('dc_first_month') || 'First month' },
+                { key: 'p5_ergaenzung', label: t('dc_p5_ergaenzung') || 'Check Ergänzungsleistungen (supplementary benefits)', deadline: t('dc_months') || 'Within months' },
+                { key: 'p5_lebensversicherung', label: t('dc_p5_lebensversicherung') || 'Check life insurance payouts (Lebensversicherung)', deadline: t('dc_first_month') || 'First month' },
+            ]
+        }
+    ];
+};
 
 const DeathChecklist: React.FC = () => {
     const { t } = useLanguage();
-    const [checks, setChecks] = usePersistedState<Record<string, boolean>>('death_checklist_v2', {});
+    const PHASES = usePhases();
+    const [checks, setChecks] = usePersistedState<Record<string, boolean>>('death_checklist_v3', {});
     const [expanded, setExpanded] = useState<number | null>(0);
 
     const toggle = (key: string) => {
@@ -80,12 +117,15 @@ const DeathChecklist: React.FC = () => {
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
                     {t('desc_checklist') || 'A comprehensive guide for what needs to happen after a loved one passes. Track each step to ensure nothing is missed.'}
                 </p>
+                <p style={{ opacity: 0.5, marginTop: '6px', fontSize: '0.8rem', fontStyle: 'italic' }}>
+                    {t('dc_source') || 'Based on the Pro Senectute guide for Switzerland'}
+                </p>
             </div>
 
             {/* Overall progress */}
             <div style={{ marginBottom: '32px', padding: '20px', background: 'var(--glass-bg)', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Overall Progress</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{t('dc_progress') || 'Overall Progress'}</span>
                     <span style={{ fontSize: '0.9rem', color: 'var(--accent-gold)', fontWeight: 700 }}>{doneCount}/{allItems.length} — {progress}%</span>
                 </div>
                 <div style={{ height: '8px', borderRadius: '4px', background: 'var(--glass-bg)', overflow: 'hidden' }}>

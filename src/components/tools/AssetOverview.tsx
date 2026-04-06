@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useDemoMode } from '../../context/DemoContext';
 import { fillDemoAssets } from '../../lib/demoData';
-import { saveToDocuments } from '../../lib/saveDocument';
+import { useSaveToDocuments } from '../../hooks/useSaveToDocuments';
 
 // ─── Persistent input hook ────────────────────────────────────────────────────
 const useInput = (key: string, resetSignal?: boolean) => {
@@ -98,7 +98,7 @@ const DynamicAssetList = ({ title, itemKey, fields, demoMode }: {
                 <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: 'var(--accent-gold)', opacity: 0.9 }}>{title}</h4>
                 <button
                     className="btn"
-                    style={{ padding: '6px 14px', fontSize: '0.8rem', background: isAdding ? 'rgba(255,107,107,0.1)' : 'rgba(251,191,36,0.1)', color: isAdding ? '#ff6b6b' : 'var(--accent-gold)', border: '1px solid currentColor', borderRadius: '6px', fontWeight: 600 }}
+                    style={{ padding: '6px 14px', fontSize: '0.8rem', background: isAdding ? 'rgba(255,107,107,0.1)' : 'var(--accent-gold)', color: isAdding ? '#ff6b6b' : '#fff', border: isAdding ? '1px solid currentColor' : 'none', borderRadius: '6px', fontWeight: 600 }}
                     onClick={() => setIsAdding(!isAdding)}
                 >
                     {isAdding ? 'Cancel' : '+ Add Item'}
@@ -193,6 +193,7 @@ const validate = (value: string, required = true) => required && !value.trim() ?
 const AssetOverview: React.FC = () => {
     const { t } = useLanguage();
     const { demoMode } = useDemoMode();
+    const saveToDocuments = useSaveToDocuments();
     const [step, setStep] = useState(2);
     const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -220,7 +221,7 @@ const AssetOverview: React.FC = () => {
     const handleSaveToDocuments = async () => {
         try {
             const date = new Date().toLocaleDateString();
-            await saveToDocuments(
+            const saved = await saveToDocuments(
                 `Asset Overview — ${date}`,
                 'Asset Overview',
                 '\uD83D\uDCB0',
@@ -235,7 +236,7 @@ const AssetOverview: React.FC = () => {
                     ...getAllAssetListData(),
                 }
             );
-            setDocSaved(true);
+            if (saved) setDocSaved(true);
         } catch {
             alert('Failed to save to Documents');
         }
@@ -285,6 +286,9 @@ const AssetOverview: React.FC = () => {
                 <div className="wizard-content-step active">
                     <div className="tool-section">
                         <h3>1.2 Financial Assets</h3>
+                        <p style={{ display: 'inline-block', padding: '4px 12px', borderRadius: '6px', background: 'rgba(251,191,36,0.1)', color: 'var(--accent-gold)', fontSize: '0.75rem', fontWeight: 600, marginBottom: '16px' }}>
+                            {t('assets_indicative') || 'All values are indicative estimates — not a legal valuation'}
+                        </p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                             <DynamicAssetList title={t('label_bank') || 'Bank & Savings'} itemKey="bank" demoMode={demoMode} fields={[
                                 { key: 'name', label: 'Account', placeholder: 'e.g. UBS Savings Account' },
@@ -503,6 +507,9 @@ const AssetOverview: React.FC = () => {
                             />
                         </div>
                     </div>
+                    <p style={{ display: 'inline-block', padding: '4px 12px', borderRadius: '6px', background: 'rgba(251,191,36,0.1)', color: 'var(--accent-gold)', fontSize: '0.75rem', fontWeight: 600, marginTop: '16px', marginBottom: '4px' }}>
+                        {t('assets_indicative') || 'All values are indicative estimates — not a legal valuation'}
+                    </p>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <button className="btn" onClick={() => setStep(5)}>← Back</button>
                         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
