@@ -98,7 +98,7 @@ const DynamicAssetList = ({ title, itemKey, fields, demoMode }: {
                 <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600, color: 'var(--accent-gold)', opacity: 0.9 }}>{title}</h4>
                 <button
                     className="btn"
-                    style={{ padding: '6px 14px', fontSize: '0.8rem', background: isAdding ? 'rgba(255,107,107,0.1)' : 'var(--accent-gold)', color: isAdding ? '#ff6b6b' : '#fff', border: isAdding ? '1px solid currentColor' : 'none', borderRadius: '6px', fontWeight: 600 }}
+                    style={{ padding: '6px 14px', fontSize: '0.8rem', background: isAdding ? '#ff4444' : 'var(--accent-gold)', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 600 }}
                     onClick={() => setIsAdding(!isAdding)}
                 >
                     {isAdding ? 'Cancel' : '+ Add Item'}
