@@ -1,5 +1,6 @@
 import { getDb, schema } from '../_lib/db';
 import { signToken } from '../_lib/auth';
+import { logAudit, getRequestMeta } from '../_lib/audit';
 import type { CFContext } from '../_lib/types';
 import { eq } from 'drizzle-orm';
 
@@ -85,6 +86,9 @@ export async function onRequest(context: CFContext): Promise<Response> {
         .returning();
     }
 
+    const meta = getRequestMeta(context.request);
+    context.waitUntil(logAudit(context.env.DATABASE_URL, { userId: user.id, action: 'login_success', resource: 'auth', details: { provider: 'google' }, ...meta }));
+
     // Issue JWT
     const token = await signToken(
       { userId: user.id, email: user.email },
@@ -97,6 +101,7 @@ export async function onRequest(context: CFContext): Promise<Response> {
       name: user.name,
       plan: user.plan,
       provider: user.provider,
+      picture: googleUser.picture || '',
     });
 
     return new Response(

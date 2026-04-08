@@ -32,3 +32,15 @@ export const userData = pgTable('user_data', {
 }, (table) => [
     uniqueIndex('user_data_user_key_idx').on(table.userId, table.key),
 ]);
+
+export const auditLogs = pgTable('audit_logs', {
+    id: uuid('id').defaultRandom().primaryKey(),
+    userId: uuid('user_id'),
+    action: varchar('action', { length: 100 }).notNull(),
+    resource: varchar('resource', { length: 100 }),
+    resourceId: varchar('resource_id', { length: 255 }),
+    ip: varchar('ip', { length: 45 }),
+    userAgent: varchar('user_agent', { length: 500 }),
+    details: jsonb('details'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+});

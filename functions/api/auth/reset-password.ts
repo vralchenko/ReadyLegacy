@@ -4,6 +4,7 @@ import { json } from '../_lib/types';
 import type { CFContext } from '../_lib/types';
 import { eq, and } from 'drizzle-orm';
 import { checkRateLimit, rateLimitResponse } from '../_lib/rateLimit';
+import { logAudit, getRequestMeta } from '../_lib/audit';
 
 export async function onRequest(context: CFContext): Promise<Response> {
   if (context.request.method !== 'POST') {
@@ -61,6 +62,9 @@ export async function onRequest(context: CFContext): Promise<Response> {
   await db
     .delete(schema.userData)
     .where(and(eq(schema.userData.userId, user.id), eq(schema.userData.key, '_reset_token')));
+
+  const meta = getRequestMeta(context.request);
+  context.waitUntil(logAudit(context.env.DATABASE_URL, { userId: user.id, action: 'password_reset', resource: 'auth', ...meta }));
 
   return json({ ok: true, message: 'Password has been reset. You can now log in.' });
 }

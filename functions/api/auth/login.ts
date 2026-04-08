@@ -4,6 +4,7 @@ import { json } from '../_lib/types';
 import type { CFContext } from '../_lib/types';
 import { eq } from 'drizzle-orm';
 import { checkRateLimit, rateLimitResponse } from '../_lib/rateLimit';
+import { logAudit, getRequestMeta } from '../_lib/audit';
 
 export async function onRequest(context: CFContext): Promise<Response> {
   if (context.request.method !== 'POST') {
@@ -19,6 +20,7 @@ export async function onRequest(context: CFContext): Promise<Response> {
     return json({ error: 'Email and password are required' }, 400);
   }
 
+  const meta = getRequestMeta(context.request);
   const db = getDb(context.env.DATABASE_URL);
   const [user] = await db
     .select()
@@ -27,10 +29,12 @@ export async function onRequest(context: CFContext): Promise<Response> {
     .limit(1);
 
   if (!user) {
+    context.waitUntil(logAudit(context.env.DATABASE_URL, { action: 'login_failed', resource: 'auth', details: { email: email.toLowerCase(), reason: 'user_not_found' }, ...meta }));
     return json({ error: 'Invalid email or password' }, 401);
   }
 
   if (!user.passwordHash) {
+    context.waitUntil(logAudit(context.env.DATABASE_URL, { userId: user.id, action: 'login_failed', resource: 'auth', details: { reason: 'google_only' }, ...meta }));
     return json(
       { error: 'This account uses Google sign-in. Please use the Google button.' },
       401,
@@ -39,8 +43,11 @@ export async function onRequest(context: CFContext): Promise<Response> {
 
   const valid = await verifyPassword(password, user.passwordHash);
   if (!valid) {
+    context.waitUntil(logAudit(context.env.DATABASE_URL, { userId: user.id, action: 'login_failed', resource: 'auth', details: { reason: 'invalid_password' }, ...meta }));
     return json({ error: 'Invalid email or password' }, 401);
   }
+
+  context.waitUntil(logAudit(context.env.DATABASE_URL, { userId: user.id, action: 'login_success', resource: 'auth', ...meta }));
 
   const token = await signToken({ userId: user.id, email: user.email }, context.env.JWT_SECRET);
   return json({

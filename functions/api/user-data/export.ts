@@ -3,6 +3,7 @@ import { getUserId } from '../_lib/middleware';
 import { json } from '../_lib/types';
 import type { CFContext } from '../_lib/types';
 import { eq } from 'drizzle-orm';
+import { logAudit, getRequestMeta } from '../_lib/audit';
 
 export async function onRequest(context: CFContext): Promise<Response> {
   if (context.request.method !== 'GET') {
@@ -28,6 +29,9 @@ export async function onRequest(context: CFContext): Promise<Response> {
     .limit(1);
 
   if (!user) return json({ error: 'User not found' }, 404);
+
+  const meta = getRequestMeta(context.request);
+  context.waitUntil(logAudit(context.env.DATABASE_URL, { userId, action: 'data_export', resource: 'user_data', ...meta }));
 
   const documents = await db
     .select()

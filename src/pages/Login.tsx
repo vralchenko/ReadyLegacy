@@ -66,7 +66,7 @@ const Login: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!email || !password) { setError(t('login_error_fields') || 'Please fill in all required fields.'); return; }
-        if (mode === 'signup' && password.length < 6) { setError('Password must be at least 6 characters.'); return; }
+        if (mode === 'signup' && password.length < 8) { setError(t('login_pw_min_8') || 'Password must be at least 8 characters.'); return; }
         if (mode === 'signup' && !consent) { setError(t('consent_required') || 'You must accept the Privacy Policy to create an account.'); return; }
         setLoading('email');
         setError('');

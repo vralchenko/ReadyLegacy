@@ -8,7 +8,7 @@ export async function signToken(
   const key = new TextEncoder().encode(secret);
   return new SignJWT(payload as unknown as Record<string, unknown>)
     .setProtectedHeader({ alg: 'HS256' })
-    .setExpirationTime('30d')
+    .setExpirationTime('7d')
     .sign(key);
 }
 
@@ -26,7 +26,7 @@ export async function verifyToken(
 }
 
 export async function hashPassword(password: string): Promise<string> {
-  return bcrypt.hash(password, 8);
+  return bcrypt.hash(password, 12);
 }
 
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {

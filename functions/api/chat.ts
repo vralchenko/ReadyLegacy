@@ -85,12 +85,19 @@ function getFollowUps(category: string, lang: string): string[] {
   return cat[lang] || cat.en;
 }
 
-function corsJson(data: unknown, status = 200): Response {
+const ALLOWED_ORIGINS = ['https://readylegacy.pages.dev', 'https://readylegacy.ch', 'https://www.readylegacy.ch'];
+
+function getAllowedOrigin(request: Request): string {
+  const origin = request.headers.get('origin') || '';
+  return ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+}
+
+function corsJson(data: unknown, status = 200, origin = ALLOWED_ORIGINS[0]): Response {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': origin,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     },
@@ -98,12 +105,14 @@ function corsJson(data: unknown, status = 200): Response {
 }
 
 export async function onRequest(context: CFContext): Promise<Response> {
+  const corsOrigin = getAllowedOrigin(context.request);
+
   // CORS preflight
   if (context.request.method === 'OPTIONS') {
     return new Response(null, {
       status: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': corsOrigin,
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
       },
@@ -111,17 +120,17 @@ export async function onRequest(context: CFContext): Promise<Response> {
   }
 
   if (context.request.method !== 'POST') {
-    return corsJson({ error: 'Method not allowed' }, 405);
+    return corsJson({ error: 'Method not allowed' }, 405, corsOrigin);
   }
 
   const ip = context.request.headers.get('cf-connecting-ip') || 'unknown';
   const rl = checkRateLimit(`chat:${ip}`, 30, 60 * 1000); // 30 per minute
-  if (!rl.allowed) return corsJson({ error: 'Too many requests. Please slow down.' }, 429);
+  if (!rl.allowed) return corsJson({ error: 'Too many requests. Please slow down.' }, 429, corsOrigin);
 
   const { query, language = 'en' } = (await context.request.json()) as any;
 
   if (!query || typeof query !== 'string' || query.trim().length === 0) {
-    return corsJson({ error: 'Query is required' }, 400);
+    return corsJson({ error: 'Query is required' }, 400, corsOrigin);
   }
 
   const lang = ['en', 'de', 'ru', 'ua'].includes(language) ? language : 'en';
@@ -130,22 +139,14 @@ export async function onRequest(context: CFContext): Promise<Response> {
   // Check for greeting
   const greetingPattern = GREETINGS[lang] || GREETINGS.en;
   if (greetingPattern.test(trimmed)) {
-    return corsJson({
-      answer: GREETING_RESPONSES[lang] || GREETING_RESPONSES.en,
-      sources: [],
-      type: 'greeting',
-    });
+    return corsJson({ answer: GREETING_RESPONSES[lang] || GREETING_RESPONSES.en, sources: [], type: 'greeting' }, 200, corsOrigin);
   }
 
   // Search knowledge base
   const results = search(trimmed, lang, 3);
 
   if (results.length === 0) {
-    return corsJson({
-      answer: FALLBACK_RESPONSES[lang] || FALLBACK_RESPONSES.en,
-      sources: [],
-      type: 'fallback',
-    });
+    return corsJson({ answer: FALLBACK_RESPONSES[lang] || FALLBACK_RESPONSES.en, sources: [], type: 'fallback' }, 200, corsOrigin);
   }
 
   // Build answer from top result(s)
@@ -166,10 +167,5 @@ export async function onRequest(context: CFContext): Promise<Response> {
   const category = top.chunk.category;
   const followUps = getFollowUps(category, lang);
 
-  return corsJson({
-    answer,
-    sources,
-    type: 'result',
-    followUps,
-  });
+  return corsJson({ answer, sources, type: 'result', followUps }, 200, corsOrigin);
 }
