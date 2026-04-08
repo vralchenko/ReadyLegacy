@@ -3,12 +3,17 @@ import { hashPassword, signToken } from '../_lib/auth';
 import { json } from '../_lib/types';
 import type { CFContext } from '../_lib/types';
 import { eq } from 'drizzle-orm';
+import { checkRateLimit, rateLimitResponse } from '../_lib/rateLimit';
 
 export async function onRequest(context: CFContext): Promise<Response> {
   try {
     if (context.request.method !== 'POST') {
       return json({ error: 'Method not allowed' }, 405);
     }
+
+    const ip = context.request.headers.get('cf-connecting-ip') || 'unknown';
+    const rl = checkRateLimit(`register:${ip}`, 5, 60 * 60 * 1000); // 5 per hour
+    if (!rl.allowed) return rateLimitResponse(rl.retryAfterMs);
 
     const { email, password, name } = (await context.request.json()) as any;
     if (!email || !password || !name) {

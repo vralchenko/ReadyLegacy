@@ -21,6 +21,7 @@ import Profile from './pages/Profile';
 import Impressum from './pages/Impressum';
 import Privacy from './pages/Privacy';
 import Pricing from './pages/Pricing';
+import Terms from './pages/Terms';
 
 const App: React.FC = () => {
     return (
@@ -60,6 +61,7 @@ const Main = () => {
                     <Route path="/impressum" element={<Impressum />} />
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/terms" element={<Terms />} />
                 </Routes>
             </main>
             <Footer />

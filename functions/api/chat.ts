@@ -1,5 +1,6 @@
 import type { CFContext } from './_lib/types';
 import { search } from '../../api/knowledge/search';
+import { checkRateLimit } from './_lib/rateLimit';
 
 const GREETINGS: Record<string, RegExp> = {
   en: /^(hi|hello|hey|good\s*(morning|afternoon|evening)|howdy|greetings)\b/i,
@@ -112,6 +113,10 @@ export async function onRequest(context: CFContext): Promise<Response> {
   if (context.request.method !== 'POST') {
     return corsJson({ error: 'Method not allowed' }, 405);
   }
+
+  const ip = context.request.headers.get('cf-connecting-ip') || 'unknown';
+  const rl = checkRateLimit(`chat:${ip}`, 30, 60 * 1000); // 30 per minute
+  if (!rl.allowed) return corsJson({ error: 'Too many requests. Please slow down.' }, 429);
 
   const { query, language = 'en' } = (await context.request.json()) as any;
 
