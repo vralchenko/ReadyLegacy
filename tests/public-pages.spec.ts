@@ -33,7 +33,7 @@ test.describe('Home page', () => {
     await expect(page.getByRole('link', { name: 'Mission' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Tools', exact: true })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Documents', exact: true })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Team', exact: true })).toBeVisible();
+    // Team page temporarily hidden (Olga's request)
   });
 
   test('footer with compliance badges is visible', async ({ page }) => {
@@ -59,13 +59,10 @@ test.describe('Mission page', () => {
   });
 });
 
-test.describe('Team page', () => {
-  test('renders founder profiles', async ({ page }) => {
+test.describe('Team page (temporarily hidden)', () => {
+  test('/team redirects to home', async ({ page }) => {
     await page.goto('/team');
-    await expect(page).toHaveURL(/\/team/);
-    await expect(page.getByText(/Inna/).first()).toBeVisible();
-    await expect(page.getByText(/Olga/).first()).toBeVisible();
-    await expect(page.getByText(/Viktor/).first()).toBeVisible();
+    await expect(page).toHaveURL('/');
   });
 });
 
@@ -100,11 +97,7 @@ test.describe('Navigation', () => {
     await expect(page).toHaveURL(/\/mission/);
   });
 
-  test('navigate from Home to Team', async ({ page }) => {
-    await page.goto('/');
-    await page.getByRole('link', { name: /team/i }).click();
-    await expect(page).toHaveURL(/\/team/);
-  });
+  // Team link removed from navigation (temporarily hidden)
 
   test('clicking logo navigates to home', async ({ page }) => {
     await page.goto('/mission');

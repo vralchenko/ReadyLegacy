@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
@@ -12,7 +12,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Mission from './pages/Mission';
 import Tools from './pages/Tools';
-import Team from './pages/Team';
+// Team page temporarily hidden (Olga's bank compliance disclosure requirement)
+// import Team from './pages/Team';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Documents from './pages/Documents';
@@ -51,7 +52,7 @@ const Main = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/mission" element={<Mission />} />
                     <Route path="/tools" element={<Tools />} />
-                    <Route path="/team" element={<Team />} />
+                    <Route path="/team" element={<Navigate to="/" replace />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/documents" element={<ProtectedRoute><Documents /></ProtectedRoute>} />
