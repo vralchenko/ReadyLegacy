@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useDemoMode } from '../../context/DemoContext';
 import { DEMO_LEGAL_DOCS, fillDemoLegal } from '../../lib/demoData';
@@ -169,9 +170,14 @@ const LegalDocs: React.FC = () => {
             <div className="tool-header" style={{ marginBottom: '32px' }}>
                 <h2 style={{ fontWeight: 700 }}>{t('tag_legal') || 'Legal Framework'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '12px' }}>
-                    All your essential legal documents in one place. Track their status and store location information for your heirs.
+                    {t('legal_desc') || 'All your essential legal documents in one place. Track their status and store location information for your heirs.'}
                 </p>
-                <button onClick={() => { fillDemoLegal(); window.location.reload(); }} style={{ marginTop: '12px', padding: '6px 14px', borderRadius: '8px', border: '1px solid #10b981', background: 'rgba(16,185,129,0.08)', color: '#10b981', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}>⚡ Fill Demo Data</button>
+                <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
+                    <button onClick={() => { fillDemoLegal(); window.location.reload(); }} style={{ padding: '6px 14px', borderRadius: '8px', border: '1px solid #10b981', background: 'rgba(16,185,129,0.08)', color: '#10b981', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}>⚡ Fill Demo Data</button>
+                    <Link to="/documents" style={{ padding: '6px 14px', borderRadius: '8px', border: '1px solid var(--accent-gold)', background: 'rgba(251,191,36,0.08)', color: 'var(--accent-gold)', fontSize: '0.8rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        📄 {t('legal_view_documents') || 'View Saved Documents'}
+                    </Link>
+                </div>
             </div>
 
             {/* Progress summary */}

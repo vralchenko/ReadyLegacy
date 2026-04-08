@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useLocation } from 'react-router-dom';
+import { useSearchParams, useLocation, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import Sidebar from '../components/tools/Sidebar';
 import AssetOverview from '../components/tools/AssetOverview';
 import LegalDocs from '../components/tools/LegalDocs';
@@ -57,10 +58,12 @@ const SECTION_TIER: Record<string, 'free' | 'paid'> = {
 
 const Tools: React.FC = () => {
     const { t } = useLanguage();
+    const { user } = useAuth();
     const [searchParams, setSearchParams] = useSearchParams();
     const initialTool = searchParams.get('tool') || '';
     const [activeTool, setActiveTool] = useState(initialTool);
-    const [tierModal, setTierModal] = useState<'free' | 'paid' | null>(null);
+    const [tierModal, setTierModal] = useState<{ tier: 'free' | 'paid'; section: string } | null>(null);
+    const [storageWarningDismissed, setStorageWarningDismissed] = useState(() => !!sessionStorage.getItem('rl_storage_warning_dismissed'));
 
     const location = useLocation();
 
@@ -131,6 +134,35 @@ const Tools: React.FC = () => {
             <div className="tools-layout">
                 <Sidebar activeTool={activeTool} onSelectTool={handleSelectTool} />
                 <div className="tools-content">
+                    {/* Storage warning banner for non-logged-in users */}
+                    {!user && !storageWarningDismissed && (
+                        <div style={{
+                            display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 20px', marginBottom: '16px',
+                            borderRadius: '12px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.3)',
+                            flexWrap: 'wrap'
+                        }}>
+                            <span style={{ fontSize: '1.3rem', flexShrink: 0 }}>⚠️</span>
+                            <p style={{ flex: 1, margin: 0, fontSize: '0.88rem', color: 'var(--text-color)', lineHeight: 1.5, minWidth: '200px' }}>
+                                {t('storage_warning_text') || 'You are not logged in. Your data is stored only in this browser and will be lost if you clear browser data or switch devices.'}
+                            </p>
+                            <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                                <Link to="/pricing" style={{
+                                    padding: '8px 16px', borderRadius: '8px', border: 'none',
+                                    background: 'var(--accent-gold)', color: '#fff', fontSize: '0.82rem',
+                                    fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap'
+                                }}>
+                                    {t('storage_warning_cta') || 'Create Free Account'}
+                                </Link>
+                                <button onClick={() => { setStorageWarningDismissed(true); sessionStorage.setItem('rl_storage_warning_dismissed', '1'); }} style={{
+                                    padding: '8px 16px', borderRadius: '8px', border: '1px solid rgba(245,158,11,0.3)',
+                                    background: 'transparent', color: 'var(--text-muted)', fontSize: '0.82rem',
+                                    cursor: 'pointer', whiteSpace: 'nowrap'
+                                }}>
+                                    {t('storage_warning_dismiss') || 'I understand, continue'}
+                                </button>
+                            </div>
+                        </div>
+                    )}
                     <div style={{ padding: '8px 0' }}>
                         {TOOL_CARDS.map(section => (
                             <div key={section.section} id={section.section} style={{ marginBottom: '40px', scrollMarginTop: '80px' }}>
@@ -139,7 +171,7 @@ const Tools: React.FC = () => {
                                         {t(SECTION_LABELS[section.section]) || section.section}
                                     </h2>
                                     <span
-                                        onClick={() => setTierModal(SECTION_TIER[section.section])}
+                                        onClick={() => setTierModal({ tier: SECTION_TIER[section.section], section: section.section })}
                                         style={{
                                         padding: '3px 10px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer',
                                         background: SECTION_TIER[section.section] === 'free' ? 'rgba(52,211,153,0.12)' : 'rgba(251,191,36,0.12)',
@@ -181,35 +213,43 @@ const Tools: React.FC = () => {
                         ))}
                     </div>
                     {/* Tier info modal */}
-                    {tierModal && (
+                    {tierModal && (() => {
+                        const tm = tierModal;
+                        const isFree = tm.tier === 'free';
+                        const descKey = isFree
+                            ? (tm.section === 'be_honored' ? 'tier_free_desc_honored' : 'tier_free_desc_ready')
+                            : 'tier_paid_desc';
+                        const itemsKey = isFree
+                            ? (tm.section === 'be_honored' ? 'tier_free_items_honored' : 'tier_free_items_ready')
+                            : 'tier_paid_items';
+                        const items = (t(itemsKey) || '').split(', ').filter(Boolean);
+                        return (
                         <div onClick={() => setTierModal(null)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
                             <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-color)', borderRadius: '16px', border: '1px solid var(--glass-border)', padding: '28px', maxWidth: '420px', width: '90%' }}>
-                                <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '12px', color: tierModal === 'free' ? '#34d399' : 'var(--accent-gold)' }}>
-                                    {tierModal === 'free' ? (t('tier_free_title') || 'Free Tier') : (t('tier_paid_title') || 'Premium — 15 CHF / month')}
+                                <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '12px', color: isFree ? '#34d399' : 'var(--accent-gold)' }}>
+                                    {isFree ? (t('tier_free_title') || 'Free Tier') : (t('tier_paid_title') || 'Premium — 15 CHF / month')}
                                 </h3>
                                 <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '16px' }}>
-                                    {tierModal === 'free'
-                                        ? (t('tier_free_desc') || 'All essential estate planning tools are free to use. Your data is saved locally in your browser. Create an account to save your documents to the cloud.')
-                                        : (t('tier_paid_desc') || 'Premium features include the Digital Legacy Vault and AI Avatar. Store memories, messages, and media for your loved ones. Secure cloud storage with end-to-end encryption.')
+                                    {t(descKey) || (isFree
+                                        ? 'All essential estate planning tools are free to use.'
+                                        : 'Premium features include the Digital Legacy Vault and AI Avatar.')
                                     }
                                 </p>
                                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 20px' }}>
-                                    {(tierModal === 'free'
-                                        ? ['Asset Overview', 'Will Builder', 'Legal Documents', 'Death Checklist', 'Executor Tasks', 'Templates']
-                                        : ['Digital Legacy Vault', 'AI Avatar', 'Unlimited cloud storage', 'Priority support']
-                                    ).map((item, i) => (
+                                    {items.map((item, i) => (
                                         <li key={i} style={{ padding: '4px 0', fontSize: '0.9rem', color: 'var(--text-color)' }}>
-                                            <span style={{ color: tierModal === 'free' ? '#34d399' : 'var(--accent-gold)', marginRight: '8px' }}>✓</span>
+                                            <span style={{ color: isFree ? '#34d399' : 'var(--accent-gold)', marginRight: '8px' }}>✓</span>
                                             {item}
                                         </li>
                                     ))}
                                 </ul>
-                                <button onClick={() => setTierModal(null)} style={{ width: '100%', padding: '10px', borderRadius: '10px', border: 'none', background: tierModal === 'free' ? '#34d399' : 'var(--accent-gold)', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' }}>
+                                <button onClick={() => setTierModal(null)} style={{ width: '100%', padding: '10px', borderRadius: '10px', border: 'none', background: isFree ? '#34d399' : 'var(--accent-gold)', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' }}>
                                     {t('tier_close') || 'Got it'}
                                 </button>
                             </div>
                         </div>
-                    )}
+                        );
+                    })()}
                 </div>
             </div>
         );
@@ -219,6 +259,35 @@ const Tools: React.FC = () => {
         <div className="tools-layout">
             <Sidebar activeTool={activeTool} onSelectTool={handleSelectTool} />
             <div className="tools-content">
+                {/* Storage warning banner for non-logged-in users (inside tool view) */}
+                {!user && !storageWarningDismissed && (
+                    <div style={{
+                        display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 20px', marginBottom: '16px',
+                        borderRadius: '12px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.3)',
+                        flexWrap: 'wrap'
+                    }}>
+                        <span style={{ fontSize: '1.3rem', flexShrink: 0 }}>⚠️</span>
+                        <p style={{ flex: 1, margin: 0, fontSize: '0.88rem', color: 'var(--text-color)', lineHeight: 1.5, minWidth: '200px' }}>
+                            {t('storage_warning_text') || 'You are not logged in. Your data is stored only in this browser and will be lost if you clear browser data or switch devices.'}
+                        </p>
+                        <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                            <Link to="/pricing" style={{
+                                padding: '8px 16px', borderRadius: '8px', border: 'none',
+                                background: 'var(--accent-gold)', color: '#fff', fontSize: '0.82rem',
+                                fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap'
+                            }}>
+                                {t('storage_warning_cta') || 'Create Free Account'}
+                            </Link>
+                            <button onClick={() => { setStorageWarningDismissed(true); sessionStorage.setItem('rl_storage_warning_dismissed', '1'); }} style={{
+                                padding: '8px 16px', borderRadius: '8px', border: '1px solid rgba(245,158,11,0.3)',
+                                background: 'transparent', color: 'var(--text-muted)', fontSize: '0.82rem',
+                                cursor: 'pointer', whiteSpace: 'nowrap'
+                            }}>
+                                {t('storage_warning_dismiss') || 'I understand, continue'}
+                            </button>
+                        </div>
+                    </div>
+                )}
                 {renderTool()}
                 {/* Back / Next navigation */}
                 {activeTool && (

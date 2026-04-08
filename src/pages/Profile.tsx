@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -37,9 +37,9 @@ const COMPLETION_SECTIONS = [
 ];
 
 const PLAN_STYLES = {
-    free: { label: 'Free Plan', color: 'var(--text-muted)', bg: 'var(--glass-bg)', border: 'var(--glass-border)' },
-    premium: { label: 'Premium', color: '#fbbf24', bg: 'rgba(251,191,36,0.1)', border: 'rgba(251,191,36,0.3)' },
-    family: { label: 'Family Plan', color: '#a78bfa', bg: 'rgba(167,139,250,0.1)', border: 'rgba(167,139,250,0.3)' },
+    free: { labelKey: 'profile_plan_free', fallback: 'Free Plan', color: 'var(--text-muted)', bg: 'var(--glass-bg)', border: 'var(--glass-border)' },
+    premium: { labelKey: 'profile_plan_premium', fallback: 'Premium', color: '#fbbf24', bg: 'rgba(251,191,36,0.1)', border: 'rgba(251,191,36,0.3)' },
+    family: { labelKey: 'profile_plan_family', fallback: 'Family Plan', color: '#a78bfa', bg: 'rgba(167,139,250,0.1)', border: 'rgba(167,139,250,0.3)' },
 };
 
 const Profile: React.FC = () => {
@@ -47,6 +47,7 @@ const Profile: React.FC = () => {
     const { theme, toggleTheme } = useTheme();
     const { user } = useAuth();
     const { demoMode, setDemoMode } = useDemoMode();
+    const navigate = useNavigate();
 
     const getInitialProfile = (): ProfileData => {
         const defaultData: ProfileData = {
@@ -113,7 +114,9 @@ const Profile: React.FC = () => {
         ? profile.name.split(' ').slice(0, 2).map(n => n[0]).join('').toUpperCase()
         : '?';
 
-    const planStyle = PLAN_STYLES[profile.plan];
+    const planStyleRaw = PLAN_STYLES[profile.plan];
+    const planLabel = t(planStyleRaw.labelKey) || planStyleRaw.fallback;
+    const planStyle = { ...planStyleRaw, label: planLabel };
 
     return (
         <div style={{ minHeight: '100vh', padding: '20px 0 60px', marginTop: '-60px' }}>
@@ -194,10 +197,10 @@ const Profile: React.FC = () => {
                         <div style={{ padding: '20px', borderRadius: '20px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}>
                             <div style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', marginBottom: '16px' }}>{t('profile_quicklinks') || 'Quick Links'}</div>
                             {[
-                                { to: '/tools', label: '🛠 Tools Dashboard' },
-                                { to: '/documents', label: '📄 My Documents' },
-                                { to: '/tools?tool=templates', label: '📋 Request Templates' },
-                                { to: '/tools?tool=leave-behind', label: '✦ Digital Legacy' },
+                                { to: '/tools', icon: '🛠', labelKey: 'profile_quicklink_tools', fallback: 'Tools Dashboard' },
+                                { to: '/documents', icon: '📄', labelKey: 'profile_quicklink_docs', fallback: 'My Documents' },
+                                { to: '/tools?tool=templates', icon: '📋', labelKey: 'profile_quicklink_templates', fallback: 'Request Templates' },
+                                { to: '/tools?tool=leave-behind', icon: '✦', labelKey: 'profile_quicklink_legacy', fallback: 'Digital Legacy' },
                             ].map(link => (
                                 <Link key={link.to} to={link.to} style={{
                                     display: 'block', padding: '10px 12px', borderRadius: '8px', marginBottom: '8px',
@@ -207,7 +210,7 @@ const Profile: React.FC = () => {
                                     onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'var(--secondary-bg)'; }}
                                     onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
                                 >
-                                    {link.label}
+                                    {link.icon} {t(link.labelKey) || link.fallback}
                                 </Link>
                             ))}
                         </div>
@@ -254,15 +257,15 @@ const Profile: React.FC = () => {
 
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                     {[
-                                        { key: 'name', label: 'Full Name', placeholder: 'John Doe', type: 'text' },
-                                        { key: 'email', label: 'Email Address', placeholder: 'your@email.com', type: 'email' },
-                                        { key: 'phone', label: 'Phone Number', placeholder: '+43 660 000 0000', type: 'tel' },
-                                        { key: 'dob', label: 'Date of Birth', placeholder: '', type: 'date' },
-                                        { key: 'nationality', label: 'Nationality', placeholder: 'e.g. Austrian', type: 'text' },
-                                        { key: 'city', label: 'City / Country', placeholder: 'Vienna, Austria', type: 'text' },
+                                        { key: 'name', labelKey: 'profile_full_name', fallback: 'Full Name', placeholder: 'John Doe', type: 'text' },
+                                        { key: 'email', labelKey: 'profile_email_address', fallback: 'Email Address', placeholder: 'your@email.com', type: 'email' },
+                                        { key: 'phone', labelKey: 'profile_phone_number', fallback: 'Phone Number', placeholder: '+41 79 000 0000', type: 'tel' },
+                                        { key: 'dob', labelKey: 'profile_date_of_birth', fallback: 'Date of Birth', placeholder: '', type: 'date' },
+                                        { key: 'nationality', labelKey: 'profile_nationality', fallback: 'Nationality', placeholder: 'e.g. Swiss', type: 'text' },
+                                        { key: 'city', labelKey: 'profile_city_country', fallback: 'City / Country', placeholder: 'Zürich, Switzerland', type: 'text' },
                                     ].map(field => (
                                         <div key={field.key}>
-                                            <label style={{ fontSize: '1rem', color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>{field.label}</label>
+                                            <label style={{ fontSize: '1rem', color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>{t(field.labelKey) || field.fallback}</label>
                                             {editing ? (
                                                 <input
                                                     type={field.type}
@@ -273,7 +276,7 @@ const Profile: React.FC = () => {
                                                 />
                                             ) : (
                                                 <div style={{ padding: '12px 0', fontSize: '1.2rem', color: (profile as any)[field.key] ? 'var(--text-color)' : 'var(--text-muted)', fontStyle: (profile as any)[field.key] ? 'normal' : 'italic' }}>
-                                                    {(profile as any)[field.key] || 'Not set'}
+                                                    {(profile as any)[field.key] || (t('profile_not_set') || 'Not set')}
                                                 </div>
                                             )}
                                         </div>
@@ -282,7 +285,7 @@ const Profile: React.FC = () => {
 
                                 {/* Bio */}
                                 <div style={{ marginTop: '24px' }}>
-                                    <label style={{ fontSize: '1rem', color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>Personal Note / Bio</label>
+                                    <label style={{ fontSize: '1rem', color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>{t('profile_bio') || 'Personal Note / Bio'}</label>
                                     {editing ? (
                                         <textarea
                                             value={draft.bio}
@@ -293,7 +296,7 @@ const Profile: React.FC = () => {
                                         />
                                     ) : (
                                         <div style={{ padding: '12px 0', fontSize: '1.2rem', color: profile.bio ? 'var(--text-color)' : 'var(--text-muted)', fontStyle: profile.bio ? 'normal' : 'italic' }}>
-                                            {profile.bio || 'Not set'}
+                                            {profile.bio || (t('profile_not_set') || 'Not set')}
                                         </div>
                                     )}
                                 </div>
@@ -301,34 +304,34 @@ const Profile: React.FC = () => {
                                 {/* My Beneficiaries */}
                                 <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid var(--glass-border)' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                                        <h3 style={{ fontSize: '1.4rem', margin: 0 }}>My Beneficiaries</h3>
+                                        <h3 style={{ fontSize: '1.4rem', margin: 0 }}>{t('profile_beneficiaries') || 'My Beneficiaries'}</h3>
                                         <button onClick={() => setAddingBeneficiary(!addingBeneficiary)} style={{
                                             padding: '8px 16px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer',
                                             border: '1px solid var(--accent-gold)', color: addingBeneficiary ? '#ff6b6b' : 'var(--accent-gold)',
                                             background: addingBeneficiary ? 'rgba(255,107,107,0.1)' : 'rgba(251,191,36,0.08)',
                                         }}>
-                                            {addingBeneficiary ? 'Cancel' : '+ Add Beneficiary'}
+                                            {addingBeneficiary ? (t('profile_cancel') || 'Cancel') : (t('profile_add_beneficiary') || '+ Add Beneficiary')}
                                         </button>
                                     </div>
                                     <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '16px' }}>
-                                        People who will be notified and receive access when the heartbeat protocol is activated.
+                                        {t('profile_beneficiaries_desc') || 'People who will be notified and receive access when the heartbeat protocol is activated.'}
                                     </p>
 
                                     {addingBeneficiary && (
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '16px', padding: '16px', borderRadius: '12px', background: 'var(--secondary-bg)', border: '1px solid var(--glass-border)' }}>
-                                            <input placeholder="Full Name *" value={benDraft.name} onChange={e => setBenDraft({ ...benDraft, name: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
-                                            <input placeholder="Email" value={benDraft.email} onChange={e => setBenDraft({ ...benDraft, email: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
-                                            <input placeholder="Phone" value={benDraft.phone} onChange={e => setBenDraft({ ...benDraft, phone: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
-                                            <input placeholder="Relationship (e.g. Spouse, Child)" value={benDraft.relationship} onChange={e => setBenDraft({ ...benDraft, relationship: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
+                                            <input placeholder={t('profile_beneficiary_name') || 'Full Name *'} value={benDraft.name} onChange={e => setBenDraft({ ...benDraft, name: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
+                                            <input placeholder={t('profile_beneficiary_email') || 'Email'} value={benDraft.email} onChange={e => setBenDraft({ ...benDraft, email: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
+                                            <input placeholder={t('profile_beneficiary_phone') || 'Phone'} value={benDraft.phone} onChange={e => setBenDraft({ ...benDraft, phone: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
+                                            <input placeholder={t('profile_beneficiary_relationship') || 'Relationship (e.g. Spouse, Child)'} value={benDraft.relationship} onChange={e => setBenDraft({ ...benDraft, relationship: e.target.value })} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', fontSize: '0.9rem' }} />
                                             <div style={{ gridColumn: '1 / -1', textAlign: 'right' }}>
-                                                <button onClick={addBeneficiary} style={{ padding: '8px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>Add</button>
+                                                <button onClick={addBeneficiary} style={{ padding: '8px 20px', borderRadius: '8px', border: 'none', background: 'var(--accent-gold)', color: '#fff', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}>{t('profile_add_btn') || 'Add'}</button>
                                             </div>
                                         </div>
                                     )}
 
                                     {beneficiaries.length === 0 && !addingBeneficiary && (
                                         <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem', borderRadius: '12px', border: '1px dashed var(--glass-border)' }}>
-                                            No beneficiaries added yet. Click "+ Add Beneficiary" to get started.
+                                            {t('profile_no_beneficiaries') || 'No beneficiaries added yet. Click "+ Add Beneficiary" to get started.'}
                                         </div>
                                     )}
 
@@ -340,7 +343,7 @@ const Profile: React.FC = () => {
                                                     {[b.relationship, b.email, b.phone].filter(Boolean).join(' · ')}
                                                 </div>
                                             </div>
-                                            <button onClick={() => removeBeneficiary(b.id)} style={{ background: 'none', border: 'none', color: '#ff6b6b', cursor: 'pointer', fontSize: '0.8rem' }}>Remove</button>
+                                            <button onClick={() => removeBeneficiary(b.id)} style={{ background: 'none', border: 'none', color: '#ff6b6b', cursor: 'pointer', fontSize: '0.8rem' }}>{t('profile_remove') || 'Remove'}</button>
                                         </div>
                                     ))}
                                 </div>
@@ -374,27 +377,27 @@ const Profile: React.FC = () => {
                                 <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '24px' }}>
                                     <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>{t('profile_theme') || 'Theme'}</h4>
                                     <div style={{ display: 'flex', gap: '12px' }}>
-                                        {[{ key: 'dark', label: '🌙 Dark Mode' }, { key: 'light', label: '☀️ Light Mode' }].map(t => (
+                                        {[{ key: 'dark', labelKey: 'profile_dark_mode', icon: '🌙', fallback: 'Dark Mode' }, { key: 'light', labelKey: 'profile_light_mode', icon: '☀️', fallback: 'Light Mode' }].map(th => (
                                             <button
-                                                key={t.key}
-                                                onClick={() => { if ((t.key === 'light') !== (theme === 'light')) toggleTheme(); }}
+                                                key={th.key}
+                                                onClick={() => { if ((th.key === 'light') !== (theme === 'light')) toggleTheme(); }}
                                                 style={{
                                                     flex: 1, padding: '14px', borderRadius: '12px',
-                                                    border: `1px solid ${theme === t.key ? 'var(--accent-gold)' : 'var(--glass-border)'}`,
-                                                    background: theme === t.key ? 'var(--secondary-bg)' : 'transparent',
-                                                    color: theme === t.key ? 'var(--accent-gold)' : 'var(--text-muted)',
-                                                    cursor: 'pointer', fontSize: '1.1rem', fontWeight: theme === t.key ? 700 : 400, transition: 'all 0.2s'
+                                                    border: `1px solid ${theme === th.key ? 'var(--accent-gold)' : 'var(--glass-border)'}`,
+                                                    background: theme === th.key ? 'var(--secondary-bg)' : 'transparent',
+                                                    color: theme === th.key ? 'var(--accent-gold)' : 'var(--text-muted)',
+                                                    cursor: 'pointer', fontSize: '1.1rem', fontWeight: theme === th.key ? 700 : 400, transition: 'all 0.2s'
                                                 }}
-                                            >{t.label}</button>
+                                            >{th.icon} {t(th.labelKey) || th.fallback}</button>
                                         ))}
                                     </div>
                                 </div>
 
                                 {/* Demo Mode */}
                                 <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '24px' }}>
-                                    <h4 style={{ marginBottom: '8px', fontSize: '1.4rem' }}>Demo Mode</h4>
+                                    <h4 style={{ marginBottom: '8px', fontSize: '1.4rem' }}>{t('profile_demo_mode') || 'Demo Mode'}</h4>
                                     <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '16px' }}>
-                                        Pre-fill all tools with sample data for demonstration purposes.
+                                        {t('profile_demo_desc') || 'Pre-fill all tools with sample data for demonstration purposes.'}
                                     </p>
                                     <div style={{ display: 'flex', gap: '8px' }}>
                                         {([false, true] as const).map(on => (
@@ -409,7 +412,7 @@ const Profile: React.FC = () => {
                                                     cursor: 'pointer', fontWeight: demoMode === on ? 700 : 400,
                                                     fontSize: '0.9rem', transition: 'all 0.2s', textTransform: 'uppercase'
                                                 }}
-                                            >{on ? 'ON' : 'OFF'}</button>
+                                            >{on ? (t('profile_demo_on') || 'ON') : (t('profile_demo_off') || 'OFF')}</button>
                                         ))}
                                     </div>
                                 </div>
@@ -417,13 +420,13 @@ const Profile: React.FC = () => {
                                 {/* Notifications */}
                                 <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '24px' }}>
                                     <h4 style={{ marginBottom: '12px', fontSize: '1.4rem' }}>{t('auto_email_reminders') || 'Email Reminders'}</h4>
-                                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '16px' }}>Get reminded to keep your estate documents up to date.</p>
+                                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '16px' }}>{t('profile_reminders_desc') || 'Get reminded to keep your estate documents up to date.'}</p>
                                     <Link to="/tools?tool=reminders" style={{
                                         display: 'inline-block', padding: '12px 24px', borderRadius: '10px',
                                         border: '1px solid var(--accent-gold)', color: 'var(--accent-gold)',
                                         fontSize: '1.1rem', fontWeight: 600, transition: 'all 0.2s'
                                     }}>
-                                        📧 Manage Reminders →
+                                        📧 {t('profile_manage_reminders') || 'Manage Reminders →'}
                                     </Link>
                                 </div>
 
@@ -432,11 +435,11 @@ const Profile: React.FC = () => {
                                     <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>{t('profile_security') || 'Security'}</h4>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         {[
-                                            { label: 'Change Password', icon: '🔑' },
-                                            { label: 'Enable Two-Factor Auth', icon: '🛡️' },
-                                            { label: 'Connected Accounts (OAuth)', icon: '🔗' },
+                                            { labelKey: 'profile_change_password', fallback: 'Change Password', icon: '🔑' },
+                                            { labelKey: 'profile_2fa', fallback: 'Enable Two-Factor Auth', icon: '🛡️' },
+                                            { labelKey: 'profile_connected_accounts', fallback: 'Connected Accounts (OAuth)', icon: '🔗' },
                                         ].map(item => (
-                                            <button key={item.label} style={{
+                                            <button key={item.labelKey} style={{
                                                 display: 'flex', alignItems: 'center', gap: '10px', padding: '16px 20px',
                                                 borderRadius: '10px', border: '1px solid var(--glass-border)',
                                                 background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer',
@@ -445,7 +448,7 @@ const Profile: React.FC = () => {
                                                 onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent-gold)'}
                                                 onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--glass-border)'}
                                             >
-                                                <span>{item.icon}</span> {item.label}
+                                                <span>{item.icon}</span> {t(item.labelKey) || item.fallback}
                                                 <span style={{ marginLeft: 'auto', opacity: 0.3 }}>→</span>
                                             </button>
                                         ))}
@@ -466,7 +469,7 @@ const Profile: React.FC = () => {
                                         }}>
                                             {planStyle.label}
                                         </span>
-                                        {profile.plan === 'free' && <span style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>Upgrade to unlock all features</span>}
+                                        {profile.plan === 'free' && <span style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{t('profile_upgrade_hint') || 'Upgrade to unlock all features'}</span>}
                                     </div>
 
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
@@ -494,12 +497,19 @@ const Profile: React.FC = () => {
                                                         style={{
                                                             marginTop: 'auto', paddingTop: '14px', padding: '12px', borderRadius: '8px', border: `1px solid ${ts.border}`,
                                                             background: profile.plan === tier.plan ? ts.bg : 'transparent',
-                                                            color: ts.color, cursor: 'pointer', fontSize: '1rem',
+                                                            color: ts.color, cursor: profile.plan === tier.plan ? 'default' : 'pointer', fontSize: '1rem',
                                                             fontWeight: profile.plan === tier.plan ? 700 : 400, transition: 'all 0.2s'
                                                         }}
-                                                        onClick={() => setProfile({ ...profile, plan: tier.plan })}
+                                                        onClick={() => {
+                                                            if (profile.plan === tier.plan) return;
+                                                            if (tier.plan === 'free') {
+                                                                setProfile({ ...profile, plan: 'free' });
+                                                            } else {
+                                                                navigate('/pricing');
+                                                            }
+                                                        }}
                                                     >
-                                                        {profile.plan === tier.plan ? 'Current Plan' : `Select ${tier.label}`}
+                                                        {profile.plan === tier.plan ? (t('profile_current_plan') || 'Current Plan') : `${t('profile_select_plan') || 'Select'} ${tier.label}`}
                                                     </button>
                                                 </div>
                                             );
