@@ -53,6 +53,9 @@ const WillBuilder: React.FC = () => {
             <div className="tool-header" style={{ marginBottom: '40px' }}>
                 <h2 style={{ fontWeight: 700 }}>{t('tag_will') || 'Will Builder'}</h2>
                 <p style={{ opacity: 0.7, marginTop: '16px' }}>{t('desc_will')}</p>
+                <div style={{ marginTop: '16px', padding: '14px 16px', borderRadius: '10px', background: 'rgba(255,215,0,0.05)', border: '1px solid rgba(255,215,0,0.15)', fontSize: '0.83rem', fontStyle: 'italic', opacity: 0.85 }}>
+                    {t('disclaimer_will') || 'This tool helps you organize your estate wishes. It does NOT create a legally valid will. Under Swiss law (ZGB Art. 505), a valid will must be entirely handwritten, dated, and signed by hand. Please consult a notary or lawyer.'}
+                </div>
                 <button onClick={() => { fillDemoWill(); window.location.reload(); }} style={{ marginTop: '12px', padding: '6px 14px', borderRadius: '8px', border: '1px solid #10b981', background: 'rgba(16,185,129,0.08)', color: '#10b981', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}>⚡ Fill Demo Data</button>
             </div>
 

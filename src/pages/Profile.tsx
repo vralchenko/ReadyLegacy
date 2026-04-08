@@ -454,6 +454,66 @@ const Profile: React.FC = () => {
                                         ))}
                                     </div>
                                 </div>
+
+                                {/* Data & Privacy */}
+                                <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '28px' }}>
+                                    <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>{t('profile_data_privacy') || 'Data & Privacy'}</h4>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                        <button
+                                            onClick={async () => {
+                                                const token = localStorage.getItem('readylegacy_token');
+                                                if (!token) return;
+                                                try {
+                                                    const res = await fetch('/api/user-data/export', { headers: { Authorization: `Bearer ${token}` } });
+                                                    const blob = await res.blob();
+                                                    const url = URL.createObjectURL(blob);
+                                                    const a = document.createElement('a');
+                                                    a.href = url;
+                                                    a.download = 'readylegacy-export.json';
+                                                    a.click();
+                                                    URL.revokeObjectURL(url);
+                                                } catch { alert('Export failed'); }
+                                            }}
+                                            style={{
+                                                display: 'flex', alignItems: 'center', gap: '10px', padding: '16px 20px',
+                                                borderRadius: '10px', border: '1px solid var(--glass-border)',
+                                                background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer',
+                                                textAlign: 'left', fontSize: '1.1rem', transition: 'all 0.2s'
+                                            }}
+                                            onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent-gold)'}
+                                            onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--glass-border)'}
+                                        >
+                                            <span>📥</span> {t('profile_export_data') || 'Export My Data'}
+                                            <span style={{ marginLeft: 'auto', opacity: 0.3 }}>→</span>
+                                        </button>
+                                        <button
+                                            onClick={async () => {
+                                                const confirmed = window.confirm(t('profile_delete_confirm') || 'Are you sure you want to permanently delete your account and all data? This action cannot be undone.');
+                                                if (!confirmed) return;
+                                                const token = localStorage.getItem('readylegacy_token');
+                                                if (!token) return;
+                                                try {
+                                                    const res = await fetch('/api/auth/account', { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+                                                    if (res.ok) {
+                                                        localStorage.clear();
+                                                        window.location.href = '/';
+                                                    } else {
+                                                        alert('Deletion failed. Please contact support.');
+                                                    }
+                                                } catch { alert('Deletion failed'); }
+                                            }}
+                                            style={{
+                                                display: 'flex', alignItems: 'center', gap: '10px', padding: '16px 20px',
+                                                borderRadius: '10px', border: '1px solid rgba(239,68,68,0.3)',
+                                                background: 'rgba(239,68,68,0.05)', color: '#ef4444', cursor: 'pointer',
+                                                textAlign: 'left', fontSize: '1.1rem', transition: 'all 0.2s'
+                                            }}
+                                        >
+                                            <span>🗑️</span> {t('profile_delete_account') || 'Delete My Account'}
+                                            <span style={{ marginLeft: 'auto', opacity: 0.3 }}>→</span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         )}
 

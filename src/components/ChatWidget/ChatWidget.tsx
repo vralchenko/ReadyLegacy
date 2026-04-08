@@ -210,6 +210,9 @@ const ChatWidget: React.FC = () => {
                 <div className="chat-msg-avatar">✦</div>
                 <div className="chat-bubble chat-bubble--bot">
                   {renderBoldText(t('chat_welcome') || 'Hello! I\'m the **Ready Legacy Assistant**. Ask me about estate planning, tools, or documents.')}
+                  <div style={{ marginTop: '8px', padding: '8px 10px', borderRadius: '8px', background: 'rgba(255,215,0,0.06)', border: '1px solid rgba(255,215,0,0.12)', fontSize: '0.75rem', fontStyle: 'italic', opacity: 0.8 }}>
+                    {t('disclaimer_chat') || 'I provide general information only — not legal, financial, or medical advice. Please consult a qualified professional for specific guidance.'}
+                  </div>
                   <div className="chat-bubble-time">{formatTime()}</div>
                 </div>
               </div>

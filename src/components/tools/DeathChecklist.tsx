@@ -120,6 +120,9 @@ const DeathChecklist: React.FC = () => {
                 <p style={{ opacity: 0.5, marginTop: '6px', fontSize: '0.8rem', fontStyle: 'italic' }}>
                     {t('dc_source') || 'Based on the Pro Senectute guide for Switzerland'}
                 </p>
+                <div style={{ marginTop: '16px', padding: '14px 16px', borderRadius: '10px', background: 'rgba(255,215,0,0.05)', border: '1px solid rgba(255,215,0,0.15)', fontSize: '0.83rem', fontStyle: 'italic', opacity: 0.85 }}>
+                    {t('disclaimer_death_checklist') || 'This checklist is based on Swiss procedures and may vary by canton or country. It is for informational purposes only. Please consult local authorities or a professional advisor for your specific situation.'}
+                </div>
             </div>
 
             {/* Overall progress */}

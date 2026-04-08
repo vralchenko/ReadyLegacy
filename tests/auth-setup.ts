@@ -17,6 +17,11 @@ setup('create test account and save auth state', async ({ page }) => {
     await page.getByPlaceholder(/name/i).fill('E2E Test User');
     await page.getByPlaceholder('your@email.com').fill(email);
     await page.locator('input[type="password"]').fill(password);
+    // Accept privacy policy consent checkbox
+    const consentCheckbox = page.locator('input[type="checkbox"]');
+    if (await consentCheckbox.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await consentCheckbox.check();
+    }
     await page.locator('form button[type="submit"]').click();
 
     try {

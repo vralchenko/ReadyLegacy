@@ -36,9 +36,9 @@ const Impressum: React.FC = () => {
                         {t('impressum_hosting') || 'Hosting'}
                     </h3>
                     <p>
-                        Vercel Inc.<br />
-                        440 N Baxter St, Los Angeles, CA 90012, USA<br />
-                        {t('impressum_hosting_note') || 'Data is processed on Vercel edge servers. For EU/Swiss users, data is primarily served from European edge locations.'}
+                        Cloudflare Inc.<br />
+                        101 Townsend St, San Francisco, CA 94107, USA<br />
+                        {t('impressum_hosting_note') || 'Data is processed on Cloudflare edge servers. For EU/Swiss users, data is primarily served from European edge locations. Database hosted on Neon PostgreSQL (EU region: Frankfurt).'}
                     </p>
 
                     <h3 style={{ marginTop: '24px', marginBottom: '12px', color: 'var(--accent-gold)' }}>

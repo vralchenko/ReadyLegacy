@@ -47,6 +47,7 @@ const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [consent, setConsent] = useState(false);
     const [loading, setLoading] = useState<string | null>(null);
     const [error, setError] = useState('');
 
@@ -54,6 +55,7 @@ const Login: React.FC = () => {
         e.preventDefault();
         if (!email || !password) { setError(t('login_error_fields') || 'Please fill in all required fields.'); return; }
         if (mode === 'signup' && password.length < 6) { setError('Password must be at least 6 characters.'); return; }
+        if (mode === 'signup' && !consent) { setError(t('consent_required') || 'You must accept the Privacy Policy to create an account.'); return; }
         setLoading('email');
         setError('');
         try {
@@ -157,6 +159,22 @@ const Login: React.FC = () => {
                                 style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-color)', boxSizing: 'border-box', fontSize: '0.85rem' }}
                             />
                         </div>
+
+                        {mode === 'signup' && (
+                            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.78rem', opacity: 0.85, cursor: 'pointer', marginTop: '2px' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={consent}
+                                    onChange={e => setConsent(e.target.checked)}
+                                    style={{ marginTop: '2px', accentColor: 'var(--accent-gold)' }}
+                                />
+                                <span>
+                                    {t('consent_agree') || 'I agree to the'}{' '}
+                                    <Link to="/privacy" target="_blank" style={{ color: 'var(--accent-gold)' }}>{t('footer_privacy') || 'Privacy Policy'}</Link>
+                                    {' '}{t('consent_and_age') || 'and confirm I am at least 18 years old.'}
+                                </span>
+                            </label>
+                        )}
 
                         {error && (
                             <div style={{ padding: '8px 12px', borderRadius: '8px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444', fontSize: '0.78rem' }}>

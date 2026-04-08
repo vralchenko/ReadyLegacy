@@ -178,6 +178,9 @@ const LegalDocs: React.FC = () => {
                         📄 {t('legal_view_documents') || 'View Saved Documents'}
                     </Link>
                 </div>
+                <div style={{ marginTop: '16px', padding: '14px 16px', borderRadius: '10px', background: 'rgba(255,215,0,0.05)', border: '1px solid rgba(255,215,0,0.15)', fontSize: '0.83rem', fontStyle: 'italic', opacity: 0.85 }}>
+                    {t('disclaimer_legal_docs') || 'This tool helps you track your legal documents. The information stored here is for organizational purposes only and does not replace professional legal advice.'}
+                </div>
             </div>
 
             {/* Progress summary */}
