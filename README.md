@@ -8,7 +8,7 @@ Digital platform for estate planning, legacy management, and bereavement support
 
 1. **Be Ready** — Estate planning: asset overview, will builder, legal documents, checklists, executor tasks, document templates
 2. **Leave Behind** — Digital legacy: personal messages, media vault, AI Avatar (beta)
-3. **Be Honored** — Bereavement support: grief resources, support groups, guided healing
+3. **Be Honored** — Digital memorial world: personalized virtual memorial spaces, memorial shop (flowers, candles), main revenue driver
 
 ## Pricing
 

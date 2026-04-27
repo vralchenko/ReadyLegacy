@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useDemoMode } from '../context/DemoContext';
 import useSyncedState from '../hooks/useSyncedState';
+import MfaSetup from '../components/MfaSetup';
 
 interface Beneficiary {
     id: string;
@@ -434,9 +435,12 @@ const Profile: React.FC = () => {
                                 <div style={{ background: 'var(--glass-bg)', borderRadius: '20px', border: '1px solid var(--glass-border)', padding: '28px' }}>
                                     <h4 style={{ marginBottom: '16px', fontSize: '1.4rem' }}>{t('profile_security') || 'Security'}</h4>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                        {/* MFA Setup Component */}
+                                        <div style={{ padding: '16px 20px', borderRadius: '10px', border: '1px solid var(--glass-border)' }}>
+                                            <MfaSetup />
+                                        </div>
                                         {[
                                             { labelKey: 'profile_change_password', fallback: 'Change Password', icon: '🔑' },
-                                            { labelKey: 'profile_2fa', fallback: 'Enable Two-Factor Auth', icon: '🛡️' },
                                             { labelKey: 'profile_connected_accounts', fallback: 'Connected Accounts (OAuth)', icon: '🔗' },
                                         ].map(item => (
                                             <button key={item.labelKey} style={{

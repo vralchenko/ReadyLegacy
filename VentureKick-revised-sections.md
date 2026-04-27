@@ -95,7 +95,7 @@ Role-based access for trusted individuals (spouse, lawyer, executor), granular p
 Video, audio, and written messages for loved ones with scheduled and trigger-based delivery, memory albums, and AI-assisted legacy creation.
 
 **Phase 5 — Be Honored Module (Q1 2027)**
-Structured remembrance environment, personalized bereavement pathway, executor dashboard, and memorial pages.
+Next-level digital cemetery: virtual memorial world where users create personalized memorial spaces (island, moon, forest). Memorial shop (flowers, candles, keepsakes) as main revenue driver. Reflects culture, religion, and personality of the deceased.
 
 Within the next 3–9 months, the team aims to:
 - complete Phase 1 (backend, authentication, encrypted storage)

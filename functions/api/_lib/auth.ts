@@ -32,3 +32,14 @@ export async function hashPassword(password: string): Promise<string> {
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {
   return bcrypt.compare(password, hash);
 }
+
+export async function signMfaChallengeToken(
+  payload: { userId: string; email: string },
+  secret: string,
+): Promise<string> {
+  const key = new TextEncoder().encode(secret);
+  return new SignJWT({ ...payload, mfaChallenge: true } as unknown as Record<string, unknown>)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('5m')
+    .sign(key);
+}

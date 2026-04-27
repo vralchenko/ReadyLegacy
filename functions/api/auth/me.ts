@@ -2,7 +2,7 @@ import { getDb, schema } from '../_lib/db';
 import { getUserId } from '../_lib/middleware';
 import { json } from '../_lib/types';
 import type { CFContext } from '../_lib/types';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 
 export async function onRequest(context: CFContext): Promise<Response> {
   if (context.request.method !== 'GET') {
@@ -26,5 +26,13 @@ export async function onRequest(context: CFContext): Promise<Response> {
     .limit(1);
 
   if (!user) return json({ error: 'User not found' }, 404);
-  return json({ user });
+
+  // Check MFA status
+  const [mfaRow] = await db
+    .select()
+    .from(schema.userData)
+    .where(and(eq(schema.userData.userId, userId), eq(schema.userData.key, '_mfa_enabled')))
+    .limit(1);
+
+  return json({ user: { ...user, mfaEnabled: mfaRow ? (mfaRow.value as boolean) === true : false } });
 }

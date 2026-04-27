@@ -73,7 +73,7 @@ const Privacy: React.FC = () => {
                     <h3 style={{ marginTop: '24px', marginBottom: '12px', color: 'var(--accent-gold)' }}>
                         8. {t('privacy_retention_title') || 'Data Retention'}
                     </h3>
-                    <p>{t('privacy_retention_text') || 'We retain your data for as long as your account is active. Upon account deletion, all personal data is permanently removed from our database. Backup copies may persist for up to 30 days after deletion.'}</p>
+                    <p>{t('privacy_retention_text_updated') || 'Documents and estate planning data are stored for a minimum of 10 years in accordance with Swiss legal requirements (OR Art. 958f). Upon account deletion, your data is soft-deleted (archived) and retained for the legally required period. Active account data is retained as long as your account is active. Backup copies may persist for up to 30 days after permanent deletion.'}</p>
 
                     <h3 style={{ marginTop: '24px', marginBottom: '12px', color: 'var(--accent-gold)' }}>
                         9. {t('privacy_contact_title') || 'Contact'}

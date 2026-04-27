@@ -78,18 +78,16 @@
 ---
 
 ## Phase 5: Be Honored (Pillar 3) — Q1 2027
-*Goal: Support for those left behind*
+*Goal: Next-level digital cemetery — virtual memorial world and main revenue driver*
 
-- [ ] **Bereavement Pathway v2**: Personalized step-by-step guidance after loss
-- [ ] **Practical Checklists**: Country-specific post-death procedures (Switzerland, DACH region)
-- [ ] **Emotional Support Hub**: Curated resources, grief stages, self-care tools
-- [ ] **Memorial Pages**: Digital tribute pages for honoring loved ones
-- [ ] **Community Support**: Moderated peer support groups
-- [ ] **Professional Directory**: Certified therapists, notaries, estate lawyers
+- [ ] **Virtual Memorial World**: Game-like 3D environments (island, moon, forest, meadow) for personalized memorial spaces
+- [ ] **Memorial Customization**: Choose tomb type (crypt to meadow), reflect culture, religion, and personality of the deceased
+- [ ] **Memorial Shop**: Buy flowers, light candles, place keepsakes — primary revenue generator
+- [ ] **Community Memorials**: Visit and honor others' memorial spaces
 - [ ] **Executor Dashboard**: Task management for estate executors
 - [ ] **Message Delivery**: Released messages from the deceased to recipients
 
-**Deliverable:** Families receive structured support through the most difficult time.
+**Deliverable:** A personalized digital memorial world where families create, visit, and maintain virtual memorial spaces.
 
 ---
 

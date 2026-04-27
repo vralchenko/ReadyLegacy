@@ -1,8 +1,8 @@
 import { getDb, schema } from '../_lib/db';
-import { verifyPassword, signToken } from '../_lib/auth';
+import { verifyPassword, signToken, signMfaChallengeToken } from '../_lib/auth';
 import { json } from '../_lib/types';
 import type { CFContext } from '../_lib/types';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { checkRateLimit, rateLimitResponse } from '../_lib/rateLimit';
 import { logAudit, getRequestMeta } from '../_lib/audit';
 
@@ -33,6 +33,12 @@ export async function onRequest(context: CFContext): Promise<Response> {
     return json({ error: 'Invalid email or password' }, 401);
   }
 
+  // Check if account is soft-deleted
+  if (user.passwordHash === '__DELETED__') {
+    context.waitUntil(logAudit(context.env.DATABASE_URL, { userId: user.id, action: 'login_failed', resource: 'auth', details: { reason: 'account_deleted' }, ...meta }));
+    return json({ error: 'This account has been deactivated.' }, 401);
+  }
+
   if (!user.passwordHash) {
     context.waitUntil(logAudit(context.env.DATABASE_URL, { userId: user.id, action: 'login_failed', resource: 'auth', details: { reason: 'google_only' }, ...meta }));
     return json(
@@ -45,6 +51,20 @@ export async function onRequest(context: CFContext): Promise<Response> {
   if (!valid) {
     context.waitUntil(logAudit(context.env.DATABASE_URL, { userId: user.id, action: 'login_failed', resource: 'auth', details: { reason: 'invalid_password' }, ...meta }));
     return json({ error: 'Invalid email or password' }, 401);
+  }
+
+  // Check if MFA is enabled
+  const [mfaRow] = await db
+    .select()
+    .from(schema.userData)
+    .where(and(eq(schema.userData.userId, user.id), eq(schema.userData.key, '_mfa_enabled')))
+    .limit(1);
+
+  if (mfaRow && (mfaRow.value as any) === true) {
+    // Return challenge token instead of full JWT
+    const challengeToken = await signMfaChallengeToken({ userId: user.id, email: user.email }, context.env.JWT_SECRET);
+    context.waitUntil(logAudit(context.env.DATABASE_URL, { userId: user.id, action: 'login_mfa_required', resource: 'auth', ...meta }));
+    return json({ mfaRequired: true, challengeToken });
   }
 
   context.waitUntil(logAudit(context.env.DATABASE_URL, { userId: user.id, action: 'login_success', resource: 'auth', ...meta }));

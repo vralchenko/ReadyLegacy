@@ -7,8 +7,9 @@ const Login: React.FC = () => {
     const { t } = useLanguage();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const { user, login, register } = useAuth();
-    const [mode, setMode] = useState<'login' | 'signup' | 'forgot' | 'reset'>('login');
+    const { user, login, register, mfaPending, verifyMfa, cancelMfa } = useAuth();
+    const [mode, setMode] = useState<'login' | 'signup' | 'forgot' | 'reset' | 'mfa'>('login');
+    const [mfaCode, setMfaCode] = useState('');
 
     // Handle OAuth callback (token in URL from google-callback redirect)
     useEffect(() => {
@@ -63,20 +64,48 @@ const Login: React.FC = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
+    // When mfaPending changes, switch to MFA mode
+    useEffect(() => {
+        if (mfaPending) {
+            setMode('mfa');
+            setMfaCode('');
+            setError('');
+            setLoading(null);
+        }
+    }, [mfaPending]);
+
+    const handleMfaVerify = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!mfaPending) return;
+        if (!mfaCode || mfaCode.length < 6) { setError(t('mfa_enter_6_digit') || 'Enter the 6-digit code from your authenticator app'); return; }
+        setLoading('mfa');
+        setError('');
+        try {
+            await verifyMfa(mfaPending.challengeToken, mfaCode);
+            navigate(returnTo);
+        } catch (err: any) {
+            setError(err.message || 'Invalid code');
+        } finally {
+            setLoading(null);
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!email || !password) { setError(t('login_error_fields') || 'Please fill in all required fields.'); return; }
-        if (mode === 'signup' && password.length < 8) { setError(t('login_pw_min_8') || 'Password must be at least 8 characters.'); return; }
+        if (mode === 'signup' && password.length < 12) { setError(t('login_pw_min_12') || 'Password must be at least 12 characters.'); return; }
         if (mode === 'signup' && !consent) { setError(t('consent_required') || 'You must accept the Privacy Policy to create an account.'); return; }
         setLoading('email');
         setError('');
         try {
             if (mode === 'login') {
                 await login(email, password);
+                // If mfaPending was set by login(), don't navigate — useEffect will switch to MFA mode
+                if (!mfaPending) navigate(returnTo);
             } else {
                 await register(email, password, name || 'User');
+                navigate(returnTo);
             }
-            navigate(returnTo);
         } catch (err: any) {
             setError(err.message || 'Something went wrong. Please try again.');
         } finally {
@@ -115,7 +144,7 @@ const Login: React.FC = () => {
 
     const handleResetPassword = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newPassword || newPassword.length < 8) { setError(t('login_pw_min_8') || 'Password must be at least 8 characters.'); return; }
+        if (!newPassword || newPassword.length < 12) { setError(t('login_pw_min_12') || 'Password must be at least 12 characters.'); return; }
         setLoading('reset');
         setError('');
         setSuccess('');
@@ -190,7 +219,7 @@ const Login: React.FC = () => {
                                 <div>
                                     <label style={{ fontSize: '0.78rem', opacity: 0.8, display: 'block', marginBottom: '4px' }}>{t('login_new_password') || 'New Password'} *</label>
                                     <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="••••••••" style={inputStyle} />
-                                    <span style={{ fontSize: '0.7rem', opacity: 0.5 }}>{t('login_pw_min_8') || 'Minimum 8 characters'}</span>
+                                    <span style={{ fontSize: '0.7rem', opacity: 0.5 }}>{t('login_pw_min_12') || 'Minimum 12 characters'}</span>
                                 </div>
                                 {error && <div style={{ padding: '8px 12px', borderRadius: '8px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444', fontSize: '0.78rem' }}>{error}</div>}
                                 {success && <div style={{ padding: '8px 12px', borderRadius: '8px', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', color: '#10b981', fontSize: '0.78rem' }}>{success}</div>}
@@ -198,6 +227,37 @@ const Login: React.FC = () => {
                                     {loading === 'reset' ? (t('login_processing') || 'Processing...') : (t('login_reset_pw') || 'Reset Password')}
                                 </button>
                             </form>
+                        </>
+                    )}
+
+                    {/* MFA verification form */}
+                    {mode === 'mfa' && (
+                        <>
+                            <h3 style={{ textAlign: 'center', marginBottom: '16px', fontSize: '1.1rem' }}>{t('mfa_verify_title') || 'Two-Factor Authentication'}</h3>
+                            <p style={{ fontSize: '0.8rem', opacity: 0.7, marginBottom: '16px', textAlign: 'center' }}>
+                                {t('mfa_verify_desc') || 'Enter the 6-digit code from your authenticator app, or use a backup code.'}
+                            </p>
+                            <form onSubmit={handleMfaVerify} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                <input
+                                    type="text"
+                                    inputMode="numeric"
+                                    maxLength={8}
+                                    value={mfaCode}
+                                    onChange={e => setMfaCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 8))}
+                                    placeholder="000000"
+                                    style={{ ...inputStyle, textAlign: 'center', letterSpacing: '4px', fontWeight: 700, fontSize: '1.2rem' }}
+                                    autoFocus
+                                />
+                                {error && <div style={{ padding: '8px 12px', borderRadius: '8px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444', fontSize: '0.78rem' }}>{error}</div>}
+                                <button type="submit" disabled={loading !== null} style={{ width: '100%', padding: '10px', borderRadius: '10px', border: 'none', background: 'var(--accent-gold)', color: '#fff', fontWeight: 700, fontSize: '0.9rem', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
+                                    {loading === 'mfa' ? (t('login_processing') || 'Processing...') : (t('mfa_verify_btn') || 'Verify')}
+                                </button>
+                            </form>
+                            <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                                <button onClick={() => { cancelMfa(); setMode('login'); setError(''); }} style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', opacity: 0.7, background: 'none', border: 'none', cursor: 'pointer' }}>
+                                    {t('login_back_signin') || '← Back to Sign In'}
+                                </button>
+                            </div>
                         </>
                     )}
 

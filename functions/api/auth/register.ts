@@ -20,8 +20,8 @@ export async function onRequest(context: CFContext): Promise<Response> {
     if (!email || !password || !name) {
       return json({ error: 'Email, password, and name are required' }, 400);
     }
-    if (password.length < 8) {
-      return json({ error: 'Password must be at least 8 characters' }, 400);
+    if (password.length < 12) {
+      return json({ error: 'Password must be at least 12 characters' }, 400);
     }
 
     const db = getDb(context.env.DATABASE_URL);
