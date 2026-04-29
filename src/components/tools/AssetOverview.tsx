@@ -208,7 +208,7 @@ const AssetOverview: React.FC = () => {
 
     const getAllAssetListData = () => {
         const lists: Record<string, unknown[]> = {};
-        const keys = ['bank', 'securities', 'bvg', 'insurance', 'real_estate', 'crypto_wallets', 'crypto_exchanges', 'hardware_wallets', 'online_accounts', 'online_banking', 'funeral_music', 'funeral_people', 'funeral_flowers', 'sentimental_items', 'pets'];
+        const keys = ['eigengut', 'gifts_made', 'bank', 'securities', 'bvg', 'insurance', 'real_estate', 'valuables', 'liabilities_mortgages', 'liabilities_debts', 'crypto_wallets', 'crypto_exchanges', 'hardware_wallets', 'online_accounts', 'online_banking', 'funeral_music', 'funeral_people', 'funeral_flowers', 'sentimental_items', 'pets'];
         for (const k of keys) {
             try {
                 const stored = localStorage.getItem(`readylegacy_list_${k}`);
@@ -290,18 +290,47 @@ const AssetOverview: React.FC = () => {
                             {t('assets_indicative') || 'All values are indicative estimates — not a legal valuation'}
                         </p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <DynamicAssetList title={t('label_eigengut') || 'Marital Property (Eigengüter)'} itemKey="eigengut" demoMode={demoMode} fields={[
+                                { key: 'name', label: 'Description', placeholder: 'e.g. Savings brought into marriage' },
+                                { key: 'value', label: 'Amount / Value', placeholder: 'e.g. 30,000 CHF' },
+                                { key: 'type', label: 'Type', placeholder: 'Brought into marriage / Inherited / Gift' },
+                                { key: 'owner', label: 'Owner', placeholder: 'e.g. Partner 1 or Partner 2' },
+                            ]} />
+                            <DynamicAssetList title={t('label_gifts') || 'Gifts & Donations Made (Schenkungen)'} itemKey="gifts_made" demoMode={demoMode} fields={[
+                                { key: 'name', label: 'Recipient', placeholder: 'e.g. Daughter Maria' },
+                                { key: 'value', label: 'Amount CHF', placeholder: 'e.g. 10,000 CHF' },
+                                { key: 'date', label: 'Date', placeholder: 'e.g. March 2024' },
+                            ]} />
                             <DynamicAssetList title={t('label_bank') || 'Bank & Savings'} itemKey="bank" demoMode={demoMode} fields={[
                                 { key: 'name', label: 'Account', placeholder: 'e.g. UBS Savings Account' },
+                                { key: 'value', label: 'Amount / Value', placeholder: 'e.g. 50,000 CHF' },
+                                { key: 'account_number', label: 'Account Number', placeholder: 'e.g. CH93 0076 2011 6238 5295 7' },
                             ]} />
-                            <DynamicAssetList title={t('label_securities') || 'Securities & Stocks'} itemKey="securities" demoMode={demoMode} />
-                            <DynamicAssetList title={t('label_bvg') || 'Pension Fund'} itemKey="bvg" demoMode={demoMode} />
-                            <DynamicAssetList title={t('label_insurance') || 'Insurance'} itemKey="insurance" demoMode={demoMode} />
+                            <DynamicAssetList title={t('label_securities') || 'Securities & Stocks'} itemKey="securities" demoMode={demoMode} fields={[
+                                { key: 'name', label: 'Description', placeholder: 'e.g. ETF Portfolio, Apple shares' },
+                                { key: 'value', label: 'Amount / Value', placeholder: 'e.g. 25,000 CHF' },
+                                { key: 'depot_number', label: 'Depot Number', placeholder: 'e.g. 123-456789-0' },
+                            ]} />
+                            <DynamicAssetList title={t('label_bvg') || 'Pension Fund (BVG)'} itemKey="bvg" demoMode={demoMode} fields={[
+                                { key: 'name', label: 'Pension Fund', placeholder: 'e.g. BVK, Publica, Migros PK' },
+                                { key: 'value', label: 'Amount / Value', placeholder: 'e.g. 120,000 CHF' },
+                                { key: 'depot_number', label: 'Account / Depot Number', placeholder: 'e.g. 987-654321' },
+                            ]} />
+                            <DynamicAssetList title={t('label_insurance') || 'Insurance (Säule 3a/3b)'} itemKey="insurance" demoMode={demoMode} fields={[
+                                { key: 'name', label: 'Provider', placeholder: 'e.g. Swiss Life, AXA, PostFinance' },
+                                { key: 'value', label: 'Amount / Value', placeholder: 'e.g. 80,000 CHF' },
+                                { key: 'policy_number', label: 'Policy Number', placeholder: 'e.g. POL-2024-12345' },
+                            ]} />
                             <DynamicAssetList title={t('auto_real_estate') || 'Real Estate'} itemKey="real_estate" demoMode={demoMode} fields={[
                                 { key: 'name', label: 'Property', placeholder: 'e.g. Vienna apartment' },
                                 { key: 'value', label: 'Estimated Value', placeholder: 'e.g. 350,000 EUR' },
                                 { key: 'address', label: 'Address', placeholder: 'Street, City' },
                                 { key: 'ownership', label: 'Ownership', placeholder: 'Personal or Shared (e.g. 50% with spouse)' },
                                 { key: 'co_owners', label: 'Co-owners', placeholder: 'e.g. Spouse name, share %' },
+                            ]} />
+                            <DynamicAssetList title={t('label_valuables') || 'Valuables (Furniture, Art, Jewelry)'} itemKey="valuables" demoMode={demoMode} fields={[
+                                { key: 'name', label: 'Item', placeholder: 'e.g. Antique cabinet, diamond ring, painting' },
+                                { key: 'value', label: 'Estimated Value', placeholder: 'e.g. 5,000 CHF' },
                             ]} />
                         </div>
                     </div>
@@ -316,13 +345,17 @@ const AssetOverview: React.FC = () => {
                 <div className="wizard-content-step active">
                     <div className="tool-section">
                         <h3>1.3 Liabilities</h3>
-                        <div className="form-group">
-                            <label>{t('label_mortgages') || 'Mortgages'}</label>
-                            <input type="text" placeholder={t('auto_e_g_200_000_eur') || 'e.g. 200,000 EUR — Raiffeisen Bank'} {...assetMortgages} />
-                        </div>
-                        <div className="form-group">
-                            <label>{t('label_debts') || 'Other Debts & Liabilities'}</label>
-                            <input type="text" placeholder={t('auto_e_g_car_loan_cr') || 'e.g. Car loan, credit card...'} {...assetDebts} />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <DynamicAssetList title={t('label_mortgages') || 'Mortgages'} itemKey="liabilities_mortgages" demoMode={demoMode} fields={[
+                                { key: 'name', label: 'Bank / Lender', placeholder: 'e.g. Raiffeisen, UBS' },
+                                { key: 'value', label: 'Amount', placeholder: 'e.g. 200,000 CHF' },
+                                { key: 'account_number', label: 'Account Number', placeholder: 'e.g. HYP-2024-12345' },
+                            ]} />
+                            <DynamicAssetList title={t('label_debts') || 'Other Debts & Liabilities'} itemKey="liabilities_debts" demoMode={demoMode} fields={[
+                                { key: 'name', label: 'Creditor', placeholder: 'e.g. Car loan — ZKB' },
+                                { key: 'value', label: 'Amount', placeholder: 'e.g. 15,000 CHF' },
+                                { key: 'account_number', label: 'Account Number', placeholder: 'e.g. KR-2024-67890' },
+                            ]} />
                         </div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -482,6 +515,7 @@ const AssetOverview: React.FC = () => {
                                 demoMode={demoMode}
                                 fields={[
                                     { key: 'name', label: 'Item', placeholder: 'e.g. Grandmother\'s ring, old watch...' },
+                                    { key: 'location', label: 'Storage Location', placeholder: 'e.g. Home safe, bank vault, attic...' },
                                     { key: 'recipient', label: 'Intended for', placeholder: 'e.g. My daughter Sofia' },
                                     { key: 'note', label: 'Story / Note', placeholder: 'Why it is meaningful...' },
                                 ]}
